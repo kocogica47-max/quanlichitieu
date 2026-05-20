@@ -4,7 +4,7 @@ COPY . .
 RUN mvn clean package -DskipTests
 
 # Bước 2: Chạy file jar bằng Temurin Java 17
-FROM eclipse-temurin:17-jre-slim
+FROM amazoncorretto:17-alpine
 COPY --from=build /target/*.jar app.jar
 EXPOSE 8080
 ENTRYPOINT ["java","-jar","app.jar"]
