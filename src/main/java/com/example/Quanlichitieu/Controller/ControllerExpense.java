@@ -10,7 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class ControllerExpense {
@@ -107,5 +110,73 @@ public class ControllerExpense {
         if (session.getAttribute("loggedInUser") == null) return "redirect:/login";
         this.expenseRepository.deleteById(id);
         return "redirect:/";
+    }
+
+    // --- API THỐNG KÊ SO SÁNH THÁNG (ĐÃ SỬA LỖI VÀ TỐI ƯU HÓA) ---
+    @GetMapping("/api/thong-ke/so-sanh-thang")
+    @ResponseBody
+    public Map<String, Object> getSoSanhThang(HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
+        User loggedInUser = (User) session.getAttribute("loggedInUser"); // Đã sửa lỗi dấu gạch chéo \" ở đây
+        
+        // Nếu chưa đăng nhập, trả về lỗi 401 giả lập dạng JSON
+        if (loggedInUser == null) {
+            response.put("error", "Unauthorized");
+            return response;
+        }
+
+        // Lấy toàn bộ danh sách chi tiêu của người dùng này từ Database
+        List<Expense> listExpenses = expenseRepository.findByUserId(loggedInUser.getId());
+        
+        LocalDate today = LocalDate.now();
+        int currentMonth = today.getMonthValue();
+        int currentYear = today.getYear();
+        
+        LocalDate lastMonthDate = today.minusMonths(1);
+        int lastMonth = lastMonthDate.getMonthValue();
+        int lastMonthYear = lastMonthDate.getYear();
+
+        double tongThangNay = 0;
+        double tongThangTruoc = 0;
+
+        if (listExpenses != null) {
+            for (Expense exp : listExpenses) {
+                if (exp.getDate() != null) {
+                    LocalDate expDate;
+                    
+                    // Cơ chế tự động nhận diện kiểu dữ liệu an toàn:
+                    if (exp.getDate() instanceof LocalDate) {
+                        expDate = (LocalDate) (Object) exp.getDate();
+                    } else {
+                        // Nếu trường date lưu kiểu String (Ví dụ: "2026-05-23"), tự động phân tích về đối tượng Ngày
+                        expDate = LocalDate.parse(exp.getDate().toString());
+                    }
+                    
+                    // Tính tổng tiền tháng này
+                    if (expDate.getMonthValue() == currentMonth && expDate.getYear() == currentYear) {
+                        tongThangNay += exp.getAmount();
+                    } 
+                    // Tính tổng tiền tháng trước
+                    else if (expDate.getMonthValue() == lastMonth && expDate.getYear() == lastMonthYear) {
+                        tongThangTruoc += exp.getAmount();
+                    }
+                }
+            }
+        }
+
+        // Tính % chênh lệch tăng/giảm giữa 2 tháng
+        double phanTramThayDoi = 0;
+        if (tongThangTruoc > 0) {
+            phanTramThayDoi = ((tongThangNay - tongThangTruoc) / tongThangTruoc) * 100;
+        }
+
+        // Đóng gói dữ liệu chuẩn JSON để JavaScript ở index.html nhận được
+        response.put("labelThangNay", "Tháng " + currentMonth);
+        response.put("tongThangNay", tongThangNay);
+        response.put("labelThangTruoc", "Tháng " + lastMonth);
+        response.put("tongThangTruoc", tongThangTruoc);
+        response.put("phanTramThayDoi", Math.round(phanTramThayDoi * 100.0) / 100.0);
+
+        return response;
     }
 }

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org">
-<head>
+<head><script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý chi tiêu</title>
@@ -39,6 +39,23 @@
     <div class="container">
         
         <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 mb-4">
+            <div class="card border-0 shadow-sm rounded-3 mb-4">
+    <div class="card-body p-4">
+        <h5 class="card-title fw-bold text-dark mb-3"><i class="bi bi-bar-chart-line-fill me-2 text-primary"></i>Báo cáo so sánh chi tiêu</h5>
+        <div class="row align-items-center">
+            <div class="col-md-5 col-12 mb-3 mb-md-0">
+                <div style="position: relative; height: 180px; width: 100%;">
+                    <canvas id="chartSoSanhThang"></canvas>
+                </div>
+            </div>
+            <div class="col-md-7 col-12">
+                <div id="textPhanTichThongKe" class="fs-6 text-secondary">
+                    <p class="placeholder-glow"><span class="placeholder col-6"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
             <div>
                 <h2 class="fw-bold text-dark m-0 d-flex align-items-center gap-2">
                     <i class="bi bi-wallet2 text-primary"></i> Nhật Ký Chi Tiêu
@@ -107,5 +124,61 @@
         </div>
         
     </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Gọi API lấy dữ liệu so sánh từ Spring Boot
+        fetch('/api/thong-ke/so-sanh-thang')
+            .then(response => response.json())
+            .then(data => {
+                if(data.error) return;
+
+                // 1. Tạo biểu đồ cột đôi trực quan bằng Chart.js
+                const ctx = document.getElementById('chartSoSanhThang').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: [data.labelThangTruoc, data.labelThangNay],
+                        datasets: [{
+                            label: 'Số tiền (₫)',
+                            data: [data.tongThangTruoc, data.tongThangNay],
+                            backgroundColor: ['#adb5bd', '#4f46e5'], // Tháng trước màu xám, tháng này màu xanh tím độc quyền
+                            borderRadius: 6,
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: { y: { beginAtZero: true } }
+                    }
+                });
+
+                // 2. Điền văn bản phân tích xu hướng chi tiêu
+                const textDiv = document.getElementById('textPhanTichThongKe');
+                let danhGiaXuHuong = "";
+
+                if (data.phanTramThayDoi > 0) {
+                    danhGiaXuHuong = `<span class="text-danger fw-bold"><i class="bi bi-graph-up-arrow me-1"></i>Tăng ${data.phanTramThayDoi}%</span> so với tháng trước. Bạn nên cân đối lại ví tiền nhé!`;
+                } else if (data.phanTramThayDoi < 0) {
+                    danhGiaXuHuong = `<span class="text-success fw-bold"><i class="bi bi-graph-down-arrow me-1"></i>Giảm ${Math.abs(data.phanTramThayDoi)}%</span> so với tháng trước. Chi tiêu rất kế hoạch!`;
+                } else {
+                    danhGiaXuHuong = `Chi tiêu giữ mức ổn định bằng khít so với tháng trước.`;
+                }
+
+                textDiv.innerHTML = `
+                    <div class="mb-2">Tổng chi tháng trước: <strong class="text-dark">${data.tongThangTruoc.toLocaleString('vi-VN')} ₫</strong></div>
+                    <div class="mb-2">Tổng chi tháng này: <strong class="text-dark">${data.tongThangNay.toLocaleString('vi-VN')} ₫</strong></div>
+                    <div class="p-2 bg-light rounded-3 mt-3 border-start border-4 ${data.phanTramThayDoi > 0 ? 'border-danger' : 'border-success'}">
+                        ${danhGiaXuHuong}
+                    </div>
+                `;
+            })
+            .catch(err => {
+                document.getElementById('textPhanTichThongKe').innerHTML = "<span class='text-danger'>Lỗi tải dữ liệu thống kê rồi!</span>";
+                console.error(err);
+            });
+    });
+</script>
 </body>
 </html>
