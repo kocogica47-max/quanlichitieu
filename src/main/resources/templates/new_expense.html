@@ -10,8 +10,8 @@
     <style>
         /* Nền không gian tối đồng bộ trang chủ */
         body {
-            background: radial-gradient(circle at top right, #1e1b4b 0%, #0f172a 100%);
-            color: #f8fafc;
+            background: radial-gradient(circle at top right, #1e1b4b 0%, #0f172a 100%) !important;
+            color: #f8fafc !important;
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             min-height: 100vh;
             display: flex;
@@ -28,22 +28,32 @@
             box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
         }
 
-        /* Tiêu đề phát sáng nhẹ */
+        /* ÉP CHỮ TIÊU ĐỀ MÀU TRẮNG PHÁT SÁNG */
         .glow-text {
+            color: #ffffff !important;
             text-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+        }
+
+        /* ÉP MÀU TRẮNG XÁM RÕ RÀNG CHO TOÀN BỘ CÁC LABEL */
+        .tech-label {
+            color: #cbd5e1 !important;
+            font-size: 0.88rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            display: inline-block;
         }
 
         /* Định dạng lại các ô Form nhập liệu phong cách Cyber tối */
         .tech-input-group {
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
             border-radius: 12px;
             overflow: hidden;
-            background: rgba(15, 23, 42, 0.4) !important;
+            background: rgba(15, 23, 42, 0.5) !important;
             transition: all 0.25s ease;
         }
         .tech-input-group:focus-within {
-            border-color: #6366f1;
-            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+            border-color: #6366f1 !important;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2) !important;
         }
 
         /* Icon đầu ô nhập liệu */
@@ -59,50 +69,53 @@
         .tech-form-control {
             background: transparent !important;
             border: none !important;
-            color: #f8fafc !important; /* Chữ trắng rõ nét */
+            color: #f8fafc !important; /* Ép chữ gõ vào là màu trắng */
             padding: 12px 14px 12px 4px;
             box-shadow: none !important;
         }
         .tech-form-control::placeholder {
             color: #475569 !important;
         }
-        /* Fix màu cho lịch trình picker (Date) */
+        
+        /* Fix màu lịch chọn ngày */
         .tech-form-control::-webkit-calendar-picker-indicator {
             filter: invert(1);
             opacity: 0.5;
             cursor: pointer;
         }
-        /* Mở rộng màu chữ cho thẻ select option */
+        
+        /* Màu cho các lựa chọn bên trong thẻ select */
         .tech-form-control option {
             background-color: #1e293b !important;
-            color: #f8fafc;
+            color: #f8fafc !important;
         }
 
         /* Hệ thống nút bấm đồng bộ */
         .btn-tech-primary {
-            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
-            color: white;
-            border: none;
-            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.35);
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important;
+            color: white !important;
+            border: none !important;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.35) !important;
             transition: all 0.2s ease;
         }
         .btn-tech-primary:hover {
-            background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%);
+            background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%) !important;
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.5);
-            color: white;
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.5) !important;
+            color: white !important;
         }
 
         .btn-tech-outline {
-            background: transparent;
-            color: #94a3b8;
-            border: 1px solid #334155;
+            background: transparent !important;
+            color: #94a3b8 !important;
+            border: 1px solid #334155 !important;
             transition: all 0.2s ease;
+            text-decoration: none;
         }
         .btn-tech-outline:hover {
-            background: rgba(255, 255, 255, 0.05);
-            color: #f8fafc;
-            border-color: #475569;
+            background: rgba(255, 255, 255, 0.05) !important;
+            color: #f8fafc !important;
+            border-color: #475569 !important;
         }
     </style>
 </head>
@@ -121,10 +134,68 @@
                             <p class="small m-0 mt-1" style="color: #64748b;">Khởi tạo bản ghi tiêu dùng vào cơ sở dữ liệu hệ thống</p>
                         </div>
                         
-                        <form th:action="@{/saveExpense}" th:object="${expense}" method="POST" class="d-flex flex-column gap-3.5">
+                        <form th:action="@{/saveExpense}" th:object="${expense}" method="POST" class="d-flex flex-column gap-3">
                             
                             <div class="mb-3">
-                                <label class="form-label mb-1.5 fw-semibold" style="color: #94a3b8; font-size: 0.85rem; letter-spacing: 0.3px;">Nội dung chi tiêu</label>
+                                <label class="form-label mb-1.5 tech-label">Nội dung chi tiêu</label>
                                 <div class="input-group tech-input-group">
                                     <span class="input-group-text tech-input-text"><i class="bi bi-pencil-square"></i></span>
-                                    <input type="text" th:field="*{title}" class
+                                    <input type="text" th:field="*{title}" class="form-control tech-form-control" placeholder="Ví dụ: Mua sắm quần áo, Ăn tối..." required>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label mb-1.5 tech-label">Phân loại danh mục</label>
+                                <div class="input-group tech-input-group">
+                                    <span class="input-group-text tech-input-text"><i class="bi bi-tags"></i></span>
+                                    <select th:field="*{category}" class="form-select tech-form-control" style="cursor: pointer;" required>
+                                        <option value="" disabled selected hidden>-- Chọn phân loại phù hợp --</option>
+                                        <option value="Ăn uống">🍔 Ăn uống</option>
+                                        <option value="Di chuyển">🚗 Di chuyển</option>
+                                        <option value="Mua sắm">🛍️ Mua sắm</option>
+                                        <option value="Giải trí">🎬 Giải trí</option>
+                                        <option value="Học tập">📚 Học tập</option>
+                                        <option value="Hóa đơn">💵 Hóa đơn & Tiện ích</option>
+                                        <option value="Khác">✨ Mục khác</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label mb-1.5 tech-label">Số tiền chi tiêu (VND)</label>
+                                <div class="input-group tech-input-group">
+                                    <span class="input-group-text tech-input-text"><i class="bi bi-cash-coin"></i></span>
+                                    <input type="number" step="any" th:field="*{amount}" class="form-control tech-form-control" placeholder="Nhập số tiền..." min="0" required>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label class="form-label mb-1.5 tech-label">Thời gian giao dịch</label>
+                                <div class="input-group tech-input-group">
+                                    <span class="input-group-text tech-input-text"><i class="bi bi-calendar-check"></i></span>
+                                    <input type="date" th:field="*{date}" class="form-control tech-form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 pt-2">
+                                <div class="col-8">
+                                    <button type="submit" class="btn btn-tech-primary w-100 py-2.5 rounded-3 fw-bold">
+                                        <i class="bi bi-cloud-arrow-up-fill me-1"></i> Đồng bộ lên hệ thống
+                                    </button>
+                                </div>
+                                <div class="col-4">
+                                    <a th:href="@{/}" class="btn btn-tech-outline w-100 py-2.5 rounded-3 fw-semibold text-center d-block">
+                                        Hủy bỏ
+                                    </a>
+                                </div>
+                            </div>
+                            
+                        </form>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</body>
+</html>
