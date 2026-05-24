@@ -4,120 +4,228 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản lý chi tiêu</title>
+    <title>Quản lý chi tiêu Pro</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
     
     <style>
+        /* Nền không gian tối đậm chất Fintech */
         body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: radial-gradient(circle at top right, #1e1b4b 0%, #0f172a 100%);
+            color: #f8fafc;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             min-height: 100vh;
         }
+
+        /* Thẻ kính mờ cao cấp (Glassmorphism) */
+        .tech-card {
+            background: rgba(30, 41, 59, 0.65);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .tech-card:hover {
+            border-color: rgba(99, 102, 241, 0.35);
+            box-shadow: 0 16px 36px rgba(99, 102, 241, 0.2);
+        }
+
+        /* Tiêu đề phát sáng công nghệ */
+        .glow-text {
+            text-shadow: 0 0 20px rgba(99, 102, 241, 0.6);
+        }
+
+        /* Khung chứa biểu đồ có khoảng đệm an toàn */
+        .chart-wrapper {
+            position: relative; 
+            height: 160px; 
+            width: 100%;
+            padding: 5px 15px 5px 5px; /* Sửa lỗi dính lề trái của biểu đồ */
+        }
+
+        /* Bảng dữ liệu phong cách tối tối giản */
         .table-container {
-            border-radius: 12px;
+            border-radius: 16px;
             overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .table {
+            color: #e2e8f0 !important;
+            margin-bottom: 0;
         }
         .table th {
+            background-color: rgba(30, 41, 59, 0.9) !important;
+            color: #64748b !important;
             font-weight: 600;
-            font-size: 0.9rem;
-            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            padding: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
         .table td {
-            font-size: 0.95rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 16px;
         }
-        .btn-animate {
-            transition: all 0.2s ease-in-out;
+        .table tbody tr {
+            background-color: transparent !important;
+            transition: background-color 0.2s ease;
         }
-        .btn-animate:hover {
+        .table tbody tr:hover {
+            background-color: rgba(255, 255, 255, 0.025) !important;
+        }
+
+        /* Các nút bấm công nghệ */
+        .btn-tech-primary {
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.35);
+            transition: all 0.2s ease;
+        }
+        .btn-tech-primary:hover {
+            background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.5);
+            color: white;
+        }
+
+        .btn-tech-danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.15);
+            transition: all 0.2s ease;
+            padding: 6px 12px;
+        }
+        .btn-tech-danger:hover {
+            background: #ef4444;
+            color: white;
             transform: translateY(-1px);
+        }
+
+        /* Huy hiệu sắc nét */
+        .tech-badge {
+            background: rgba(148, 163, 184, 0.1);
+            color: #94a3b8;
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            font-size: 0.78rem;
+            padding: 5px 12px;
+        }
+
+        /* Thanh cuộn mượt phong cách tối */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
         }
     </style>
 </head>
-<body class="py-5">
-    <div class="container">
+<body class="py-4 py-md-5">
+    <div class="container" style="max-width: 960px;">
         
         <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 mb-4">
             <div>
-                <h2 class="fw-bold text-dark m-0 d-flex align-items-center gap-2">
-                    <i class="bi bi-wallet2 text-primary"></i> Nhật Ký Chi Tiêu
+                <h2 class="fw-bold text-white m-0 d-flex align-items-center gap-2 glow-text" style="letter-spacing: 0.5px;">
+                    <i class="bi bi-cpu text-info"></i> FIN-TRACKER <span class="badge bg-info text-dark fs-6 rounded-pill fw-bold" style="padding: 3px 10px;">PRO</span>
                 </h2>
-                <p class="text-muted small m-0 mt-1">Theo dõi và tối ưu hóa các khoản chi tiêu cá nhân của bạn</p>
+                <p class="m-0 mt-1" style="color: #64748b; font-size: 0.88rem;">Hệ thống phân tích và giám sát chi tiêu thông minh</p>
             </div>
             <div class="d-flex gap-2">
-                <a th:href="@{/showNewExpenseForm}" class="btn btn-primary btn-animate fw-semibold rounded-3 px-4 shadow-sm">
-                    <i class="bi bi-plus-circle me-1"></i> Thêm Khoản Chi
+                <a th:href="@{/showNewExpenseForm}" class="btn btn-tech-primary fw-bold rounded-3 px-4 py-2 d-flex align-items-center gap-2">
+                    <i class="bi bi-plus-circle-fill"></i> Ghi Khoản Chi
                 </a>
-                <a th:href="@{/logout}" class="btn btn-outline-secondary btn-animate fw-semibold rounded-3 px-3 shadow-sm">
-                    <i class="bi bi-box-arrow-right me-1"></i> Đăng xuất
+                <a th:href="@{/logout}" class="btn btn-outline-secondary fw-semibold rounded-3 px-3 d-flex align-items-center" style="color: #64748b; border-color: #334155;">
+                    <i class="bi bi-power me-1.5"></i> Đăng xuất
                 </a>
             </div>
         </div>
         
-        <div class="card border-0 shadow-sm rounded-4 mb-4 bg-white">
-            <div class="card-body p-4">
-                <h5 class="card-title fw-bold text-dark mb-4">
-                    <i class="bi bi-bar-chart-line-fill me-2 text-primary"></i>Báo cáo so sánh chi tiêu
-                </h5>
-                <div class="row align-items-center">
-                    <div class="col-md-5 col-12 mb-4 mb-md-0">
-                        <div style="position: relative; height: 180px; width: 100%;">
-                            <canvas id="chartSoSanhThang"></canvas>
-                        </div>
-                    </div>
-                    <div class="col-md-7 col-12">
-                        <div id="textPhanTichThongKe" class="fs-6 text-secondary">
-                            <p class="placeholder-glow"><span class="placeholder col-6"></span></p>
+        <div class="row g-4 mb-4">
+            <div class="col-md-7 col-12">
+                <div class="card tech-card h-100 border-0">
+                    <div class="card-body p-4 d-flex flex-column justify-content-between">
+                        <h6 class="text-uppercase fw-bold mb-3 d-flex align-items-center gap-2" style="color: #94a3b8; letter-spacing: 0.5px; font-size: 0.82rem;">
+                            <i class="bi bi-activity text-info"></i> Phân tích chu kỳ tiêu dùng
+                        </h6>
+                        <div class="row align-items-center g-3 my-auto">
+                            <div class="col-sm-5 col-12">
+                                <div class="chart-wrapper">
+                                    <canvas id="chartSoSanhThang"></canvas>
+                                </div>
+                            </div>
+                            <div class="col-sm-7 col-12">
+                                <div id="textPhanTichThongKe" class="ps-sm-2">
+                                    <p class="placeholder-glow m-0"><span class="placeholder col-8 bg-secondary opacity-25"></span></p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        
-        <div class="card border-0 border-start border-primary border-4 shadow-sm rounded-3 p-4 mb-4 bg-white">
-            <div class="d-flex align-items-center gap-3">
-                <div class="bg-primary bg-opacity-10 text-primary rounded-3 p-3">
-                    <i class="bi bi-cash-coin fs-3"></i>
-                </div>
-                <div>
-                    <h5 class="text-secondary small text-uppercase fw-bold m-0 mb-1">Tổng chi tiêu tháng này</h5>
-                    <h2 class="text-primary fw-extrabold m-0" th:text="${totalAmount} + ' VND'">0 VND</h2>
+
+            <div class="col-md-5 col-12">
+                <div class="card tech-card h-100 border-0" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.12) 0%, rgba(30, 41, 59, 0.7) 100%);">
+                    <div class="card-body p-4 d-flex flex-column justify-content-center">
+                        <h6 class="text-uppercase fw-bold mb-2 d-flex align-items-center gap-2" style="color: #818cf8; letter-spacing: 0.5px; font-size: 0.82rem;">
+                            <i class="bi bi-wallet2"></i> Quỹ chi tháng này
+                        </h6>
+                        <p class="small mb-3" style="color: #64748b;">Tổng ngân sách đã tiêu dùng</p>
+                        <h1 class="fw-extrabold m-0 text-white glow-text" style="font-size: 2.3rem; letter-spacing: -0.5px;" th:text="${totalAmount} + ' VND'">0 VND</h1>
+                        <div class="mt-4 pt-3 border-top border-white border-opacity-5 d-flex align-items-center justify-content-between small" style="color: #64748b;">
+                            <span>Trạng thái: Đang giám sát</span>
+                            <i class="bi bi-shield-check text-success fs-5"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="card border-0 shadow-sm rounded-4 bg-white p-2">
+        <div class="card tech-card border-0 p-2">
             <div class="card-body p-0">
+                <div class="p-3 border-bottom border-white border-opacity-5 d-flex align-items-center justify-content-between">
+                    <h6 class="text-uppercase fw-bold m-0 d-flex align-items-center gap-2" style="color: #94a3b8; letter-spacing: 0.5px; font-size: 0.82rem;">
+                        <i class="bi bi-list-stars text-primary"></i> Nhật ký giao dịch gần đây
+                    </h6>
+                </div>
                 <div class="table-responsive table-container">
-                    <table class="table table-hover align-middle mb-0">
-                        <thead class="table-light border-bottom text-secondary">
+                    <table class="table align-middle">
+                        <thead>
                             <tr>
-                                <th class="ps-4 py-3">Nội dung</th>
-                                <th class="py-3">Danh mục</th>
-                                <th class="py-3">Số tiền</th>
-                                <th class="py-3">Ngày chi</th>
-                                <th class="text-end pe-4 py-3">Hành động</th>
+                                <th class="ps-4">Nội dung chi tiêu</th>
+                                <th>Phân loại</th>
+                                <th>Số tiền</th>
+                                <th>Thời gian</th>
+                                <th class="text-end pe-4">Hành động</th>
                             </tr>
                         </thead>
-                        <tbody class="border-top-0">
+                        <tbody>
                             <tr th:if="${#lists.isEmpty(listExpenses)}">
-                                <td colspan="5" class="text-center py-5 text-muted">
-                                    <i class="bi bi-inbox fs-2 d-block mb-2"></i>
-                                    Chưa có khoản chi tiêu nào được ghi nhận.
+                                <td colspan="5" class="text-center py-5 text-muted small">
+                                    <i class="bi bi-database-exclamation fs-3 d-block mb-2 text-secondary opacity-50"></i>
+                                    Hệ thống trống. Chưa có dữ liệu giao dịch.
                                 </td>
                             </tr>
                             
                             <tr th:each="expense : ${listExpenses}">
-                                <td class="ps-4 fw-medium text-dark" th:text="${expense.title}"></td>
+                                <td class="ps-4 fw-semibold text-white fs-6" th:text="${expense.title}"></td>
                                 <td>
-                                    <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-20 px-2.5 py-1.5 rounded-pill" th:text="${expense.category}"></span>
+                                    <span class="badge tech-badge rounded-pill" th:text="${expense.category}"></span>
                                 </td>
-                                <td class="fw-bold text-danger-emphasis" th:text="${expense.amount} + ' ₫'"></td>
-                                <td class="text-muted" th:text="${expense.date}"></td>
+                                <td class="fw-bold text-info" style="text-shadow: 0 0 10px rgba(0, 229, 255, 0.15);" th:text="${expense.amount} + ' ₫'"></td>
+                                <td style="color: #64748b; font-size: 0.9rem;" th:text="${expense.date}"></td>
                                 <td class="text-end pe-4">
                                     <a th:href="@{/deleteExpense/{id}(id=${expense.id})}" 
-                                       class="btn btn-outline-danger btn-sm border-0 rounded-3 px-2.5 py-1.5 btn-animate"
-                                       onclick="return confirm('Bạn có chắc chắn muốn xóa khoản chi này không?')">
-                                        <i class="bi bi-trash3 me-1"></i> Xóa
+                                       class="btn btn-tech-danger btn-sm rounded-3 btn-animate"
+                                       onclick="return confirm('Hệ thống: Xác nhận xóa vĩnh viễn bản ghi này?')">
+                                        <i class="bi bi-trash-fill"></i>
                                     </a>
                                 </td>
                             </tr>
@@ -136,24 +244,36 @@
             .then(data => {
                 if(data.error) return;
 
+                // Khởi tạo biểu đồ với màu sắc và tỷ lệ padding hợp lý hơn
                 const ctx = document.getElementById('chartSoSanhThang').getContext('2d');
                 new Chart(ctx, {
                     type: 'bar',
                     data: {
                         labels: [data.labelThangTruoc, data.labelThangNay],
                         datasets: [{
-                            label: 'Số tiền (₫)',
                             data: [data.tongThangTruoc, data.tongThangNay],
-                            backgroundColor: ['#adb5bd', '#4f46e5'],
+                            backgroundColor: ['rgba(148, 163, 184, 0.25)', '#6366f1'],
+                            hoverBackgroundColor: ['rgba(148, 163, 184, 0.4)', '#818cf8'],
                             borderRadius: 6,
-                            borderWidth: 0
+                            borderWidth: 0,
+                            barThickness: 28 // Khống chế độ rộng cột không bị quá bè
                         }]
                     },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
                         plugins: { legend: { display: false } },
-                        scales: { y: { beginAtZero: true } }
+                        scales: { 
+                            y: { 
+                                beginAtZero: true,
+                                grid: { color: 'rgba(255, 255, 255, 0.04)' },
+                                ticks: { color: '#475569', font: { size: 10 } }
+                            },
+                            x: {
+                                grid: { display: false },
+                                ticks: { color: '#94a3b8', font: { size: 11, weight: '600' } }
+                            }
+                        }
                     }
                 });
 
@@ -161,23 +281,23 @@
                 let danhGiaXuHuong = "";
 
                 if (data.phanTramThayDoi > 0) {
-                    danhGiaXuHuong = `<span class="text-danger fw-bold"><i class="bi bi-graph-up-arrow me-1"></i>Tăng ${data.phanTramThayDoi}%</span> so với tháng trước. Bạn nên cân đối lại ví tiền nhé!`;
+                    danhGiaXuHuong = `<span style="color: #f87171; font-weight: 700;"><i class="bi bi-lightning-fill me-1"></i>Vượt hạn mức ${data.phanTramThayDoi}%</span>`;
                 } else if (data.phanTramThayDoi < 0) {
-                    danhGiaXuHuong = `<span class="text-success fw-bold"><i class="bi bi-graph-down-arrow me-1"></i>Giảm ${Math.abs(data.phanTramThayDoi)}%</span> so với tháng trước. Chi tiêu rất kế hoạch!`;
+                    danhGiaXuHuong = `<span style="color: #34d399; font-weight: 700;"><i class="bi bi-shield-check me-1"></i>Tiết kiệm ${Math.abs(data.phanTramThayDoi)}%</span>`;
                 } else {
-                    danhGiaXuHuong = `Chi tiêu giữ mức ổn định bằng khít so với tháng trước.`;
+                    danhGiaXuHuong = `<span class="text-info fw-bold">Chi tiêu tối ưu ổn định</span>`;
                 }
 
                 textDiv.innerHTML = `
-                    <div class="mb-2">Tổng chi tháng trước: <strong class="text-dark">${data.tongThangTruoc.toLocaleString('vi-VN')} ₫</strong></div>
-                    <div class="mb-2">Tổng chi tháng này: <strong class="text-dark">${data.tongThangNay.toLocaleString('vi-VN')} ₫</strong></div>
-                    <div class="p-2 bg-light rounded-3 mt-3 border-start border-4 ${data.phanTramThayDoi > 0 ? 'border-danger' : 'border-success'}">
+                    <div class="mb-1.5 text-secondary" style="font-size: 0.85rem;">Chu kỳ trước: <span class="text-white fw-bold ms-1">${data.tongThangTruoc.toLocaleString('vi-VN')} ₫</span></div>
+                    <div class="mb-3 text-secondary" style="font-size: 0.85rem;">Chu kỳ này: <span class="text-white fw-bold ms-1">${data.tongThangNay.toLocaleString('vi-VN')} ₫</span></div>
+                    <div class="p-2 px-3 rounded-3 border-start border-3 ${data.phanTramThayDoi > 0 ? 'border-danger' : 'border-success'}" style="background: rgba(255,255,255,0.02); font-size: 0.88rem; display: inline-block;">
                         ${danhGiaXuHuong}
                     </div>
                 `;
             })
             .catch(err => {
-                document.getElementById('textPhanTichThongKe').innerHTML = "<span class='text-danger'>Lỗi tải dữ liệu thống kê rồi!</span>";
+                document.getElementById('textPhanTichThongKe').innerHTML = "<span class='text-danger small'>API Error. Không thể đồng bộ dữ liệu.</span>";
                 console.error(err);
             });
     });
