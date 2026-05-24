@@ -112,4 +112,143 @@
 <body class="py-4 py-md-5">
     <div class="container">
         
-        <div class="d-flex flex-column flex-md
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-stretch align-items-md-center gap-3 mb-4 mb-md-5 pb-3 border-bottom border-secondary border-opacity-25">
+            <h2 class="fw-bold mb-0 d-flex align-items-center justify-content-center justify-content-md-start" style="background: linear-gradient(to right, #22d3ee, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: calc(1.3rem + 0.6vw);">
+                <i class="bi bi-cpu me-3 text-cyan"></i>
+                <span th:text="#{app.title}">Quản lý chi tiêu</span>
+            </h2>
+            
+            <div class="d-flex flex-column flex-sm-row align-items-center justify-content-center justify-content-md-end gap-3">
+                <div class="d-flex align-items-center justify-content-center w-100 w-sm-auto gap-2 bg-dark bg-opacity-25 p-2 px-3 rounded-3 border border-secondary border-opacity-10 text-center">
+                    <span class="text-nowrap small text-secondary">
+                        <i class="bi bi-person-circle me-1 text-cyan"></i>
+                        <span th:text="#{app.welcome} + ': ' + ${username}">User</span>
+                    </span>
+                </div>
+                
+                <a href="/logout" class="btn btn-sm btn-outline-danger px-3 py-2 py-sm-1 rounded-3 d-flex align-items-center justify-content-center gap-2 w-100 w-sm-auto">
+                    <i class="bi bi-box-arrow-right"></i> 
+                    <span th:text="#{app.btn.delete}">Đăng xuất</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="tech-card p-4 mb-4">
+                    <div class="d-flex align-items-center">
+                        <div class="p-3 rounded-3 bg-info bg-opacity-10 text-cyan me-3">
+                            <i class="bi bi-wallet2 fs-4"></i>
+                        </div>
+                        <div>
+                            <p class="text-secondary small mb-1 text-uppercase tracking-wider" th:text="#{app.total}">Tổng tích lũy chi</p>
+                            <h3 class="fw-bold mb-0 text-cyan" th:text="${#numbers.formatDecimal(totalAmount, 0, 'COMMA', 0, 'POINT')} + ' đ'">0 đ</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tech-card p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="fw-bold mb-0 text-indigo"><i class="bi bi-graph-up-arrow me-2"></i><span th:text="#{app.chart.title}">Xu hướng</span></h5>
+                        <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-3 py-1 text-xs" th:text="#{app.stat.status}">Realtime</span>
+                    </div>
+                    <div style="position: relative; height: 220px; width: 100%;">
+                        <canvas id="xuHuongChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="tech-card p-4 h-100 d-flex flex-column">
+                    
+                    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-stretch align-items-sm-center gap-3 mb-4">
+                        <h5 class="fw-bold mb-0 text-center text-sm-start">
+                            <i class="bi bi-list-stars me-2 text-cyan"></i>
+                            <span th:text="#{app.history}">Lịch sử giao dịch</span>
+                        </h5>
+                        <a href="/showNewExpenseForm" class="btn btn-gradient-cyan d-flex align-items-center justify-content-center gap-2 shadow-sm py-2 py-sm-2">
+                            <i class="bi bi-plus-lg"></i> 
+                            <span th:text="#{app.btn.add}">Thêm khoản chi</span>
+                        </a>
+                    </div>
+
+                    <div class="table-responsive flex-grow-1">
+                        <table class="table table-cyber mb-0" style="min-width: 550px;">
+                            <thead>
+                                <tr>
+                                    <th th:text="#{app.th.title}">Khoản chi</th>
+                                    <th th:text="#{app.th.category}">Danh mục</th>
+                                    <th th:text="#{app.th.date}">Thời gian</th>
+                                    <th class="text-end" th:text="#{app.th.amount}">Số tiền</th>
+                                    <th class="text-center" th:text="#{app.th.action}">Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="expense : ${listExpenses}" th:if="${listExpenses != null}">
+                                    <td class="fw-medium text-white" th:text="${expense != null ? expense.title : ''}">Khoản chi</td>
+                                    <td>
+                                        <span class="badge badge-category" th:text="${expense != null ? expense.category : ''}">Danh mục</span>
+                                    </td>
+                                    <td class="text-secondary small" th:text="${expense != null ? expense.date : ''}">01-01-2026</td>
+                                    <td class="text-end fw-bold text-cyan" th:text="${expense != null ? #numbers.formatDecimal(expense.amount, 0, 'COMMA', 0, 'POINT') + ' đ' : '0 đ'}">0 đ</td>
+                                    <td class="text-center">
+                                        <a th:if="${expense != null}" 
+                                           th:href="@{/deleteExpense/{id}(id=${expense.id})}" 
+                                           class="btn btn-sm btn-outline-danger border-0 rounded-3 px-2 py-1"
+                                           th:data-confirm-msg="#{app.confirm.delete}"
+                                           onclick="return confirm(this.getAttribute('data-confirm-msg'))">
+                                            <i class="bi bi-trash3 fs-6"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr th:if="${#lists.isEmpty(listExpenses)}">
+                                    <td colspan="5" class="text-center py-5 text-secondary">
+                                        <i class="bi bi-inbox fs-2 d-block mb-2 opacity-50"></i>
+                                        <span th:text="#{app.table.empty}">Chưa có dữ liệu chi tiêu nào được ghi nhận.</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch('/api/xu-huong-chi-tieu')
+                .then(response => response.json())
+                .then(data => {
+                    const ctx = document.getElementById('xuHuongChart').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: [data.labelThangTruoc, data.labelThangNay],
+                            datasets: [{
+                                label: 'Cost',
+                                data: [data.tongThangTruoc || 0, data.tongThangNay || 0],
+                                backgroundColor: ['rgba(99, 102, 241, 0.25)', 'rgba(6, 182, 212, 0.35)'],
+                                borderColor: ['#6366f1', '#06b6d4'],
+                                borderWidth: 2,
+                                borderRadius: 8,
+                                borderSkipped: false
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            animation: { duration: 400, easing: 'easeOutQuart' },
+                            plugins: { legend: { display: false } },
+                            scales: {
+                                x: { grid: { display: false }, ticks: { color: '#64748b' } },
+                                y: { grid: { color: 'rgba(255,255,255,0.03)' }, ticks: { color: '#64748b' } }
+                            }
+                        }
+                    });
+                })
+                .catch(err => console.error("Lỗi dữ liệu đồ thị:", err));
+        });
+    </script>
+</body>
+</html>
