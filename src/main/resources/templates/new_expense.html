@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thêm Khoản Chi Pro</title>
+    <title>Thêm Khoản Chi</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
     
     <style>
-        /* Nền không gian tối đồng bộ trang chủ */
         body {
             background: radial-gradient(circle at top right, #1e1b4b 0%, #0f172a 100%) !important;
             color: #f8fafc !important;
@@ -16,47 +15,45 @@
             min-height: 100vh;
             display: flex;
             align-items: center;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Thẻ kính mờ cao cấp (Glassmorphism) */
         .tech-card {
             background: rgba(30, 41, 59, 0.65) !important;
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
             border: 1px solid rgba(255, 255, 255, 0.08) !important;
             border-radius: 24px;
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+            will-change: transform, opacity;
+            transform: translateZ(0);
         }
 
-        /* ÉP CHỮ TIÊU ĐỀ MÀU TRẮNG PHÁT SÁNG */
         .glow-text {
             color: #ffffff !important;
             text-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
         }
 
-        /* ÉP MÀU TRẮNG XÁM RÕ RÀNG CHO TOÀN BỘ CÁC LABEL */
         .tech-label {
             color: #cbd5e1 !important;
             font-size: 0.88rem;
             font-weight: 600;
             letter-spacing: 0.3px;
-            display: inline-block;
         }
 
-        /* Định dạng lại các ô Form nhập liệu phong cách Cyber tối */
         .tech-input-group {
             border: 1px solid rgba(255, 255, 255, 0.1) !important;
             border-radius: 12px;
             overflow: hidden;
             background: rgba(15, 23, 42, 0.5) !important;
-            transition: all 0.25s ease;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+            will-change: border-color, box-shadow;
         }
         .tech-input-group:focus-within {
             border-color: #6366f1 !important;
             box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2) !important;
         }
 
-        /* Icon đầu ô nhập liệu */
         .tech-input-text {
             background: transparent !important;
             border: none !important;
@@ -65,11 +62,10 @@
             padding-right: 8px;
         }
 
-        /* Thanh Input viết chữ */
         .tech-form-control {
             background: transparent !important;
             border: none !important;
-            color: #f8fafc !important; /* Ép chữ gõ vào là màu trắng */
+            color: #f8fafc !important;
             padding: 12px 14px 12px 4px;
             box-shadow: none !important;
         }
@@ -77,45 +73,42 @@
             color: #475569 !important;
         }
         
-        /* Fix màu lịch chọn ngày */
         .tech-form-control::-webkit-calendar-picker-indicator {
             filter: invert(1);
             opacity: 0.5;
             cursor: pointer;
         }
         
-        /* Màu cho các lựa chọn bên trong thẻ select */
         .tech-form-control option {
             background-color: #1e293b !important;
             color: #f8fafc !important;
         }
 
-        /* Hệ thống nút bấm đồng bộ */
         .btn-tech-primary {
             background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important;
             color: white !important;
             border: none !important;
             box-shadow: 0 4px 15px rgba(79, 70, 229, 0.35) !important;
-            transition: all 0.2s ease;
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            will-change: transform;
+            transform: translateZ(0);
         }
         .btn-tech-primary:hover {
             background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%) !important;
-            transform: translateY(-2px);
+            transform: translateY(-2px) translateZ(0);
             box-shadow: 0 6px 20px rgba(79, 70, 229, 0.5) !important;
-            color: white !important;
         }
 
         .btn-tech-outline {
             background: transparent !important;
             color: #94a3b8 !important;
             border: 1px solid #334155 !important;
-            transition: all 0.2s ease;
+            transition: background-color 0.15s linear, color 0.15s linear !important;
             text-decoration: none;
         }
         .btn-tech-outline:hover {
             background: rgba(255, 255, 255, 0.05) !important;
             color: #f8fafc !important;
-            border-color: #475569 !important;
         }
     </style>
 </head>
@@ -180,7 +173,7 @@
                             <div class="row g-2 pt-2">
                                 <div class="col-8">
                                     <button type="submit" class="btn btn-tech-primary w-100 py-2.5 rounded-3 fw-bold">
-                                        <i class="bi bi-cloud-arrow-up-fill me-1"></i> Đồng bộ lên hệ thống
+                                        <i class="bi bi-cloud-arrow-up-fill me-1"></i> Lưu Khoản Chi
                                     </button>
                                 </div>
                                 <div class="col-4">
