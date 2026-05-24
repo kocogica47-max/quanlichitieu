@@ -3,83 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng ký tài khoản</title>
+    <title>Đăng Ký Tài Khoản - Quản Lý Chi Tiêu Pro</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
     
     <style>
-        /* Đồng bộ nền với trang đăng nhập */
+        /* Nền không gian tối đồng bộ toàn hệ thống */
         body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: radial-gradient(circle at top right, #1e1b4b 0%, #0f172a 100%);
+            color: #f8fafc;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             min-height: 100vh;
             display: flex;
             align-items: center;
         }
-        /* Hiệu ứng khi focus vào ô nhập */
-        .form-control:focus {
-            border-color: #4f46e5;
-            box-shadow: 0 0 0 0.25rem rgba(79, 70, 229, 0.15);
+
+        /* Thẻ kính mờ cao cấp (Glassmorphism) */
+        .tech-card {
+            background: rgba(30, 41, 59, 0.65) !important;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            border-radius: 24px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
         }
-        .btn, .form-control {
-            transition: all 0.2s ease-in-out;
+
+        .glow-text {
+            text-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+        }
+
+        /* Định dạng các ô nhập liệu tối Cyber */
+        .tech-input-group {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            background: rgba(15, 23, 42, 0.4) !important;
+            transition: all 0.25s ease;
+        }
+        .tech-input-group:focus-within {
+            border-color: #00f5ff;
+            box-shadow: 0 0 0 4px rgba(0, 245, 255, 0.15);
+        }
+
+        .tech-input-text {
+            background: transparent !important;
+            border: none !important;
+            color: #64748b !important;
+            padding-left: 14px;
+            padding-right: 8px;
+        }
+
+        .tech-form-control {
+            background: transparent !important;
+            border: none !important;
+            color: #f8fafc !important; /* Chữ trắng sắc nét */
+            padding: 12px 14px 12px 4px;
+            box-shadow: none !important;
+        }
+        .tech-form-control::placeholder {
+            color: #475569 !important;
+        }
+
+        /* Nút bấm Đăng ký Cyan Neon thu hút */
+        .btn-tech-cyan {
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            color: #0f172a;
+            border: none;
+            box-shadow: 0 4px 15px rgba(6, 182, 212, 0.25);
+            transition: all 0.2s ease;
+        }
+        .btn-tech-cyan:hover {
+            background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(6, 182, 212, 0.45);
+            color: #0f172a;
+        }
+
+        .tech-link {
+            color: #06b6d4;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        .tech-link:hover {
+            color: #22d3ee;
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container py-5">
         <div class="row justify-content-center">
-            <div class="col-12 col-sm-8 col-md-6 col-lg-4">
+            <div class="col-12 col-sm-10 col-md-8 col-lg-5">
                 
-                <div class="card border-0 shadow-lg rounded-4 bg-white">
-                    <div class="card-body p-5">
+                <div class="card tech-card border-0 p-3 p-sm-4">
+                    <div class="card-body">
                         
                         <div class="text-center mb-4">
-                            <div class="d-inline-flex align-items-center justify-content-center bg-success bg-opacity-10 text-success rounded-circle p-3 mb-3">
-                                <i class="bi bi-person-plus fs-3"></i>
+                            <h2 class="fw-bold text-white glow-text d-flex align-items-center justify-content-center gap-2">
+                                <i class="bi bi-person-plus-fill text-info"></i> ĐĂNG KÝ MỚI
+                            </h2>
+                            <p class="small m-0 mt-1" style="color: #64748b;">Khởi tạo ví điện tử giám sát chi tiêu cá nhân</p>
+                        </div>
+                        
+                        <div th:if="${param.error}" class="alert alert-warning border-0 small text-center rounded-3 mb-4" 
+                             style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">
+                            <i class="bi bi-exclamation-circle-fill me-1"></i> Tên tài khoản đã tồn tại trên cơ sở dữ liệu!
+                        </div>
+
+                        <form th:action="@{/register}" method="POST" class="d-flex flex-column gap-3">
+                            
+                            <div class="mb-2">
+                                <label class="form-label mb-1.5 fw-semibold" style="color: #94a3b8; font-size: 0.85rem;">Tên tài khoản mong muốn</label>
+                                <div class="input-group tech-input-group">
+                                    <span class="input-group-text tech-input-text"><i class="bi bi-person-badge"></i></span>
+                                    <input type="text" name="username" class="form-control tech-form-control" placeholder="Tối thiểu từ 3 ký tự trở lên..." required>
+                                </div>
                             </div>
-                            <h3 class="fw-bold text-dark m-0">Tạo Tài Khoản</h3>
-                            <p class="text-muted small mt-1">Đăng ký để trải nghiệm quản lý ví tiền thông minh</p>
-                        </div>
-                        
-                        <div th:if="${error}" class="alert alert-danger d-flex align-items-center rounded-3 py-2 small" role="alert">
-                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                            <span th:text="${error}"></span>
-                        </div>
-                        
-                        <div th:if="${message}" class="alert alert-success d-flex align-items-center rounded-3 py-2 small" role="alert">
-                            <i class="bi bi-check-circle-fill me-2"></i>
-                            <span th:text="${message}"></span>
-                        </div>
-                        
-                        <form th:action="@{/register}" method="post">
                             
                             <div class="mb-3">
-                                <label class="form-label text-secondary small fw-semibold">Tên tài khoản</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-person"></i></span>
-                                    <input type="text" name="username" class="form-control bg-light border-start-0 rounded-end-3" placeholder="Tạo username của bạn" required>
+                                <label class="form-label mb-1.5 fw-semibold" style="color: #94a3b8; font-size: 0.85rem;">Thiết lập mật khẩu</label>
+                                <div class="input-group tech-input-group">
+                                    <span class="input-group-text tech-input-text"><i class="bi bi-key-fill"></i></span>
+                                    <input type="password" name="password" class="form-control tech-form-control" placeholder="Nhập mật khẩu an toàn..." required>
                                 </div>
                             </div>
-                            
-                            <div class="mb-4">
-                                <label class="form-label text-secondary small fw-semibold">Mật khẩu</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-lock"></i></span>
-                                    <input type="password" name="password" class="form-control bg-light border-start-0 rounded-end-3" placeholder="Tối thiểu 6 ký tự" required>
-                                </div>
-                            </div>
-                            
-                            <button type="submit" class="btn btn-dark w-100 py-2-5 rounded-3 fw-bold shadow-sm mb-3">
-                                Tạo tài khoản
+
+                            <button type="submit" class="btn btn-tech-cyan w-100 py-2.5 rounded-3 fw-bold mt-2">
+                                <i class="bi bi-shield-check me-1"></i> Khởi Tạo Tài Khoản
                             </button>
+                            
+                            <div class="text-center mt-4 pt-2 border-top border-white border-opacity-5 small text-secondary">
+                                Đã có tài khoản từ trước? 
+                                <a th:href="@{/login}" class="tech-link fw-semibold ms-1"><i class="bi bi-arrow-left small"></i> Quay lại Đăng nhập</a>
+                            </div>
+
                         </form>
-                        
-                        <div class="text-center mt-4">
-                            <p class="small text-muted mb-0">Đã có tài khoản? 
-                                <a th:href="@{/login}" class="text-primary fw-semibold text-decoration-none hover-underline">Đăng nhập ngay</a>
-                            </p>
-                        </div>
-                        
                     </div>
                 </div>
                 

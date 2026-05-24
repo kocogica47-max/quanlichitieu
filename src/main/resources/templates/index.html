@@ -19,16 +19,16 @@
 
         /* Thẻ kính mờ cao cấp (Glassmorphism) */
         .tech-card {
-            background: rgba(30, 41, 59, 0.65);
+            background: rgba(30, 41, 59, 0.65) !important;
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
             border-radius: 24px;
             box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .tech-card:hover {
-            border-color: rgba(99, 102, 241, 0.35);
+            border-color: rgba(99, 102, 241, 0.35) !important;
             box-shadow: 0 16px 36px rgba(99, 102, 241, 0.2);
         }
 
@@ -42,42 +42,52 @@
             position: relative; 
             height: 160px; 
             width: 100%;
-            padding: 5px 15px 5px 5px; /* Sửa lỗi dính lề trái của biểu đồ */
+            padding: 5px 15px 5px 5px;
         }
 
-        /* Bảng dữ liệu phong cách tối tối giản */
+        /* KHẮC PHỤC LỖI: Cấu trúc Table tường minh, ép màu tuyệt đối */
         .table-container {
             border-radius: 16px;
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(15, 23, 42, 0.3) !important;
         }
-        .table {
-            color: #e2e8f0 !important;
+        
+        .tech-table {
             margin-bottom: 0;
+            width: 100%;
+            border-collapse: collapse;
+            background: transparent !important;
         }
-        .table th {
+        
+        .tech-table th {
             background-color: rgba(30, 41, 59, 0.9) !important;
-            color: #64748b !important;
+            color: #94a3b8 !important;
             font-weight: 600;
             text-transform: uppercase;
             font-size: 0.75rem;
             letter-spacing: 1px;
             padding: 16px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
         }
-        .table td {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        
+        .tech-table td {
             padding: 16px;
+            color: #e2e8f0 !important; /* Ép chữ màu sáng */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
+            background: transparent !important;
         }
-        .table tbody tr {
-            background-color: transparent !important;
-            transition: background-color 0.2s ease;
+        
+        .tech-table tbody tr {
+            background: transparent !important;
         }
-        .table tbody tr:hover {
-            background-color: rgba(255, 255, 255, 0.025) !important;
+        
+        .tech-table tbody tr:hover {
+            background-color: rgba(255, 255, 255, 0.03) !important;
         }
 
-        /* Các nút bấm công nghệ */
+        /* Nút bấm */
         .btn-tech-primary {
             background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
             color: white;
@@ -93,38 +103,26 @@
         }
 
         .btn-tech-danger {
-            background: rgba(239, 68, 68, 0.1);
-            color: #f87171;
-            border: 1px solid rgba(239, 68, 68, 0.15);
+            background: rgba(239, 68, 68, 0.1) !important;
+            color: #f87171 !important;
+            border: 1px solid rgba(239, 68, 68, 0.2) !important;
             transition: all 0.2s ease;
             padding: 6px 12px;
         }
         .btn-tech-danger:hover {
-            background: #ef4444;
-            color: white;
+            background: #ef4444 !important;
+            color: white !important;
             transform: translateY(-1px);
         }
 
         /* Huy hiệu sắc nét */
         .tech-badge {
-            background: rgba(148, 163, 184, 0.1);
-            color: #94a3b8;
-            border: 1px solid rgba(148, 163, 184, 0.18);
+            background: rgba(148, 163, 184, 0.1) !important;
+            color: #94a3b8 !important;
+            border: 1px solid rgba(148, 163, 184, 0.18) !important;
             font-size: 0.78rem;
             padding: 5px 12px;
-        }
-
-        /* Thanh cuộn mượt phong cách tối */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0f172a;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #1e293b;
-            border-radius: 4px;
+            display: inline-block;
         }
     </style>
 </head>
@@ -134,7 +132,7 @@
         <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 mb-4">
             <div>
                 <h2 class="fw-bold text-white m-0 d-flex align-items-center gap-2 glow-text" style="letter-spacing: 0.5px;">
-                    <i class="bi bi-cpu text-info"></i> FIN-TRACKER <span class="badge bg-info text-dark fs-6 rounded-pill fw-bold" style="padding: 3px 10px;">PRO</span>
+                    <i class="bi bi-cpu text-info"></i> QUẢN LÝ CHI TIÊU <span class="badge bg-info text-dark fs-6 rounded-pill fw-bold" style="padding: 3px 10px;">PRO</span>
                 </h2>
                 <p class="m-0 mt-1" style="color: #64748b; font-size: 0.88rem;">Hệ thống phân tích và giám sát chi tiêu thông minh</p>
             </div>
@@ -172,7 +170,7 @@
             </div>
 
             <div class="col-md-5 col-12">
-                <div class="card tech-card h-100 border-0" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.12) 0%, rgba(30, 41, 59, 0.7) 100%);">
+                <div class="card tech-card h-100 border-0" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.12) 0%, rgba(30, 41, 59, 0.7) 100%) !important;">
                     <div class="card-body p-4 d-flex flex-column justify-content-center">
                         <h6 class="text-uppercase fw-bold mb-2 d-flex align-items-center gap-2" style="color: #818cf8; letter-spacing: 0.5px; font-size: 0.82rem;">
                             <i class="bi bi-wallet2"></i> Quỹ chi tháng này
@@ -195,8 +193,8 @@
                         <i class="bi bi-list-stars text-primary"></i> Nhật ký giao dịch gần đây
                     </h6>
                 </div>
-                <div class="table-responsive table-container">
-                    <table class="table align-middle">
+                <div class="table-container">
+                    <table class="tech-table">
                         <thead>
                             <tr>
                                 <th class="ps-4">Nội dung chi tiêu</th>
@@ -208,7 +206,7 @@
                         </thead>
                         <tbody>
                             <tr th:if="${#lists.isEmpty(listExpenses)}">
-                                <td colspan="5" class="text-center py-5 text-muted small">
+                                <td colspan="5" class="text-center py-5" style="color: #64748b !important;">
                                     <i class="bi bi-database-exclamation fs-3 d-block mb-2 text-secondary opacity-50"></i>
                                     Hệ thống trống. Chưa có dữ liệu giao dịch.
                                 </td>
@@ -219,11 +217,11 @@
                                 <td>
                                     <span class="badge tech-badge rounded-pill" th:text="${expense.category}"></span>
                                 </td>
-                                <td class="fw-bold text-info" style="text-shadow: 0 0 10px rgba(0, 229, 255, 0.15);" th:text="${expense.amount} + ' ₫'"></td>
-                                <td style="color: #64748b; font-size: 0.9rem;" th:text="${expense.date}"></td>
+                                <td class="fw-bold text-info" style="text-shadow: 0 0 10px rgba(0, 229, 255, 0.2);" th:text="${expense.amount} + ' ₫'"></td>
+                                <td style="color: #94a3b8 !important; font-size: 0.9rem;" th:text="${expense.date}"></td>
                                 <td class="text-end pe-4">
                                     <a th:href="@{/deleteExpense/{id}(id=${expense.id})}" 
-                                       class="btn btn-tech-danger btn-sm rounded-3 btn-animate"
+                                       class="btn btn-tech-danger btn-sm rounded-3"
                                        onclick="return confirm('Hệ thống: Xác nhận xóa vĩnh viễn bản ghi này?')">
                                         <i class="bi bi-trash-fill"></i>
                                     </a>
@@ -244,7 +242,6 @@
             .then(data => {
                 if(data.error) return;
 
-                // Khởi tạo biểu đồ với màu sắc và tỷ lệ padding hợp lý hơn
                 const ctx = document.getElementById('chartSoSanhThang').getContext('2d');
                 new Chart(ctx, {
                     type: 'bar',
@@ -256,7 +253,7 @@
                             hoverBackgroundColor: ['rgba(148, 163, 184, 0.4)', '#818cf8'],
                             borderRadius: 6,
                             borderWidth: 0,
-                            barThickness: 28 // Khống chế độ rộng cột không bị quá bè
+                            barThickness: 28
                         }]
                     },
                     options: {
