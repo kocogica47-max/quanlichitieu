@@ -1,18 +1,19 @@
 package com.example.Quanlichitieu.Model;
 
-// BẮT BUỘC: Sử dụng thư viện jakarta cho Spring Boot 3
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
 import java.time.LocalDate;
 
-@Entity // <-- ĐÃ THÊM: Bắt buộc phải có để báo cho Spring biết đây là Model dữ liệu
-@Table(name = "expenses") // (Tùy chọn) Tên bảng dưới database
+@Entity
+@Table(name = "expenses")
 public class Expense {
 
-    @Id // <-- Bắt buộc phải có để đánh dấu khóa chính
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -20,58 +21,31 @@ public class Expense {
     private Double amount;
     private String category;
     private LocalDate date;
-    private Long userId;
 
-    // --- CONSTRUCTOR ---
+    // SỬA TẠI ĐÂY: Thay thế private Long userId bằng mối quan hệ ManyToOne
+    @ManyToOne
+    @JoinColumn(name = "user_id") // Tên cột liên kết trong cơ sở dữ liệu
+    private User user;
+
     public Expense() {
     }
 
-    // --- GETTER VÀ SETTER (Đảm bảo đầy đủ để các file khác gọi không bị lỗi) ---
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
 
-    public String getTitle() {
-        return title;
-    }
+    public Double getAmount() { return amount; }
+    public void setAmount(Double amount) { this.amount = amount; }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    public String getCategory() { return category; }
+    public void setCategory(String category) { this.category = category; }
 
-    public Double getAmount() {
-        return amount;
-    }
+    public LocalDate getDate() { return date; }
+    public void setDate(LocalDate date) { this.date = date; }
 
-    public void setAmount(Double amount) {
-        this.amount = amount;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
+    // GETTER & SETTER CHO USER
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
 }
