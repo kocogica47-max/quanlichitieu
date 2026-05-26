@@ -117,14 +117,14 @@
                             <i class="bi bi-wallet2 fs-4"></i>
                         </div>
                         <div>
-                            <p class="text-secondary small mb-1">Tổng tích lũy chi</p>
+                            <p class="text-secondary small mb-1">Tổng tích lũy chi tiêu</p>
                             <h3 class="fw-bold mb-0 fs-4 fs-md-3" style="color: #06b6d4;" th:text="${totalAmount != null ? #numbers.formatDecimal(totalAmount, 0, 'COMMA', 0, 'POINT') + ' đ' : '0 đ'}">0 đ</h3>
                         </div>
                     </div>
                 </div>
 
                 <div class="tech-card p-3 p-md-4 mb-3 mb-md-0">
-                    <h6 class="fw-bold mb-3 mb-md-4" style="color: #818cf8;"><i class="bi bi-graph-up-arrow me-2"></i><span>Xu hướng</span></h6>
+                    <h6 class="fw-bold mb-3 mb-md-4" style="color: #818cf8;"><i class="bi bi-graph-up-arrow me-2"></i><span>Xu hướng chi tiêu</span></h6>
                     <div style="position: relative; height: 180px; width: 100%;">
                         <canvas id="xuHuongChart"></canvas>
                     </div>
