@@ -4,7 +4,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="#{app.title}">Quản lý chi tiêu cá nhân</title>
+    <title>Quản lý chi tiêu cá nhân</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
     
@@ -91,20 +91,20 @@
         <div class="d-flex justify-content-between align-items-center gap-2 mb-4 mb-md-5 pb-3 border-bottom border-secondary border-opacity-25">
             <h2 class="brand-title fs-4 fs-md-2">
                 <i class="bi bi-cpu me-2 me-md-3" style="color: #06b6d4; -webkit-text-fill-color: initial;"></i>
-                <span th:text="#{app.title}">Quản lý chi tiêu</span>
+                <span>Quản lý chi tiêu</span>
             </h2>
             
             <div class="d-flex align-items-center gap-2">
                 <div class="bg-dark bg-opacity-25 p-2 px-2 px-md-3 rounded-3 border border-secondary border-opacity-10">
                     <span class="small text-secondary" style="font-size: 0.85rem;">
                         <i class="bi bi-person-circle me-1" style="color: #06b6d4;"></i>
-                        <span class="d-none d-md-inline" th:text="#{app.welcome} + ': '">Chào, </span>
+                        <span>Chào, </span>
                         <span class="fw-medium text-white-50" th:text="${username}">User</span>
                     </span>
                 </div>
                 <a href="/logout" class="btn btn-sm btn-outline-danger px-2 px-md-3 rounded-3 d-flex align-items-center gap-1" style="padding-top: 6px; padding-bottom: 6px;">
                     <i class="bi bi-box-arrow-right"></i> 
-                    <span class="d-none d-md-inline">Đăng xuất</span>
+                    <span>Đăng xuất</span>
                 </a>
             </div>
         </div>
@@ -117,14 +117,14 @@
                             <i class="bi bi-wallet2 fs-4"></i>
                         </div>
                         <div>
-                            <p class="text-secondary small mb-1" th:text="#{app.total}">Tổng tích lũy chi</p>
+                            <p class="text-secondary small mb-1">Tổng tích lũy chi</p>
                             <h3 class="fw-bold mb-0 fs-4 fs-md-3" style="color: #06b6d4;" th:text="${totalAmount != null ? #numbers.formatDecimal(totalAmount, 0, 'COMMA', 0, 'POINT') + ' đ' : '0 đ'}">0 đ</h3>
                         </div>
                     </div>
                 </div>
 
                 <div class="tech-card p-3 p-md-4 mb-3 mb-md-0">
-                    <h6 class="fw-bold mb-3 mb-md-4" style="color: #818cf8;"><i class="bi bi-graph-up-arrow me-2"></i><span th:text="#{app.chart.title}">Xu hướng</span></h6>
+                    <h6 class="fw-bold mb-3 mb-md-4" style="color: #818cf8;"><i class="bi bi-graph-up-arrow me-2"></i><span>Xu hướng</span></h6>
                     <div style="position: relative; height: 180px; width: 100%;">
                         <canvas id="xuHuongChart"></canvas>
                     </div>
@@ -134,10 +134,10 @@
             <div class="col-lg-8">
                 <div class="tech-card p-3 p-md-4 h-100">
                     <div class="d-flex justify-content-between align-items-center mb-3 mb-md-4">
-                        <h6 class="fw-bold mb-0 text-white-50"><i class="bi bi-list-stars me-2" style="color: #06b6d4;"></i><span th:text="#{app.history}">Lịch sử giao dịch</span></h6>
+                        <h6 class="fw-bold mb-0 text-white-50"><i class="bi bi-list-stars me-2" style="color: #06b6d4;"></i><span>Lịch sử giao dịch</span></h6>
                         <a href="/showNewExpenseForm" class="btn btn-gradient-cyan d-flex align-items-center gap-2">
                             <i class="bi bi-plus-lg"></i> 
-                            <span th:text="#{app.btn.add}">Thêm khoản chi</span>
+                            <span>Thêm khoản chi</span>
                         </a>
                     </div>
 
@@ -149,15 +149,14 @@
                                     <div class="text-secondary" style="font-size: 0.75rem;" th:text="${expense.date}">01-01-2026</div>
                                 </div>
                                 <div class="text-end">
-                                    <div class="fw-bold" style="color: #06b6d4; font-size: 1.05rem;" th:text="${#numbers.formatDecimal(expense.amount, 0, 'COMMA', 0, 'POINT') + ' đ'}">0 đ</div>
+                                    <div class="fw-bold" style="color: #06b6d4; font-size: 1.05rem;" th:text="${expense.amount != null ? #numbers.formatDecimal(expense.amount, 0, 'COMMA', 0, 'POINT') + ' đ' : '0 đ'}">0 đ</div>
                                     <div class="mt-1"><span class="badge badge-category" th:text="${expense.category}">Danh mục</span></div>
                                 </div>
                             </div>
                             <div class="d-flex justify-content-end border-top border-secondary border-opacity-10 pt-2 mt-2">
                                 <a th:href="@{/deleteExpense/{id}(id=${expense.id})}" 
                                    class="text-danger bg-danger bg-opacity-10 p-2 py-1 rounded-2 text-decoration-none" style="font-size: 0.85rem;"
-                                   th:data-confirm-msg="#{app.confirm.delete}" 
-                                   onclick="return confirm(this.getAttribute('data-confirm-msg'))">
+                                   onclick="return confirm('Bạn có chắc chắn muốn xóa khoản chi này không?')">
                                     <i class="bi bi-trash3 me-1"></i> Xóa bản ghi
                                 </a>
                             </div>
@@ -168,11 +167,11 @@
                         <table class="table table-cyber mb-0">
                             <thead>
                                 <tr>
-                                    <th th:text="#{app.th.title}">Khoản chi</th>
-                                    <th th:text="#{app.th.category}">Danh mục</th>
-                                    <th th:text="#{app.th.date}">Thời gian</th>
-                                    <th class="text-end" th:text="#{app.th.amount}">Số tiền</th>
-                                    <th class="text-center" th:text="#{app.th.action}">Hành động</th>
+                                    <th>Khoản chi</th>
+                                    <th>Danh mục</th>
+                                    <th>Thời gian</th>
+                                    <th class="text-end">Số tiền</th>
+                                    <th class="text-center">Hành động</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -180,12 +179,11 @@
                                     <td class="fw-medium text-white" th:text="${expense.title}">Khoản chi</td>
                                     <td><span class="badge badge-category" th:text="${expense.category}">Danh mục</span></td>
                                     <td class="text-secondary small" th:text="${expense.date}">01-01-2026</td>
-                                    <td class="text-end fw-bold" style="color: #06b6d4;" th:text="${#numbers.formatDecimal(expense.amount, 0, 'COMMA', 0, 'POINT') + ' đ'}">0 đ</td>
+                                    <td class="text-end fw-bold" style="color: #06b6d4;" th:text="${expense.amount != null ? #numbers.formatDecimal(expense.amount, 0, 'COMMA', 0, 'POINT') + ' đ' : '0 đ'}">0 đ</td>
                                     <td class="text-center">
                                         <a th:href="@{/deleteExpense/{id}(id=${expense.id})}" 
                                            class="btn btn-sm btn-outline-danger border-0" 
-                                           th:data-confirm-msg="#{app.confirm.delete}" 
-                                           onclick="return confirm(this.getAttribute('data-confirm-msg'))">
+                                           onclick="return confirm('Bạn có chắc chắn muốn xóa khoản chi này không?')">
                                             <i class="bi bi-trash3"></i>
                                         </a>
                                     </td>
@@ -196,7 +194,7 @@
 
                     <div th:if="${#lists.isEmpty(listExpenses)}" class="text-center py-5 text-secondary">
                         <i class="bi bi-inbox fs-2 mb-2 d-block text-secondary border-opacity-25"></i>
-                        <span th:text="#{app.table.empty}">Chưa có dữ liệu chi tiêu nào được ghi nhận.</span>
+                        <span>Chưa có dữ liệu chi tiêu nào được ghi nhận.</span>
                     </div>
 
                 </div>
@@ -213,7 +211,7 @@
                     new Chart(ctx, {
                         type: 'bar',
                         data: {
-                            labels: [data.labelThangTruoc, data.labelThangNay],
+                            labels: [data.labelThangTruoc || "Tháng trước", data.labelThangNay || "Tháng này"],
                             datasets: [{
                                 label: 'Cost',
                                 data: [data.tongThangTruoc || 0, data.tongThangNay || 0],
