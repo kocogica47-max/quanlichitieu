@@ -7,8 +7,6 @@ import java.util.List;
 
 @Repository
 public interface ExpenseRepository extends JpaRepository<Expense, Long> {
-    
-    // Hàm tìm kiếm danh sách chi tiêu dựa theo ID của người dùng đăng nhập
-    List<Expense> findByUserId(Long userId);
-    
+    // Tìm kiếm danh sách chi tiêu dựa theo ID của User trong mối quan hệ đối tượng
+    List<Expense> findByUser_Id(Long userId);
 }

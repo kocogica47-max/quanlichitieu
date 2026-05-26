@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-public class ControllerExpense { // ĐÃ SỬA: Loại bỏ hoàn toàn "implements WebMvcConfigurer"
+public class ControllerExpense { 
 
     @Autowired
     private ExpenseRepository expenseRepository;
@@ -58,38 +58,74 @@ public class ControllerExpense { // ĐÃ SỬA: Loại bỏ hoàn toàn "impleme
         return "redirect:/login?error=true";
     }
 
-    // --- ĐĂNG XUẤT ---
+    // --- CHỨC NĂNG ĐĂNG XUẤT ---
     @GetMapping("/logout")
-    public String logout(HttpSession session) {
-        session.invalidate(); 
+    public String logoutUser(HttpSession session) {
+        session.invalidate();
         return "redirect:/login";
     }
 
-    // --- TRANG CHỦ ---
+    // --- TRANG CHỦ (DANH SÁCH CHI TIÊU) ---
     @GetMapping("/")
-    public String viewHomePage(Model model, HttpSession session) {
+    public String showIndex(Model model, HttpSession session) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser == null) {
             return "redirect:/login";
         }
 
-        List<Expense> listExpenses = expenseRepository.findByUserId(loggedInUser.getId());
+        List<Expense> listExpenses = expenseRepository.findByUser_Id(loggedInUser.getId());
+        model.addAttribute("listExpenses", listExpenses);
+        model.addAttribute("username", loggedInUser.getUsername());
+
         double totalAmount = 0;
         if (listExpenses != null) {
             for (Expense exp : listExpenses) {
-                if (exp.getAmount() != 0) {
-                    totalAmount += exp.getAmount();
-                }
+                totalAmount += exp.getAmount();
             }
         }
-
-        model.addAttribute("username", loggedInUser.getUsername());
-        model.addAttribute("listExpenses", listExpenses);
         model.addAttribute("totalAmount", totalAmount);
+
         return "index";
     }
 
-    // --- API BIỂU ĐỒ CHI TIÊU ---
+    // --- CHỨC NĂNG THÊM KHOẢN CHI MỚI ---
+    @GetMapping("/showNewExpenseForm")
+    public String showNewExpenseForm(Model model, HttpSession session) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return "redirect:/login";
+        }
+        Expense expense = new Expense();
+        model.addAttribute("expense", expense);
+        return "new_expense";
+    }
+
+    @PostMapping("/saveExpense")
+    public String saveExpense(@ModelAttribute("expense") Expense expense, HttpSession session) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return "redirect:/login";
+        }
+        
+        // Gán trực tiếp thực thể User hiện tại vào thuộc tính đối tượng của Expense
+        expense.setUser(loggedInUser);
+        
+        expenseRepository.save(expense);
+        return "redirect:/";
+    }
+
+    // --- CHỨC NĂNG XÓA KHOẢN CHI ---
+    @GetMapping("/deleteExpense/{id}")
+    public String deleteExpense(@PathVariable(value = "id") long id, HttpSession session) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return "redirect:/login";
+        }
+        expenseRepository.deleteById(id);
+        return "redirect:/";
+    }
+
+    // --- API ĐỒ THỊ XU HƯỚNG ---
     @GetMapping("/api/xu-huong-chi-tieu")
     @ResponseBody
     public Map<String, Object> getXuHuongChiTieu(HttpSession session) {
@@ -106,7 +142,7 @@ public class ControllerExpense { // ĐÃ SỬA: Loại bỏ hoàn toàn "impleme
         double tongThangTruoc = 0;
         LocalDate today = LocalDate.now();
 
-        List<Expense> listExpenses = expenseRepository.findByUserId(loggedInUser.getId());
+        List<Expense> listExpenses = expenseRepository.findByUser_Id(loggedInUser.getId());
         if (listExpenses != null) {
             for (Expense exp : listExpenses) {
                 if (exp.getDate() == null) continue;
@@ -124,7 +160,7 @@ public class ControllerExpense { // ĐÃ SỬA: Loại bỏ hoàn toàn "impleme
         response.put("tongThangNay", tongThangNay);
         response.put("labelThangTruoc", "Tháng " + today.minusMonths(1).getMonthValue());
         response.put("tongThangTruoc", tongThangTruoc);
-        
+
         return response;
     }
 }
