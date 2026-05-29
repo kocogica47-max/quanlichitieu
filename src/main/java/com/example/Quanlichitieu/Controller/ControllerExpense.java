@@ -163,4 +163,36 @@ public class ControllerExpense {
 
         return response;
     }
+
+    // --- API ĐỒ THỊ TRÒN THEO DANH MỤC ---
+    @GetMapping("/api/chi-tieu-theo-danh-muc")
+    @ResponseBody
+    public Map<String, Object> getChiTieuTheoDanhMuc(HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+
+        if (loggedInUser == null) {
+            response.put("categories", new String[0]);
+            response.put("amounts", new double[0]);
+            return response;
+        }
+
+        List<Expense> listExpenses = expenseRepository.findByUser_Id(loggedInUser.getId());
+        Map<String, Double> categoryMap = new HashMap<>();
+
+        if (listExpenses != null) {
+            for (Expense exp : listExpenses) {
+                String category = exp.getCategory();
+                if (category == null || category.isEmpty()) {
+                    category = "Khác";
+                }
+                categoryMap.put(category, categoryMap.getOrDefault(category, 0.0) + exp.getAmount());
+            }
+        }
+
+        response.put("categories", categoryMap.keySet().toArray(new String[0]));
+        response.put("amounts", categoryMap.values().toArray(new Double[0]));
+
+        return response;
+    }
 }
