@@ -67,15 +67,54 @@ public class ControllerExpense {
 
     // --- TRANG CHỦ (DANH SÁCH CHI TIÊU) ---
     @GetMapping("/")
-    public String showIndex(Model model, HttpSession session) {
+    public String showIndex(Model model, HttpSession session,
+                           @RequestParam(required = false) String category,
+                           @RequestParam(required = false) String timeFilter) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser == null) {
             return "redirect:/login";
         }
 
         List<Expense> listExpenses = expenseRepository.findByUser_Id(loggedInUser.getId());
+        
+        // Lọc theo danh mục
+        if (category != null && !category.isEmpty() && !category.equals("all")) {
+            listExpenses = listExpenses.stream()
+                .filter(exp -> category.equals(exp.getCategory()))
+                .toList();
+        }
+        
+        // Lọc theo thời gian
+        if (timeFilter != null && !timeFilter.isEmpty() && !timeFilter.equals("all")) {
+            LocalDate today = LocalDate.now();
+            listExpenses = listExpenses.stream()
+                .filter(exp -> {
+                    if (exp.getDate() == null) return false;
+                    LocalDate expDate = exp.getDate();
+                    
+                    switch (timeFilter) {
+                        case "today":
+                            return expDate.equals(today);
+                        case "week":
+                            return expDate.isAfter(today.minusWeeks(1)) && !expDate.isAfter(today);
+                        case "month":
+                            return expDate.getMonthValue() == today.getMonthValue() 
+                                && expDate.getYear() == today.getYear();
+                        case "lastMonth":
+                            LocalDate lastMonth = today.minusMonths(1);
+                            return expDate.getMonthValue() == lastMonth.getMonthValue() 
+                                && expDate.getYear() == lastMonth.getYear();
+                        default:
+                            return true;
+                    }
+                })
+                .toList();
+        }
+        
         model.addAttribute("listExpenses", listExpenses);
         model.addAttribute("username", loggedInUser.getUsername());
+        model.addAttribute("selectedCategory", category != null ? category : "all");
+        model.addAttribute("selectedTimeFilter", timeFilter != null ? timeFilter : "all");
 
         double totalAmount = 0;
         if (listExpenses != null) {
