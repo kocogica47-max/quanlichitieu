@@ -95,6 +95,9 @@ public class ControllerExpense {
                     switch (timeFilter) {
                         case "today":
                             return expDate.equals(today);
+                        case "yesterday":
+                            LocalDate yesterday = today.minusDays(1);
+                            return expDate.equals(yesterday);
                         case "week":
                             return expDate.isAfter(today.minusWeeks(1)) && !expDate.isAfter(today);
                         case "month":
