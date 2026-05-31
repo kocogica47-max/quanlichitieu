@@ -170,6 +170,22 @@
                     <div class="d-flex justify-content-between align-items-center mb-3 mb-md-4 flex-wrap gap-2">
                         <h6 class="fw-bold mb-0 text-white-50"><i class="bi bi-list-stars me-2" style="color: #06b6d4;"></i><span>Lịch sử giao dịch</span></h6>
                         <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <!-- Nút xóa hàng loạt -->
+                            <button id="deleteSelectedBtn" class="btn btn-sm btn-outline-danger border-opacity-25 d-none align-items-center gap-1" 
+                                    style="background: rgba(239, 68, 68, 0.1); color: #ef4444; padding: 6px 12px; border-radius: 8px;"
+                                    onclick="deleteSelected()">
+                                <i class="bi bi-trash3"></i>
+                                <span class="d-none d-sm-inline">Xóa đã chọn</span>
+                            </button>
+                            
+                            <!-- Nút xóa tất cả -->
+                            <button id="deleteAllBtn" class="btn btn-sm btn-outline-danger border-opacity-25 d-flex align-items-center gap-1" 
+                                    style="background: rgba(239, 68, 68, 0.1); color: #ef4444; padding: 6px 12px; border-radius: 8px;"
+                                    onclick="deleteAll()">
+                                <i class="bi bi-trash3-fill"></i>
+                                <span class="d-none d-sm-inline">Xóa tất cả</span>
+                            </button>
+                            
                             <!-- Nút lọc danh mục -->
                             <div class="dropdown">
                                 <button class="btn btn-sm btn-outline-light border-opacity-25 d-flex align-items-center gap-1 dropdown-toggle" 
@@ -263,14 +279,20 @@
 
                     <div class="d-block d-md-none">
                         <div th:each="expense : ${listExpenses}" class="mobile-card-item">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <div>
-                                    <div class="fw-bold text-white fs-6" th:text="${expense.title}">Khoản chi</div>
-                                    <div class="text-secondary" style="font-size: 0.75rem;" th:text="${expense.date}">01-01-2026</div>
-                                </div>
-                                <div class="text-end">
-                                    <div class="fw-bold" style="color: #06b6d4; font-size: 1.05rem;" th:text="${expense.amount != null ? #numbers.formatDecimal(expense.amount, 0, 'COMMA', 0, 'POINT') + ' đ' : '0 đ'}">0 đ</div>
-                                    <div class="mt-1"><span class="badge badge-category" th:text="${expense.category}">Danh mục</span></div>
+                            <div class="d-flex align-items-start gap-2 mb-2">
+                                <input type="checkbox" class="form-check-input expense-checkbox mt-1" th:value="${expense.id}" 
+                                       style="cursor: pointer; width: 18px; height: 18px;" onchange="updateDeleteButton()">
+                                <div class="flex-grow-1">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <div class="fw-bold text-white fs-6" th:text="${expense.title}">Khoản chi</div>
+                                            <div class="text-secondary" style="font-size: 0.75rem;" th:text="${expense.date}">01-01-2026</div>
+                                        </div>
+                                        <div class="text-end">
+                                            <div class="fw-bold" style="color: #06b6d4; font-size: 1.05rem;" th:text="${expense.amount != null ? #numbers.formatDecimal(expense.amount, 0, 'COMMA', 0, 'POINT') + ' đ' : '0 đ'}">0 đ</div>
+                                            <div class="mt-1"><span class="badge badge-category" th:text="${expense.category}">Danh mục</span></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="d-flex justify-content-end border-top border-secondary border-opacity-10 pt-2 mt-2">
@@ -287,6 +309,11 @@
                         <table class="table table-cyber mb-0">
                             <thead>
                                 <tr>
+                                    <th style="width: 40px;">
+                                        <input type="checkbox" id="selectAll" class="form-check-input" 
+                                               style="cursor: pointer; width: 18px; height: 18px;" 
+                                               onchange="toggleSelectAll(this)">
+                                    </th>
                                     <th>Khoản chi</th>
                                     <th>Danh mục</th>
                                     <th>Thời gian</th>
@@ -296,6 +323,12 @@
                             </thead>
                             <tbody>
                                 <tr th:each="expense : ${listExpenses}">
+                                    <td>
+                                        <input type="checkbox" class="form-check-input expense-checkbox" 
+                                               th:value="${expense.id}" 
+                                               style="cursor: pointer; width: 18px; height: 18px;" 
+                                               onchange="updateDeleteButton()">
+                                    </td>
                                     <td class="fw-medium text-white" th:text="${expense.title}">Khoản chi</td>
                                     <td><span class="badge badge-category" th:text="${expense.category}">Danh mục</span></td>
                                     <td class="text-secondary small" th:text="${expense.date}">01-01-2026</td>
@@ -474,6 +507,102 @@
                     document.getElementById('toggleChartBtn').innerHTML = '<i class="bi bi-bar-chart-fill"></i><span>Biểu đồ cột</span>';
                 })
                 .catch(err => console.error("Error loading pie chart:", err));
+        }
+
+        // Hàm chọn/bỏ chọn tất cả
+        function toggleSelectAll(checkbox) {
+            const checkboxes = document.querySelectorAll('.expense-checkbox');
+            checkboxes.forEach(cb => {
+                cb.checked = checkbox.checked;
+            });
+            updateDeleteButton();
+        }
+
+        // Cập nhật hiển thị nút xóa đã chọn
+        function updateDeleteButton() {
+            const checkboxes = document.querySelectorAll('.expense-checkbox:checked');
+            const deleteBtn = document.getElementById('deleteSelectedBtn');
+            const selectAllCheckbox = document.getElementById('selectAll');
+            
+            if (checkboxes.length > 0) {
+                deleteBtn.classList.remove('d-none');
+                deleteBtn.classList.add('d-flex');
+            } else {
+                deleteBtn.classList.remove('d-flex');
+                deleteBtn.classList.add('d-none');
+            }
+
+            // Cập nhật trạng thái checkbox "Chọn tất cả"
+            if (selectAllCheckbox) {
+                const allCheckboxes = document.querySelectorAll('.expense-checkbox');
+                selectAllCheckbox.checked = allCheckboxes.length > 0 && checkboxes.length === allCheckboxes.length;
+            }
+        }
+
+        // Xóa các mục đã chọn
+        function deleteSelected() {
+            const checkboxes = document.querySelectorAll('.expense-checkbox:checked');
+            if (checkboxes.length === 0) {
+                alert('Vui lòng chọn ít nhất một khoản chi để xóa!');
+                return;
+            }
+
+            const count = checkboxes.length;
+            if (!confirm(`Bạn có chắc chắn muốn xóa ${count} khoản chi đã chọn không?`)) {
+                return;
+            }
+
+            const ids = Array.from(checkboxes).map(cb => cb.value);
+            
+            fetch('/deleteMultipleExpenses', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ ids: ids })
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    alert('Có lỗi xảy ra khi xóa các khoản chi!');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Có lỗi xảy ra khi xóa các khoản chi!');
+            });
+        }
+
+        // Xóa tất cả
+        function deleteAll() {
+            const checkboxes = document.querySelectorAll('.expense-checkbox');
+            if (checkboxes.length === 0) {
+                alert('Không có khoản chi nào để xóa!');
+                return;
+            }
+
+            if (!confirm(`Bạn có chắc chắn muốn xóa TẤT CẢ ${checkboxes.length} khoản chi không? Hành động này không thể hoàn tác!`)) {
+                return;
+            }
+
+            fetch('/deleteAllExpenses', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    alert('Có lỗi xảy ra khi xóa tất cả khoản chi!');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Có lỗi xảy ra khi xóa tất cả khoản chi!');
+            });
         }
     </script>
 </body>

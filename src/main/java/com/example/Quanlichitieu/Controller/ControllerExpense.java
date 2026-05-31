@@ -167,6 +167,70 @@ public class ControllerExpense {
         return "redirect:/";
     }
 
+    // --- CHỨC NĂNG XÓA NHIỀU KHOẢN CHI ---
+    @PostMapping("/deleteMultipleExpenses")
+    @ResponseBody
+    public Map<String, Object> deleteMultipleExpenses(@RequestBody Map<String, List<Long>> request, HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        
+        if (loggedInUser == null) {
+            response.put("success", false);
+            response.put("message", "Unauthorized");
+            return response;
+        }
+
+        try {
+            List<Long> ids = request.get("ids");
+            if (ids != null && !ids.isEmpty()) {
+                // Xóa các khoản chi thuộc về user hiện tại
+                List<Expense> expensesToDelete = expenseRepository.findAllById(ids);
+                for (Expense expense : expensesToDelete) {
+                    if (expense.getUser().getId().equals(loggedInUser.getId())) {
+                        expenseRepository.delete(expense);
+                    }
+                }
+                response.put("success", true);
+                response.put("message", "Deleted successfully");
+            } else {
+                response.put("success", false);
+                response.put("message", "No IDs provided");
+            }
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "Error: " + e.getMessage());
+        }
+        
+        return response;
+    }
+
+    // --- CHỨC NĂNG XÓA TẤT CẢ KHOẢN CHI ---
+    @PostMapping("/deleteAllExpenses")
+    @ResponseBody
+    public Map<String, Object> deleteAllExpenses(HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        
+        if (loggedInUser == null) {
+            response.put("success", false);
+            response.put("message", "Unauthorized");
+            return response;
+        }
+
+        try {
+            // Xóa tất cả khoản chi của user hiện tại
+            List<Expense> userExpenses = expenseRepository.findByUser_Id(loggedInUser.getId());
+            expenseRepository.deleteAll(userExpenses);
+            response.put("success", true);
+            response.put("message", "All expenses deleted successfully");
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "Error: " + e.getMessage());
+        }
+        
+        return response;
+    }
+
     // --- API ĐỒ THỊ XU HƯỚNG ---
     @GetMapping("/api/xu-huong-chi-tieu")
     @ResponseBody
