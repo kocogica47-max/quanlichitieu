@@ -49,6 +49,11 @@
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
+            /* GPU Acceleration */
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            perspective: 1000px;
+            will-change: background-position;
         }
         
         body::before {
@@ -63,6 +68,10 @@
             animation: float 25s ease-in-out infinite;
             pointer-events: none;
             z-index: 0;
+            /* GPU Acceleration */
+            transform: translateZ(0);
+            will-change: transform;
+            backface-visibility: hidden;
         }
         
         body::after {
@@ -78,6 +87,8 @@
             pointer-events: none;
             z-index: 0;
             opacity: 0.3;
+            /* GPU Acceleration */
+            transform: translateZ(0);
         }
         
         .container {
@@ -110,6 +121,10 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
+            /* GPU Acceleration */
+            transform: translateZ(0);
+            will-change: transform, box-shadow;
+            backface-visibility: hidden;
         }
         
         .tech-card::before {

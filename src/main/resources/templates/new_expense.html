@@ -59,6 +59,11 @@
             -webkit-font-smoothing: antialiased;
             position: relative;
             overflow: hidden;
+            /* GPU Acceleration for 60-120fps */
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            perspective: 1000px;
+            will-change: background-position;
         }
         
         body::before {
@@ -72,6 +77,10 @@
                         radial-gradient(circle at 50% 70%, rgba(168, 85, 247, 0.15) 0%, transparent 50%);
             animation: float 30s ease-in-out infinite;
             pointer-events: none;
+            /* GPU Acceleration */
+            transform: translateZ(0);
+            will-change: transform;
+            backface-visibility: hidden;
         }
         
         body::after {
@@ -86,6 +95,8 @@
                 repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0px, transparent 1px, transparent 2px, rgba(255,255,255,0.03) 3px);
             pointer-events: none;
             opacity: 0.4;
+            /* GPU Acceleration */
+            transform: translateZ(0);
         }
 
         .tech-card {
@@ -96,11 +107,13 @@
             border-radius: 28px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 
                         inset 0 1px 0 rgba(255, 255, 255, 0.15);
-            will-change: transform, opacity;
+            will-change: transform, box-shadow;
             transform: translateZ(0);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
+            /* GPU Acceleration */
+            backface-visibility: hidden;
         }
         
         .tech-card::before {
