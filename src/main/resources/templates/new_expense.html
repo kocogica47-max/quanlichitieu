@@ -237,6 +237,78 @@
             border-color: rgba(255, 255, 255, 0.2) !important;
             transform: translate3d(0, -2px, 0);
         }
+        
+        /* ===== MOBILE OPTIMIZATIONS (< 768px) ===== */
+        @media (max-width: 767.98px) {
+            body {
+                animation: gradient-shift 40s ease infinite;
+                padding: 1rem !important;
+            }
+            
+            body::before {
+                animation: float 50s ease-in-out infinite;
+            }
+            
+            .container {
+                padding: 0 !important;
+            }
+            
+            .tech-card {
+                border-radius: 20px;
+                padding: 20px !important;
+            }
+            
+            .tech-card:hover {
+                transform: none;
+            }
+            
+            h3 {
+                font-size: 1.3rem !important;
+            }
+            
+            .glow-text {
+                animation: none;
+                text-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+            }
+            
+            .btn-tech-primary, .btn-tech-outline {
+                min-height: 48px;
+                font-size: 1rem;
+                padding: 14px 16px !important;
+            }
+            
+            .tech-input-group {
+                min-height: 48px;
+            }
+            
+            .tech-form-control {
+                font-size: 16px !important;
+                padding: 14px !important;
+            }
+            
+            /* Mobile button layout */
+            .row.g-2 {
+                gap: 0.5rem !important;
+            }
+            
+            .row.g-2 .col-8,
+            .row.g-2 .col-4 {
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+            
+            button, input, select, textarea {
+                touch-action: manipulation;
+                -webkit-tap-highlight-color: rgba(99, 102, 241, 0.2);
+            }
+        }
+        
+        /* ===== DESKTOP OPTIMIZATIONS (>= 768px) ===== */
+        @media (min-width: 768px) {
+            .tech-card {
+                padding: 32px !important;
+            }
+        }
     </style>
 </head>
 <body>
