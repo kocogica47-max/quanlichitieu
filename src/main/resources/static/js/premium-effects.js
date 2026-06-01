@@ -1,7 +1,10 @@
 /**
- * Premium Effects & Interactions
- * Các hiệu ứng nâng cao cho giao diện
+ * Premium Effects & Interactions - MOBILE OPTIMIZED
+ * Các hiệu ứng nâng cao cho giao diện (Đã tối ưu cho điện thoại)
  */
+
+// Detect mobile device
+const isMobile = window.innerWidth < 768;
 
 // 1. Ripple Effect cho tất cả buttons
 function initRippleEffect() {
@@ -54,8 +57,11 @@ function animateCounter(element, target, duration = 2000) {
     }, 16);
 }
 
-// 3. Smooth Scroll Reveal
+// 3. Smooth Scroll Reveal (DISABLED ON MOBILE for performance)
 function initScrollReveal() {
+    // Disable on mobile for better performance
+    if (isMobile) return;
+    
     const observerOptions = {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
@@ -66,6 +72,8 @@ function initScrollReveal() {
             if (entry.isIntersecting) {
                 entry.target.style.opacity = '1';
                 entry.target.style.transform = 'translateY(0)';
+                // Unobserve after animation to save resources
+                observer.unobserve(entry.target);
             }
         });
     }, observerOptions);
@@ -78,7 +86,7 @@ function initScrollReveal() {
     });
 }
 
-// 4. Toast Notification System
+// 4. Toast Notification System (Optimized backdrop-filter for mobile)
 function showToast(message, type = 'success') {
     const toast = document.createElement('div');
     const icons = {
@@ -95,12 +103,15 @@ function showToast(message, type = 'success') {
         warning: '#f59e0b'
     };
     
+    // Reduce blur on mobile for better performance
+    const blurAmount = isMobile ? '8px' : '20px';
+    
     toast.style.cssText = `
         position: fixed;
         top: 20px;
         right: 20px;
         background: rgba(30, 41, 59, 0.95);
-        backdrop-filter: blur(20px);
+        backdrop-filter: blur(${blurAmount});
         border: 1px solid ${colors[type]};
         border-radius: 16px;
         padding: 16px 24px;
@@ -127,10 +138,14 @@ function showToast(message, type = 'success') {
     }, 3000);
 }
 
-// 5. Loading Spinner
+// 5. Loading Spinner (Optimized for mobile)
 function showLoading() {
     const loading = document.createElement('div');
     loading.id = 'loading-overlay';
+    
+    // Reduce blur on mobile
+    const blurAmount = isMobile ? '5px' : '10px';
+    
     loading.style.cssText = `
         position: fixed;
         top: 0;
@@ -138,7 +153,7 @@ function showLoading() {
         width: 100%;
         height: 100%;
         background: rgba(10, 14, 39, 0.8);
-        backdrop-filter: blur(10px);
+        backdrop-filter: blur(${blurAmount});
         display: flex;
         align-items: center;
         justify-content: center;
@@ -164,8 +179,11 @@ function hideLoading() {
     if (loading) loading.remove();
 }
 
-// 6. Parallax Effect
+// 6. Parallax Effect (DISABLED ON MOBILE for performance)
 function initParallax() {
+    // Only enable on desktop
+    if (isMobile) return;
+    
     let ticking = false;
     
     window.addEventListener('scroll', () => {
@@ -204,10 +222,11 @@ function typeWriter(element, text, speed = 50) {
     type();
 }
 
-// 8. Confetti Effect (cho celebrations)
+// 8. Confetti Effect (Optimized for mobile - reduced count)
 function createConfetti() {
     const colors = ['#6366f1', '#06b6d4', '#8b5cf6', '#ec4899', '#f59e0b'];
-    const confettiCount = 50;
+    // Reduce confetti count on mobile (15 vs 50)
+    const confettiCount = isMobile ? 15 : 50;
     
     for (let i = 0; i < confettiCount; i++) {
         const confetti = document.createElement('div');
@@ -229,8 +248,11 @@ function createConfetti() {
     }
 }
 
-// 9. Smooth Page Transitions
+// 9. Smooth Page Transitions (DISABLED ON MOBILE for performance)
 function initPageTransitions() {
+    // Disable on mobile for better performance
+    if (isMobile) return;
+    
     document.querySelectorAll('a:not([target="_blank"])').forEach(link => {
         link.addEventListener('click', function(e) {
             const href = this.getAttribute('href');
@@ -302,10 +324,11 @@ function initPremiumEffects() {
     initRippleEffect();
     initScrollReveal();
     
-    // Fade in page on load
+    // Fade in page on load (faster on mobile: 0.3s vs 0.5s)
+    const fadeInDuration = isMobile ? '0.3s' : '0.5s';
     document.body.style.opacity = '0';
     window.addEventListener('load', () => {
-        document.body.style.transition = 'opacity 0.5s ease';
+        document.body.style.transition = `opacity ${fadeInDuration} ease`;
         document.body.style.opacity = '1';
     });
 }
