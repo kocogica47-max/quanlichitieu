@@ -9,51 +9,43 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
     
     <style>
+        /* Optimized animations - only use transform and opacity for 60fps */
         @keyframes gradient-shift {
             0%, 100% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
         }
         
         @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(2deg); }
-        }
-        
-        @keyframes glow-pulse {
-            0%, 100% { box-shadow: 0 0 25px rgba(99, 102, 241, 0.4), 0 0 50px rgba(6, 182, 212, 0.25); }
-            50% { box-shadow: 0 0 40px rgba(99, 102, 241, 0.6), 0 0 80px rgba(6, 182, 212, 0.4); }
-        }
-        
-        @keyframes shimmer {
-            0% { background-position: -1000px 0; }
-            100% { background-position: 1000px 0; }
+            0%, 100% { transform: translate3d(0, 0, 0); }
+            50% { transform: translate3d(0, -10px, 0); }
         }
         
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translate3d(0, 20px, 0);
             }
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translate3d(0, 0, 0);
             }
         }
         
         body {
             background: linear-gradient(-45deg, #0a0e27, #1a1147, #0f1729, #1e1b4b, #0a0e27);
             background-size: 400% 400%;
-            animation: gradient-shift 20s ease infinite;
+            animation: gradient-shift 30s ease infinite;
             color: #f8fafc !important;
             font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
+            /* Optimized for smooth scrolling */
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
             /* GPU Acceleration */
-            transform: translateZ(0);
+            transform: translate3d(0, 0, 0);
             backface-visibility: hidden;
-            perspective: 1000px;
-            will-change: background-position;
         }
         
         body::before {
@@ -63,13 +55,13 @@
             right: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle at 30% 50%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
-                        radial-gradient(circle at 70% 80%, rgba(6, 182, 212, 0.12) 0%, transparent 50%);
-            animation: float 25s ease-in-out infinite;
+            background: radial-gradient(circle at 30% 50%, rgba(99, 102, 241, 0.12) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 80%, rgba(6, 182, 212, 0.1) 0%, transparent 50%);
+            animation: float 40s ease-in-out infinite;
             pointer-events: none;
             z-index: 0;
             /* GPU Acceleration */
-            transform: translateZ(0);
+            transform: translate3d(0, 0, 0);
             will-change: transform;
             backface-visibility: hidden;
         }
@@ -82,13 +74,13 @@
             right: 0;
             bottom: 0;
             background: 
-                repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0px, transparent 1px, transparent 2px, rgba(255,255,255,0.03) 3px),
-                repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0px, transparent 1px, transparent 2px, rgba(255,255,255,0.03) 3px);
+                repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0px, transparent 1px, transparent 2px, rgba(255,255,255,0.02) 3px),
+                repeating-linear-gradient(90deg, rgba(255,255,255,0.02) 0px, transparent 1px, transparent 2px, rgba(255,255,255,0.02) 3px);
             pointer-events: none;
             z-index: 0;
-            opacity: 0.3;
+            opacity: 0.25;
             /* GPU Acceleration */
-            transform: translateZ(0);
+            transform: translate3d(0, 0, 0);
         }
         
         .container {
