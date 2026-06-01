@@ -21,10 +21,10 @@
     --card-border-hover: rgba(99, 102, 241, 0.3);
     
     /* Text Colors */
-    --text-primary: #e2e8f0;
-    --text-secondary: #94a3b8;
-    --text-muted: #64748b;
-    --text-white: #f8fafc;
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+    --text-white: #ffffff;
     
     /* Accent Colors */
     --accent-primary: #6366f1;
@@ -44,8 +44,8 @@
     --shadow-lg: 0 12px 48px rgba(0, 0, 0, 0.4);
     
     /* Table Colors */
-    --table-row-bg: rgba(30, 41, 59, 0.4);
-    --table-row-hover: rgba(30, 41, 59, 0.6);
+    --table-row-bg: rgba(30, 41, 59, 0.5);
+    --table-row-hover: rgba(30, 41, 59, 0.7);
     
     /* Dropdown Colors */
     --dropdown-bg: rgba(30, 41, 59, 0.95);
@@ -155,10 +155,12 @@ body::after {
 
 .table-cyber th {
     color: var(--text-secondary);
+    font-weight: 600;
 }
 
 .table-cyber td {
-    color: var(--text-primary);
+    color: var(--text-white);
+    font-weight: 500;
 }
 
 /* Dropdown */
