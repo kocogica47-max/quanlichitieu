@@ -42,10 +42,10 @@
         }
         
         body {
-            background: linear-gradient(-45deg, #0a0e27, #1a1147, #0f1729, #1e1b4b, #0a0e27);
+            background: linear-gradient(-45deg, #0f0f23, #1a0f2e, #0a1628, #1e1140, #0d1b2a, #1a0b2e);
             background-size: 400% 400%;
-            animation: gradient-shift 30s ease infinite;
-            color: #f8fafc !important;
+            animation: gradient-shift 35s ease infinite;
+            color: #e2e8f0 !important;
             font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
             min-height: 100vh;
             display: flex;
@@ -68,9 +68,10 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle at 50% 30%, rgba(99, 102, 241, 0.12) 0%, transparent 50%),
-                        radial-gradient(circle at 50% 70%, rgba(168, 85, 247, 0.1) 0%, transparent 50%);
-            animation: float 40s ease-in-out infinite;
+            background: radial-gradient(circle at 50% 30%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 50% 70%, rgba(168, 85, 247, 0.12) 0%, transparent 50%),
+                        radial-gradient(circle at 50% 50%, rgba(6, 182, 212, 0.08) 0%, transparent 60%);
+            animation: float 45s ease-in-out infinite;
             pointer-events: none;
             /* GPU Acceleration */
             transform: translate3d(0, 0, 0);
@@ -95,13 +96,14 @@
         }
 
         .tech-card {
-            background: rgba(30, 41, 59, 0.7) !important;
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.12) !important;
-            border-radius: 28px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 
-                        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            background: rgba(30, 41, 59, 0.75) !important;
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 
+                        0 8px 32px rgba(99, 102, 241, 0.1),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.2);
             will-change: transform, box-shadow;
             transform: translateZ(0);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -124,10 +126,11 @@
         }
         
         .tech-card:hover {
-            transform: translate3d(0, -6px, 0);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 
-                        inset 0 1px 0 rgba(255, 255, 255, 0.2),
-                        0 0 0 1px rgba(99, 102, 241, 0.4);
+            transform: translate3d(0, -8px, 0);
+            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.7), 
+                        0 12px 40px rgba(99, 102, 241, 0.2),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.25),
+                        0 0 0 1px rgba(99, 102, 241, 0.5);
         }
 
         .glow-text {
