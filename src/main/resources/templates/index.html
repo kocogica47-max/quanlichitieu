@@ -7,6 +7,8 @@
     <title>Quản lý chi tiêu cá nhân</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="/css/theme-variables.css" rel="stylesheet">
+    <script src="/js/theme-toggle.js"></script>
     
     <style>
         /* Optimized animations - only use transform and opacity for 60fps */
@@ -411,6 +413,14 @@
             </h2>
             
             <div class="d-flex align-items-center gap-2">
+                <!-- Theme Toggle Button -->
+                <button onclick="toggleTheme()" class="btn btn-sm btn-outline-light border-opacity-25 px-2 px-md-3 rounded-3 d-flex align-items-center gap-1" 
+                        style="background: rgba(30, 41, 59, 0.5); color: #94a3b8; padding-top: 6px; padding-bottom: 6px;"
+                        title="Chuyển đổi chế độ sáng/tối">
+                    <i id="theme-icon" class="bi bi-sun-fill"></i>
+                    <span id="theme-text" class="d-none d-md-inline">Sáng</span>
+                </button>
+                
                 <div class="bg-dark bg-opacity-25 p-2 px-2 px-md-3 rounded-3 border border-secondary border-opacity-10">
                     <span class="small text-secondary" style="font-size: 0.85rem;">
                         <i class="bi bi-person-circle me-1" style="color: #06b6d4;"></i>
