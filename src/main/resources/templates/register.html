@@ -337,5 +337,33 @@
             </div>
         </div>
     </div>
+    
+    <script src="/js/premium-effects.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('error')) {
+            PremiumEffects.showToast('Tên tài khoản đã tồn tại!', 'error');
+        }
+        
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const username = document.querySelector('input[name="username"]').value;
+            const password = document.querySelector('input[name="password"]').value;
+            
+            if (username.length < 3) {
+                e.preventDefault();
+                PremiumEffects.showToast('Tên tài khoản phải có ít nhất 3 ký tự!', 'warning');
+                return false;
+            }
+            
+            if (password.length < 6) {
+                e.preventDefault();
+                PremiumEffects.showToast('Mật khẩu phải có ít nhất 6 ký tự!', 'warning');
+                return false;
+            }
+            
+            PremiumEffects.showLoading();
+            PremiumEffects.showToast('Đang tạo tài khoản...', 'info');
+        });
+    </script>
 </body>
 </html>

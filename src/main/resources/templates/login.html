@@ -339,5 +339,19 @@
             </div>
         </div>
     </div>
+    
+    <script src="/js/premium-effects.js"></script>
+    <script>
+        // Check for error parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('error')) {
+            PremiumEffects.showToast('Tài khoản hoặc mật khẩu không chính xác!', 'error');
+        }
+        
+        // Show loading on submit
+        document.querySelector('form').addEventListener('submit', function() {
+            PremiumEffects.showLoading();
+        });
+    </script>
 </body>
 </html>

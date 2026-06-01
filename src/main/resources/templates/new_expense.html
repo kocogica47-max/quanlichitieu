@@ -389,5 +389,31 @@
             </div>
         </div>
     </div>
+    
+    <script src="/js/premium-effects.js"></script>
+    <script>
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const title = document.querySelector('input[name="title"]').value;
+            const amount = document.querySelector('input[name="amount"]').value;
+            const category = document.querySelector('select[name="category"]').value;
+            
+            // Validation
+            if (!title || !amount || !category) {
+                e.preventDefault();
+                PremiumEffects.showToast('Vui lòng điền đầy đủ thông tin!', 'warning');
+                return false;
+            }
+            
+            if (parseFloat(amount) <= 0) {
+                e.preventDefault();
+                PremiumEffects.showToast('Số tiền phải lớn hơn 0!', 'warning');
+                return false;
+            }
+            
+            // Show loading and success message
+            PremiumEffects.showLoading();
+            PremiumEffects.showToast('Đang lưu khoản chi...', 'info');
+        });
+    </script>
 </body>
 </html>
