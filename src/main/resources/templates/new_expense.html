@@ -326,10 +326,10 @@
                             <p class="small m-0 mt-1" style="color: #64748b;">Khởi tạo bản ghi tiêu dùng vào cơ sở dữ liệu hệ thống</p>
                         </div>
                         
-                        <form th:action="@{/saveExpense}" th:object="${expense}" method="POST" class="d-flex flex-column gap-3">
+                        <form th:action="@{/saveExpense}" th:object="${expense}" method="POST">
                             
                             <div class="mb-3">
-                                <label class="form-label mb-1.5 tech-label">Nội dung chi tiêu</label>
+                                <label class="form-label mb-2 tech-label">Nội dung chi tiêu</label>
                                 <div class="input-group tech-input-group">
                                     <span class="input-group-text tech-input-text"><i class="bi bi-pencil-square"></i></span>
                                     <input type="text" th:field="*{title}" class="form-control tech-form-control" placeholder="Ví dụ: Mua sắm quần áo, Ăn tối..." required>
@@ -337,7 +337,7 @@
                             </div>
                             
                             <div class="mb-3">
-                                <label class="form-label mb-1.5 tech-label">Phân loại danh mục</label>
+                                <label class="form-label mb-2 tech-label">Phân loại danh mục</label>
                                 <div class="input-group tech-input-group">
                                     <span class="input-group-text tech-input-text"><i class="bi bi-tags"></i></span>
                                     <select th:field="*{category}" class="form-select tech-form-control" style="cursor: pointer;" required>
@@ -354,7 +354,7 @@
                             </div>
                             
                             <div class="mb-3">
-                                <label class="form-label mb-1.5 tech-label">Số tiền chi tiêu (VND)</label>
+                                <label class="form-label mb-2 tech-label">Số tiền chi tiêu (VND)</label>
                                 <div class="input-group tech-input-group">
                                     <span class="input-group-text tech-input-text"><i class="bi bi-cash-coin"></i></span>
                                     <input type="number" step="any" th:field="*{amount}" class="form-control tech-form-control" placeholder="Nhập số tiền..." min="0" required>
@@ -362,21 +362,21 @@
                             </div>
                             
                             <div class="mb-4">
-                                <label class="form-label mb-1.5 tech-label">Thời gian giao dịch</label>
+                                <label class="form-label mb-2 tech-label">Thời gian giao dịch</label>
                                 <div class="input-group tech-input-group">
                                     <span class="input-group-text tech-input-text"><i class="bi bi-calendar-check"></i></span>
                                     <input type="date" th:field="*{date}" class="form-control tech-form-control" required>
                                 </div>
                             </div>
 
-                            <div class="row g-2 pt-2">
+                            <div class="row g-2 pt-3">
                                 <div class="col-8">
-                                    <button type="submit" class="btn btn-tech-primary w-100 py-2.5 rounded-3 fw-bold">
+                                    <button type="submit" class="btn btn-tech-primary w-100 py-3 rounded-3 fw-bold">
                                         <i class="bi bi-cloud-arrow-up-fill me-1"></i> Lưu Khoản Chi
                                     </button>
                                 </div>
                                 <div class="col-4">
-                                    <a th:href="@{/}" class="btn btn-tech-outline w-100 py-2.5 rounded-3 fw-semibold text-center d-block">
+                                    <a th:href="@{/}" class="btn btn-tech-outline w-100 py-3 rounded-3 fw-semibold text-center d-block">
                                         Hủy bỏ
                                     </a>
                                 </div>
