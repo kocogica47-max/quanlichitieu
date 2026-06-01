@@ -69,9 +69,9 @@
     --card-border-hover: rgba(99, 102, 241, 0.4);
     
     /* Text Colors */
-    --text-primary: #1e293b;
-    --text-secondary: #475569;
-    --text-muted: #64748b;
+    --text-primary: #0f172a;
+    --text-secondary: #1e293b;
+    --text-muted: #475569;
     --text-white: #0f172a;
     
     /* Accent Colors (giữ nguyên) */
@@ -163,6 +163,19 @@ body::after {
     font-weight: 500;
 }
 
+/* Light mode table improvements */
+[data-theme="light"] .table-cyber th {
+    color: #0f172a !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+[data-theme="light"] .table-cyber td {
+    color: #1e293b !important;
+    font-weight: 600;
+}
+
 /* Dropdown */
 .dropdown-menu {
     background: var(--dropdown-bg) !important;
@@ -232,9 +245,10 @@ body::after {
 }
 
 [data-theme="light"] .badge-category {
-    background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(139, 92, 246, 0.15));
-    color: var(--accent-primary);
-    border: 1px solid rgba(99, 102, 241, 0.3);
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2));
+    color: #4338ca;
+    border: 1px solid rgba(99, 102, 241, 0.4);
+    font-weight: 600;
 }
 
 /* Input fields in light mode */
@@ -261,4 +275,76 @@ body::after {
 [data-theme="light"] .btn-outline-light:hover {
     background-color: rgba(99, 102, 241, 0.1) !important;
     border-color: var(--accent-primary) !important;
+}
+
+/* Light mode text improvements */
+[data-theme="light"] h1,
+[data-theme="light"] h2,
+[data-theme="light"] h3,
+[data-theme="light"] h4,
+[data-theme="light"] h5,
+[data-theme="light"] h6 {
+    color: #0f172a !important;
+    font-weight: 700;
+}
+
+[data-theme="light"] .display-4,
+[data-theme="light"] .display-5,
+[data-theme="light"] .display-6 {
+    color: #0f172a !important;
+    font-weight: 700;
+}
+
+[data-theme="light"] .text-cyan-400,
+[data-theme="light"] .text-info {
+    color: #0891b2 !important;
+    font-weight: 700;
+}
+
+[data-theme="light"] .small,
+[data-theme="light"] small {
+    color: #475569 !important;
+}
+
+/* Chart text improvements */
+[data-theme="light"] .chart-container text,
+[data-theme="light"] canvas {
+    color: #0f172a !important;
+}
+
+/* Button text improvements */
+[data-theme="light"] .btn {
+    font-weight: 600;
+}
+
+[data-theme="light"] .btn-primary {
+    color: #ffffff !important;
+}
+
+[data-theme="light"] .btn-danger {
+    color: #ffffff !important;
+}
+
+/* Dropdown improvements */
+[data-theme="light"] .dropdown-item {
+    color: #1e293b !important;
+    font-weight: 500;
+}
+
+[data-theme="light"] .dropdown-item:hover {
+    color: #0f172a !important;
+    font-weight: 600;
+}
+
+/* Card title improvements */
+[data-theme="light"] .card-title {
+    color: #0f172a !important;
+    font-weight: 700;
+}
+
+/* List group improvements */
+[data-theme="light"] .list-group-item {
+    color: #1e293b !important;
+    background-color: rgba(255, 255, 255, 0.8) !important;
+    border-color: rgba(99, 102, 241, 0.2) !important;
 }
