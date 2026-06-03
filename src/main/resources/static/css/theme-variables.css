@@ -179,7 +179,8 @@ body {
         var(--bg-gradient-4),
         var(--bg-gradient-5),
         var(--bg-gradient-6)) !important;
-    background-size: 400% 400%;
+    background-size: 400% 400% !important;
+    animation: gradient-shift 35s ease infinite;
     color: var(--text-primary) !important;
     transition: background 0.5s ease, color 0.3s ease;
 }
