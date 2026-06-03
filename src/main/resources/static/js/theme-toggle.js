@@ -73,3 +73,16 @@ if (document.readyState === 'loading') {
 
 window.toggleTheme = toggleTheme;
 window.getCurrentTheme = getCurrentTheme;
+
+// Re-render chart khi đổi theme (nếu có chart trên trang)
+const _origToggle = window.toggleTheme;
+window.toggleTheme = function() {
+    _origToggle();
+    // Reload chart sau khi theme đổi (nếu trang có loadBarChart)
+    setTimeout(() => {
+        if (typeof loadBarChart === 'function' && typeof currentChartType !== 'undefined') {
+            if (currentChartType === 'bar') loadBarChart();
+            else if (currentChartType === 'pie') loadPieChart();
+        }
+    }, 320);
+};

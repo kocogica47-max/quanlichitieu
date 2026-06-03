@@ -638,3 +638,90 @@ a,
     0%, 100% { transform: translate3d(0, 0, 0); }
     50% { transform: translate3d(0, -10px, 0); }
 }
+
+/* ===================================================
+   TYPOGRAPHY CONSISTENCY — BOTH THEMES
+   =================================================== */
+
+/* Dark mode — rõ hơn */
+:root .table-cyber th,
+[data-theme="dark"] .table-cyber th {
+    color: #e2e8f0 !important;
+    opacity: 0.9;
+}
+
+[data-theme="dark"] .table-cyber td {
+    color: #f1f5f9 !important;
+}
+
+/* Ngày tháng dark */
+[data-theme="dark"] .table-cyber td.small {
+    color: #94a3b8 !important;
+}
+
+/* Số tiền dark */
+[data-theme="dark"] .table-cyber td.text-end {
+    color: #22d3ee !important;
+}
+
+/* Stat card label dark */
+[data-theme="dark"] .tech-card p {
+    color: #94a3b8 !important;
+}
+
+/* Tên khoản chi trong mobile card dark */
+[data-theme="dark"] .mobile-card-item .fw-bold {
+    color: #f1f5f9 !important;
+}
+
+[data-theme="dark"] .mobile-card-item .text-secondary {
+    color: #94a3b8 !important;
+}
+
+/* Light mode — rõ hơn */
+[data-theme="light"] .table-cyber th {
+    color: #1e293b !important;
+    opacity: 1 !important;
+}
+
+[data-theme="light"] .table-cyber td {
+    color: #0f172a !important;
+}
+
+[data-theme="light"] .table-cyber td.small {
+    color: #475569 !important;
+}
+
+[data-theme="light"] .table-cyber td.text-end {
+    color: #0e7490 !important;
+}
+
+[data-theme="light"] .tech-card p {
+    color: #475569 !important;
+}
+
+[data-theme="light"] .mobile-card-item .fw-bold {
+    color: #0f172a !important;
+}
+
+[data-theme="light"] .mobile-card-item .text-secondary {
+    color: #64748b !important;
+}
+
+/* Header "Chào" */
+[data-theme="dark"] .small.text-secondary {
+    color: #94a3b8 !important;
+}
+
+[data-theme="light"] .small.text-secondary {
+    color: #475569 !important;
+}
+
+/* Section headings */
+[data-theme="dark"] h6.fw-bold {
+    color: #e2e8f0;
+}
+
+[data-theme="light"] h6.fw-bold {
+    color: #1e293b !important;
+}
