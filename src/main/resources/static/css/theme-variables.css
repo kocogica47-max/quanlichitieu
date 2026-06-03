@@ -611,14 +611,32 @@ body::after {
     cursor: pointer;
 }
 
-/* ===== SMOOTH TRANSITION ===== */
-*, *::before, *::after {
-    transition-property: background-color, border-color, color, fill, stroke, box-shadow;
-    transition-duration: 0.25s;
+/* ===== SMOOTH TRANSITION =====
+   Chỉ transition những property cần thiết — KHÔNG dùng `all`
+   vì `transition: all` buộc browser recalculate mọi thứ mỗi frame */
+
+/* Theme switch — chỉ màu sắc */
+body,
+.tech-card,
+.dropdown-menu,
+.dropdown-item,
+.mobile-card-item,
+.table-cyber tr,
+.badge-category,
+.theme-toggle-btn,
+.btn,
+button,
+a,
+input,
+select,
+.form-control,
+.form-select {
+    transition-property: background-color, border-color, color, box-shadow;
+    transition-duration: 0.22s;
     transition-timing-function: ease;
 }
 
-/* Preserve animations – override above for transform */
+/* Interactive elements — thêm transform */
 .tech-card,
 .btn,
 button,
@@ -626,7 +644,18 @@ a,
 .badge-category,
 .dropdown-item,
 .table-cyber tr {
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    transition-property: background-color, border-color, color, box-shadow, transform, opacity;
+    transition-duration: 0.22s;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* GPU hint cho elements hay animate */
+.tech-card,
+.btn,
+.badge-category,
+.toast-notification,
+.theme-toggle-btn {
+    will-change: transform;
 }
 
 /* ===== KEYFRAMES ===== */
@@ -638,6 +667,34 @@ a,
 @keyframes float {
     0%, 100% { transform: translate3d(0, 0, 0); }
     50% { transform: translate3d(0, -10px, 0); }
+}
+
+/* ===== PERFORMANCE: GPU LAYERS ===== */
+
+/* Background animation tách riêng ra pseudo-element,
+   body content không bị repaint theo */
+body {
+    isolation: isolate;
+}
+
+/* Table rows: contain layout để tránh reflow lan ra ngoài */
+.table-cyber tr {
+    contain: layout style;
+}
+
+/* Dropdown: tạo layer riêng khi mở */
+.dropdown-menu {
+    contain: layout paint;
+}
+
+/* Cards: promote lên composite layer khi hover */
+.tech-card:hover {
+    will-change: transform, box-shadow;
+}
+
+/* Sau khi animation xong thì bỏ will-change để tiết kiệm VRAM */
+.reveal-ready.revealed {
+    will-change: auto;
 }
 
 /* ===================================================

@@ -1,364 +1,283 @@
 ﻿/**
- * Premium Effects & Interactions - MOBILE OPTIMIZED
- * Các hiệu ứng nâng cao cho giao diện (Đã tối ưu cho điện thoại)
+ * Premium Effects & Interactions — 60 FPS Optimized
+ * Chỉ dùng transform + opacity để đảm bảo compositor-only animations
  */
 
-// Detect mobile device
 const isMobile = window.innerWidth < 768;
 
-// 1. Ripple Effect cho tất cả buttons
+// ── 1. Ripple Effect ────────────────────────────────────────────────────────
 function initRippleEffect() {
     document.querySelectorAll('.btn, .btn-gradient-cyan, .btn-tech-primary, .btn-tech-cyan').forEach(button => {
-        button.style.position = 'relative';
-        button.style.overflow = 'hidden';
-        
         button.addEventListener('click', function(e) {
             const ripple = document.createElement('span');
-            const rect = this.getBoundingClientRect();
-            const size = Math.max(rect.width, rect.height);
-            const x = e.clientX - rect.left - size / 2;
-            const y = e.clientY - rect.top - size / 2;
-            
+            const rect   = this.getBoundingClientRect();
+            const size   = Math.max(rect.width, rect.height);
+
+            ripple.className = 'ripple-el';
             ripple.style.cssText = `
-                position: absolute;
-                border-radius: 50%;
-                background: rgba(255, 255, 255, 0.5);
-                width: ${size}px;
-                height: ${size}px;
-                left: ${x}px;
-                top: ${y}px;
-                transform: scale(0);
-                animation: ripple-animation 0.6s ease-out;
-                pointer-events: none;
+                width:${size}px;height:${size}px;
+                left:${e.clientX - rect.left - size / 2}px;
+                top:${e.clientY - rect.top  - size / 2}px;
             `;
-            
+
             this.appendChild(ripple);
-            setTimeout(() => ripple.remove(), 600);
+            // cleanup after animation ends
+            ripple.addEventListener('animationend', () => ripple.remove(), { once: true });
         });
     });
 }
 
-// 2. Number Counter Animation
-function animateCounter(element, target, duration = 2000) {
+// ── 2. Number Counter — rAF-based (no setInterval) ─────────────────────────
+function animateCounter(element, target, duration = 1200) {
     if (!element) return;
-    
-    const start = 0;
-    const increment = target / (duration / 16);
-    let current = start;
-    
-    const timer = setInterval(() => {
-        current += increment;
-        if (current >= target) {
-            element.textContent = target.toLocaleString('vi-VN') + ' đ';
-            clearInterval(timer);
-        } else {
-            element.textContent = Math.floor(current).toLocaleString('vi-VN') + ' đ';
-        }
-    }, 16);
+
+    const start     = performance.now();
+    const startVal  = 0;
+
+    function step(now) {
+        const elapsed  = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        // easeOutExpo
+        const eased    = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+        const current  = Math.floor(startVal + (target - startVal) * eased);
+
+        element.textContent = current.toLocaleString('vi-VN') + ' đ';
+
+        if (progress < 1) requestAnimationFrame(step);
+    }
+
+    requestAnimationFrame(step);
 }
 
-// 3. Smooth Scroll Reveal (DISABLED ON MOBILE for performance)
+// ── 3. Scroll Reveal — IntersectionObserver, CSS-driven ────────────────────
 function initScrollReveal() {
-    // Disable on mobile for better performance
-    if (isMobile) return;
-    
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
+    if (isMobile) return; // skip trên mobile
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-                // Unobserve after animation to save resources
+                entry.target.classList.add('revealed');
                 observer.unobserve(entry.target);
             }
         });
-    }, observerOptions);
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
 
-    document.querySelectorAll('.tech-card, .mobile-card-item').forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(30px)';
-        el.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+    document.querySelectorAll('.tech-card').forEach(el => {
+        el.classList.add('reveal-ready');
         observer.observe(el);
     });
 }
 
-// 4. Toast Notification System (Optimized backdrop-filter for mobile)
+// ── 4. Toast Notification ──────────────────────────────────────────────────
 function showToast(message, type = 'success') {
+    const icons  = { success: '✓', error: '✕', info: 'ℹ', warning: '⚠' };
+    const colors = { success: '#10b981', error: '#ef4444', info: '#06b6d4', warning: '#f59e0b' };
+
     const toast = document.createElement('div');
-    const icons = {
-        success: '✓',
-        error: '✕',
-        info: 'ℹ',
-        warning: '⚠'
-    };
-    
-    const colors = {
-        success: '#10b981',
-        error: '#ef4444',
-        info: '#06b6d4',
-        warning: '#f59e0b'
-    };
-    
-    // Reduce blur on mobile for better performance
-    const blurAmount = isMobile ? '8px' : '20px';
-    
-    toast.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: var(--dropdown-bg, rgba(30, 41, 59, 0.95));
-        backdrop-filter: blur(${blurAmount});
-        border: 1px solid ${colors[type]};
-        border-radius: 16px;
-        padding: 16px 24px;
-        box-shadow: var(--shadow-md, 0 8px 32px rgba(0, 0, 0, 0.4));
-        z-index: 9999;
-        color: var(--text-primary, #f8fafc);
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        animation: slideInRight 0.3s ease;
-        max-width: 350px;
-    `;
-    
+    toast.className = 'toast-notification toast-in';
     toast.innerHTML = `
-        <span style="font-size: 20px; color: ${colors[type]};">${icons[type]}</span>
-        <span style="flex: 1;">${message}</span>
+        <span style="color:${colors[type]};font-size:1.2rem">${icons[type]}</span>
+        <span>${message}</span>
     `;
-    
+    toast.style.setProperty('--toast-accent', colors[type]);
+
     document.body.appendChild(toast);
-    
+
     setTimeout(() => {
-        toast.style.animation = 'slideOutRight 0.3s ease';
-        setTimeout(() => toast.remove(), 300);
+        toast.classList.replace('toast-in', 'toast-out');
+        toast.addEventListener('animationend', () => toast.remove(), { once: true });
     }, 3000);
 }
 
-// 5. Loading Spinner (Optimized for mobile)
+// ── 5. Loading Spinner ─────────────────────────────────────────────────────
 function showLoading() {
-    const loading = document.createElement('div');
-    loading.id = 'loading-overlay';
-    
-    // Reduce blur on mobile
-    const blurAmount = isMobile ? '5px' : '10px';
-    
-    loading.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: var(--overlay-bg, rgba(10, 14, 39, 0.8));
-        backdrop-filter: blur(${blurAmount});
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 99999;
-    `;
-    
-    loading.innerHTML = `
-        <div style="
-            width: 50px;
-            height: 50px;
-            border: 3px solid var(--card-border, rgba(99, 102, 241, 0.15));
-            border-top-color: var(--accent-primary, #6366f1);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        "></div>
-    `;
-    
-    document.body.appendChild(loading);
+    if (document.getElementById('loading-overlay')) return;
+    const el = document.createElement('div');
+    el.id = 'loading-overlay';
+    el.innerHTML = '<div class="spinner-ring"></div>';
+    document.body.appendChild(el);
 }
 
 function hideLoading() {
-    const loading = document.getElementById('loading-overlay');
-    if (loading) loading.remove();
+    const el = document.getElementById('loading-overlay');
+    if (el) el.remove();
 }
 
-// 6. Parallax Effect (DISABLED ON MOBILE for performance)
-function initParallax() {
-    // Only enable on desktop
-    if (isMobile) return;
-    
-    let ticking = false;
-    
-    window.addEventListener('scroll', () => {
-        if (!ticking) {
-            window.requestAnimationFrame(() => {
-                const scrolled = window.pageYOffset;
-                const parallaxElements = document.querySelectorAll('.tech-card');
-                
-                parallaxElements.forEach((el, index) => {
-                    const speed = 0.05 * (index + 1);
-                    el.style.transform = `translateY(${scrolled * speed}px)`;
-                });
-                
-                ticking = false;
-            });
-            ticking = true;
-        }
-    });
-}
+// ── 6. Parallax — REMOVED (causes layout thrashing) ────────────────────────
+// Parallax trên .tech-card dùng style.transform trong scroll listener
+// buộc browser recalculate layout mỗi frame → đây là nguyên nhân lag #1
+// Đã xoá hoàn toàn.
 
-// 7. Typing Effect
+// ── 7. Typing Effect ───────────────────────────────────────────────────────
 function typeWriter(element, text, speed = 50) {
     if (!element) return;
-    
     let i = 0;
     element.textContent = '';
-    
-    function type() {
+    (function type() {
         if (i < text.length) {
-            element.textContent += text.charAt(i);
-            i++;
+            element.textContent += text.charAt(i++);
             setTimeout(type, speed);
         }
-    }
-    
-    type();
+    })();
 }
 
-// 8. Confetti Effect (Optimized for mobile - reduced count)
+// ── 8. Confetti — rAF-driven, DOM-lite ─────────────────────────────────────
 function createConfetti() {
-    const colors = ['#6366f1', '#06b6d4', '#8b5cf6', '#ec4899', '#f59e0b'];
-    // Reduce confetti count on mobile (15 vs 50)
-    const confettiCount = isMobile ? 15 : 50;
-    
-    for (let i = 0; i < confettiCount; i++) {
-        const confetti = document.createElement('div');
-        confetti.style.cssText = `
-            position: fixed;
-            width: 10px;
-            height: 10px;
-            background: ${colors[Math.floor(Math.random() * colors.length)]};
-            left: ${Math.random() * 100}%;
-            top: -10px;
-            opacity: 1;
-            transform: rotate(${Math.random() * 360}deg);
-            animation: confetti-fall ${2 + Math.random() * 3}s linear forwards;
-            z-index: 99999;
+    const colors = ['#6366f1','#06b6d4','#8b5cf6','#ec4899','#f59e0b'];
+    const count  = isMobile ? 12 : 40;
+
+    for (let i = 0; i < count; i++) {
+        const el = document.createElement('div');
+        el.className = 'confetti-piece';
+        el.style.cssText = `
+            left:${Math.random() * 100}%;
+            background:${colors[i % colors.length]};
+            animation-duration:${2 + Math.random() * 2}s;
+            animation-delay:${Math.random() * 0.5}s;
         `;
-        
-        document.body.appendChild(confetti);
-        setTimeout(() => confetti.remove(), 5000);
+        document.body.appendChild(el);
+        el.addEventListener('animationend', () => el.remove(), { once: true });
     }
 }
 
-// 9. Smooth Page Transitions (DISABLED ON MOBILE for performance)
+// ── 9. Page Transitions ─────────────────────────────────────────────────────
 function initPageTransitions() {
-    // Disable on mobile for better performance
     if (isMobile) return;
-    
+
     document.querySelectorAll('a:not([target="_blank"])').forEach(link => {
         link.addEventListener('click', function(e) {
             const href = this.getAttribute('href');
-            if (href && !href.startsWith('#') && !href.startsWith('javascript:')) {
+            if (href && !href.startsWith('#') && !href.startsWith('javascript:') && !href.startsWith('?')) {
                 e.preventDefault();
-                document.body.style.opacity = '0';
-                document.body.style.transition = 'opacity 0.3s ease';
-                setTimeout(() => {
-                    window.location.href = href;
-                }, 300);
+                document.body.classList.add('page-exit');
+                setTimeout(() => { window.location.href = href; }, 250);
             }
         });
     });
 }
 
-// 10. Initialize all effects
+// ── 10. Init ────────────────────────────────────────────────────────────────
 function initPremiumEffects() {
-    // Add CSS animations
+    // Inject CSS animations vào 1 <style> duy nhất
     const style = document.createElement('style');
     style.textContent = `
-        @keyframes ripple-animation {
+        /* Ripple */
+        .ripple-el {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.45);
+            transform: scale(0);
+            animation: ripple-anim 0.55s ease-out forwards;
+            pointer-events: none;
+            will-change: transform, opacity;
+        }
+        @keyframes ripple-anim {
             to { transform: scale(4); opacity: 0; }
         }
-        
-        @keyframes slideInRight {
-            from { transform: translateX(400px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+
+        /* Scroll reveal — CSS-driven, compositor-only */
+        .reveal-ready {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            will-change: opacity, transform;
         }
-        
-        @keyframes slideOutRight {
-            from { transform: translateX(0); opacity: 1; }
-            to { transform: translateX(400px); opacity: 0; }
+        .reveal-ready.revealed {
+            opacity: 1;
+            transform: translateY(0);
         }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+
+        /* Toast */
+        .toast-notification {
+            position: fixed;
+            top: 20px; right: 20px;
+            background: var(--dropdown-bg, rgba(30,41,59,0.95));
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--toast-accent, #6366f1);
+            border-radius: 14px;
+            padding: 14px 20px;
+            box-shadow: var(--shadow-md);
+            z-index: 9999;
+            color: var(--text-primary, #f8fafc);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 320px;
+            will-change: transform, opacity;
         }
-        
+        .toast-in  { animation: toast-slide-in  0.28s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+        .toast-out { animation: toast-slide-out 0.22s ease-in forwards; }
+        @keyframes toast-slide-in  { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes toast-slide-out { from { transform: translateX(0);    opacity: 1; } to { transform: translateX(120%); opacity: 0; } }
+
+        /* Loading */
+        #loading-overlay {
+            position: fixed; inset: 0;
+            background: var(--overlay-bg, rgba(10,14,39,0.75));
+            backdrop-filter: blur(6px);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 99999;
+        }
+        .spinner-ring {
+            width: 44px; height: 44px;
+            border: 3px solid var(--card-border, rgba(99,102,241,0.2));
+            border-top-color: var(--accent-primary, #6366f1);
+            border-radius: 50%;
+            animation: spin 0.75s linear infinite;
+            will-change: transform;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Confetti */
+        .confetti-piece {
+            position: fixed; top: -10px;
+            width: 9px; height: 9px;
+            opacity: 1;
+            animation: confetti-fall linear forwards;
+            will-change: transform, opacity;
+            z-index: 99999;
+        }
         @keyframes confetti-fall {
-            to {
-                transform: translateY(100vh) rotate(720deg);
-                opacity: 0;
-            }
+            to { transform: translateY(105vh) rotate(540deg); opacity: 0; }
         }
-        
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 10px;
-            height: 10px;
+
+        /* Page exit */
+        .page-exit {
+            opacity: 0;
+            transition: opacity 0.25s ease;
         }
-        
-        ::-webkit-scrollbar-track {
-            background: rgba(15, 23, 42, 0.5);
-        }
-        
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb {
             background: linear-gradient(180deg, #6366f1, #8b5cf6);
-            border-radius: 10px;
-            border: 2px solid rgba(15, 23, 42, 0.5);
+            border-radius: 8px;
         }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(180deg, #818cf8, #a78bfa);
-        }
-
-        [data-theme="light"] ::-webkit-scrollbar-track {
-            background: rgba(238, 242, 255, 0.6);
-        }
-
         [data-theme="light"] ::-webkit-scrollbar-thumb {
             background: linear-gradient(180deg, #5b5fc7, #7c3aed);
-            border-color: rgba(238, 242, 255, 0.6);
-        }
-
-        [data-theme="light"] ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(180deg, #4338ca, #6d28d9);
         }
     `;
     document.head.appendChild(style);
-    
-    // Initialize effects
+
     initRippleEffect();
     initScrollReveal();
-    
-    // Fade in page on load (faster on mobile: 0.3s vs 0.5s)
-    const fadeInDuration = isMobile ? '0.3s' : '0.5s';
+    initPageTransitions();
+
+    // Fade-in page — opacity only (compositor layer, free)
     document.body.style.opacity = '0';
     window.addEventListener('load', () => {
-        document.body.style.transition = `opacity ${fadeInDuration} ease`;
+        document.body.style.transition = 'opacity 0.35s ease';
         document.body.style.opacity = '1';
-    });
+        // Remove transition property after fade so it doesn't interfere
+        setTimeout(() => { document.body.style.transition = ''; }, 400);
+    }, { once: true });
 }
 
-// Auto-initialize when DOM is ready
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initPremiumEffects);
 } else {
     initPremiumEffects();
 }
 
-// Export functions for manual use
-window.PremiumEffects = {
-    showToast,
-    showLoading,
-    hideLoading,
-    animateCounter,
-    createConfetti,
-    typeWriter
-};
+window.PremiumEffects = { showToast, showLoading, hideLoading, animateCounter, createConfetti, typeWriter };
