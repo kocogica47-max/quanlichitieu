@@ -3,24 +3,21 @@
  * Hệ thống chuyển đổi chế độ sáng/tối
  */
 
-// Lấy theme hiện tại từ localStorage hoặc mặc định là 'dark'
 function getCurrentTheme() {
     return localStorage.getItem('theme') || 'dark';
 }
 
-// Lưu theme vào localStorage
 function saveTheme(theme) {
     localStorage.setItem('theme', theme);
 }
 
-// Áp dụng theme
 function applyTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
-    
-    // Cập nhật icon của nút toggle
+
+    // Cập nhật icon và text
     const themeIcon = document.getElementById('theme-icon');
     const themeText = document.getElementById('theme-text');
-    
+
     if (themeIcon) {
         if (theme === 'light') {
             themeIcon.className = 'bi bi-moon-stars-fill';
@@ -30,36 +27,49 @@ function applyTheme(theme) {
             if (themeText) themeText.textContent = 'Sáng';
         }
     }
+
+    // Áp dụng class CSS cho tất cả nút toggle
+    document.querySelectorAll('[onclick="toggleTheme()"], .theme-toggle-btn').forEach(btn => {
+        btn.classList.add('theme-toggle-btn');
+        // Xóa inline style cứng để CSS variable hoạt động
+        btn.style.removeProperty('background');
+        btn.style.removeProperty('color');
+    });
 }
 
-// Toggle theme
 function toggleTheme() {
     const currentTheme = getCurrentTheme();
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    
+
+    // Ripple effect
+    document.body.style.transition = 'background 0.4s ease, color 0.3s ease';
+
     saveTheme(newTheme);
     applyTheme(newTheme);
-    
-    // Hiệu ứng chuyển đổi mượt mà
-    document.body.style.transition = 'background 0.3s ease, color 0.3s ease';
+
     setTimeout(() => {
         document.body.style.transition = '';
-    }, 300);
+    }, 400);
 }
 
-// Khởi tạo theme khi trang load
 function initTheme() {
     const theme = getCurrentTheme();
+    // Áp dụng ngay để tránh flash
+    document.documentElement.setAttribute('data-theme', theme);
     applyTheme(theme);
 }
 
-// Tự động khởi tạo khi DOM ready
+// Áp dụng theme trước khi DOM render xong để tránh flash
+(function() {
+    const t = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', t);
+})();
+
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initTheme);
 } else {
     initTheme();
 }
 
-// Export cho sử dụng global
 window.toggleTheme = toggleTheme;
 window.getCurrentTheme = getCurrentTheme;

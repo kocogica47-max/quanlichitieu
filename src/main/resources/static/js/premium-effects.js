@@ -110,14 +110,14 @@ function showToast(message, type = 'success') {
         position: fixed;
         top: 20px;
         right: 20px;
-        background: rgba(30, 41, 59, 0.95);
+        background: var(--dropdown-bg, rgba(30, 41, 59, 0.95));
         backdrop-filter: blur(${blurAmount});
         border: 1px solid ${colors[type]};
         border-radius: 16px;
         padding: 16px 24px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        box-shadow: var(--shadow-md, 0 8px 32px rgba(0, 0, 0, 0.4));
         z-index: 9999;
-        color: #f8fafc;
+        color: var(--text-primary, #f8fafc);
         display: flex;
         align-items: center;
         gap: 12px;
@@ -152,7 +152,7 @@ function showLoading() {
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(10, 14, 39, 0.8);
+        background: var(--overlay-bg, rgba(10, 14, 39, 0.8));
         backdrop-filter: blur(${blurAmount});
         display: flex;
         align-items: center;
@@ -164,8 +164,8 @@ function showLoading() {
         <div style="
             width: 50px;
             height: 50px;
-            border: 3px solid rgba(99, 102, 241, 0.1);
-            border-top-color: #6366f1;
+            border: 3px solid var(--card-border, rgba(99, 102, 241, 0.15));
+            border-top-color: var(--accent-primary, #6366f1);
             border-radius: 50%;
             animation: spin 1s linear infinite;
         "></div>
@@ -316,6 +316,19 @@ function initPremiumEffects() {
         
         ::-webkit-scrollbar-thumb:hover {
             background: linear-gradient(180deg, #818cf8, #a78bfa);
+        }
+
+        [data-theme="light"] ::-webkit-scrollbar-track {
+            background: rgba(238, 242, 255, 0.6);
+        }
+
+        [data-theme="light"] ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #5b5fc7, #7c3aed);
+            border-color: rgba(238, 242, 255, 0.6);
+        }
+
+        [data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #4338ca, #6d28d9);
         }
     `;
     document.head.appendChild(style);

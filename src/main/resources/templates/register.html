@@ -286,12 +286,42 @@
                 padding: 32px !important;
             }
         }
+
+        /* Light mode overrides for register page */
+        [data-theme="light"] .tech-input-group {
+            border-color: rgba(99, 102, 241, 0.2) !important;
+        }
+
+        [data-theme="light"] .tech-input-group:focus-within {
+            border-color: #0891b2 !important;
+            box-shadow: 0 0 0 4px rgba(8, 145, 178, 0.12) !important;
+        }
+
+        [data-theme="light"] .tech-form-control {
+            color: #0f172a !important;
+        }
+
+        [data-theme="light"] .tech-form-control::placeholder {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="light"] .tech-label {
+            color: #334155 !important;
+        }
+
+        [data-theme="light"] .tech-link {
+            color: #0891b2 !important;
+        }
+
+        [data-theme="light"] .tech-link:hover {
+            color: #0e7490 !important;
+        }
     </style>
 </head>
 <body>
     <!-- Theme Toggle Button (Fixed Position) -->
-    <button onclick="toggleTheme()" class="btn btn-sm btn-outline-light border-opacity-25 rounded-3 d-flex align-items-center gap-2" 
-            style="position: fixed; top: 20px; right: 20px; z-index: 1000; background: rgba(30, 41, 59, 0.8); backdrop-filter: blur(10px); color: #94a3b8; padding: 8px 16px;"
+    <button onclick="toggleTheme()" class="btn btn-sm theme-toggle-btn rounded-3 d-flex align-items-center gap-2" 
+            style="position: fixed; top: 20px; right: 20px; z-index: 1000; padding: 8px 16px;"
             title="Chuyển đổi chế độ sáng/tối">
         <i id="theme-icon" class="bi bi-sun-fill"></i>
         <span id="theme-text" class="d-none d-sm-inline">Sáng</span>

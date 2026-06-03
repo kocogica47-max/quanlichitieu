@@ -403,6 +403,30 @@
                 padding: 28px !important;
             }
         }
+
+        /* ===== LIGHT MODE - INDEX PAGE SPECIFIC ===== */
+        [data-theme="light"] .mobile-card-item {
+            -webkit-tap-highlight-color: rgba(91, 95, 199, 0.15);
+        }
+
+        [data-theme="light"] .mobile-card-item:active {
+            background: rgba(238, 242, 255, 0.95) !important;
+        }
+
+        [data-theme="light"] #deleteSelectedBtn,
+        [data-theme="light"] #deleteAllBtn {
+            background: rgba(254, 242, 242, 0.9) !important;
+            color: #dc2626 !important;
+            border-color: rgba(220, 38, 38, 0.3) !important;
+        }
+
+        [data-theme="light"] .border-bottom.border-secondary {
+            border-color: rgba(99, 102, 241, 0.12) !important;
+        }
+
+        [data-theme="light"] .fw-bold[style*="#06b6d4"] {
+            color: #0891b2 !important;
+        }
     </style>
 </head>
 <body class="py-3 py-md-5">
@@ -416,8 +440,8 @@
             
             <div class="d-flex align-items-center gap-2">
                 <!-- Theme Toggle Button -->
-                <button onclick="toggleTheme()" class="btn btn-sm btn-outline-light border-opacity-25 px-2 px-md-3 rounded-3 d-flex align-items-center gap-1" 
-                        style="background: rgba(30, 41, 59, 0.5); color: #94a3b8; padding-top: 6px; padding-bottom: 6px;"
+                <button onclick="toggleTheme()" class="btn btn-sm theme-toggle-btn px-2 px-md-3 rounded-3 d-flex align-items-center gap-1" 
+                        style="padding-top: 6px; padding-bottom: 6px;"
                         title="Chuyển đổi chế độ sáng/tối">
                     <i id="theme-icon" class="bi bi-sun-fill"></i>
                     <span id="theme-text" class="d-none d-md-inline">Sáng</span>
@@ -491,45 +515,36 @@
                             
                             <!-- Nút lọc danh mục -->
                             <div class="dropdown">
-                                <button class="btn btn-sm btn-outline-light border-opacity-25 d-flex align-items-center gap-1 dropdown-toggle" 
+                                <button class="btn btn-sm theme-toggle-btn d-flex align-items-center gap-1 dropdown-toggle" 
                                         type="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-expanded="false"
-                                        style="background: rgba(30, 41, 59, 0.5); color: #94a3b8; padding: 6px 12px; border-radius: 8px;">
+                                        style="padding: 6px 12px; border-radius: 8px;">
                                     <i class="bi bi-funnel"></i>
                                     <span class="d-none d-sm-inline">Danh mục</span>
                                 </button>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="categoryDropdown" 
-                                    style="background: rgba(30, 41, 59, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1);">
-                                    <li><a class="dropdown-item" th:classappend="${selectedCategory == 'all' ? 'active' : ''}" 
-                                           href="/?category=all" style="color: #f8fafc;">
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="categoryDropdown">
+                                    <li><a class="dropdown-item" th:classappend="${selectedCategory == 'all' ? 'active' : ''}" href="/?category=all">
                                         <i class="bi bi-grid-3x3-gap me-2"></i>Tất cả
                                     </a></li>
-                                    <li><hr class="dropdown-divider" style="border-color: rgba(255, 255, 255, 0.1);"></li>
-                                    <li><a class="dropdown-item" th:classappend="${selectedCategory == 'Ăn uống' ? 'active' : ''}" 
-                                           href="/?category=Ăn uống" style="color: #f8fafc;">
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" th:classappend="${selectedCategory == 'Ăn uống' ? 'active' : ''}" href="/?category=Ăn uống">
                                         🍔 Ăn uống
                                     </a></li>
-                                    <li><a class="dropdown-item" th:classappend="${selectedCategory == 'Di chuyển' ? 'active' : ''}" 
-                                           href="/?category=Di chuyển" style="color: #f8fafc;">
+                                    <li><a class="dropdown-item" th:classappend="${selectedCategory == 'Di chuyển' ? 'active' : ''}" href="/?category=Di chuyển">
                                         🚗 Di chuyển
                                     </a></li>
-                                    <li><a class="dropdown-item" th:classappend="${selectedCategory == 'Mua sắm' ? 'active' : ''}" 
-                                           href="/?category=Mua sắm" style="color: #f8fafc;">
+                                    <li><a class="dropdown-item" th:classappend="${selectedCategory == 'Mua sắm' ? 'active' : ''}" href="/?category=Mua sắm">
                                         🛍️ Mua sắm
                                     </a></li>
-                                    <li><a class="dropdown-item" th:classappend="${selectedCategory == 'Giải trí' ? 'active' : ''}" 
-                                           href="/?category=Giải trí" style="color: #f8fafc;">
+                                    <li><a class="dropdown-item" th:classappend="${selectedCategory == 'Giải trí' ? 'active' : ''}" href="/?category=Giải trí">
                                         🎬 Giải trí
                                     </a></li>
-                                    <li><a class="dropdown-item" th:classappend="${selectedCategory == 'Học tập' ? 'active' : ''}" 
-                                           href="/?category=Học tập" style="color: #f8fafc;">
+                                    <li><a class="dropdown-item" th:classappend="${selectedCategory == 'Học tập' ? 'active' : ''}" href="/?category=Học tập">
                                         📚 Học tập
                                     </a></li>
-                                    <li><a class="dropdown-item" th:classappend="${selectedCategory == 'Hóa đơn' ? 'active' : ''}" 
-                                           href="/?category=Hóa đơn" style="color: #f8fafc;">
+                                    <li><a class="dropdown-item" th:classappend="${selectedCategory == 'Hóa đơn' ? 'active' : ''}" href="/?category=Hóa đơn">
                                         💵 Hóa đơn & Tiện ích
                                     </a></li>
-                                    <li><a class="dropdown-item" th:classappend="${selectedCategory == 'Khác' ? 'active' : ''}" 
-                                           href="/?category=Khác" style="color: #f8fafc;">
+                                    <li><a class="dropdown-item" th:classappend="${selectedCategory == 'Khác' ? 'active' : ''}" href="/?category=Khác">
                                         ✨ Mục khác
                                     </a></li>
                                 </ul>
@@ -537,37 +552,30 @@
                             
                             <!-- Nút lọc thời gian -->
                             <div class="dropdown">
-                                <button class="btn btn-sm btn-outline-light border-opacity-25 d-flex align-items-center gap-1 dropdown-toggle" 
+                                <button class="btn btn-sm theme-toggle-btn d-flex align-items-center gap-1 dropdown-toggle" 
                                         type="button" id="timeDropdown" data-bs-toggle="dropdown" aria-expanded="false"
-                                        style="background: rgba(30, 41, 59, 0.5); color: #94a3b8; padding: 6px 12px; border-radius: 8px;">
+                                        style="padding: 6px 12px; border-radius: 8px;">
                                     <i class="bi bi-calendar-range"></i>
                                     <span class="d-none d-sm-inline">Thời gian</span>
                                 </button>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="timeDropdown"
-                                    style="background: rgba(30, 41, 59, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1);">
-                                    <li><a class="dropdown-item" th:classappend="${selectedTimeFilter == 'all' ? 'active' : ''}" 
-                                           href="/?timeFilter=all" style="color: #f8fafc;">
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="timeDropdown">
+                                    <li><a class="dropdown-item" th:classappend="${selectedTimeFilter == 'all' ? 'active' : ''}" href="/?timeFilter=all">
                                         <i class="bi bi-infinity me-2"></i>Tất cả
                                     </a></li>
-                                    <li><hr class="dropdown-divider" style="border-color: rgba(255, 255, 255, 0.1);"></li>
-                                    <li><a class="dropdown-item" th:classappend="${selectedTimeFilter == 'today' ? 'active' : ''}" 
-                                           href="/?timeFilter=today" style="color: #f8fafc;">
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" th:classappend="${selectedTimeFilter == 'today' ? 'active' : ''}" href="/?timeFilter=today">
                                         <i class="bi bi-calendar-day me-2"></i>Hôm nay
                                     </a></li>
-                                    <li><a class="dropdown-item" th:classappend="${selectedTimeFilter == 'yesterday' ? 'active' : ''}" 
-                                           href="/?timeFilter=yesterday" style="color: #f8fafc;">
+                                    <li><a class="dropdown-item" th:classappend="${selectedTimeFilter == 'yesterday' ? 'active' : ''}" href="/?timeFilter=yesterday">
                                         <i class="bi bi-calendar-minus me-2"></i>Hôm qua
                                     </a></li>
-                                    <li><a class="dropdown-item" th:classappend="${selectedTimeFilter == 'week' ? 'active' : ''}" 
-                                           href="/?timeFilter=week" style="color: #f8fafc;">
+                                    <li><a class="dropdown-item" th:classappend="${selectedTimeFilter == 'week' ? 'active' : ''}" href="/?timeFilter=week">
                                         <i class="bi bi-calendar-week me-2"></i>Tuần này
                                     </a></li>
-                                    <li><a class="dropdown-item" th:classappend="${selectedTimeFilter == 'month' ? 'active' : ''}" 
-                                           href="/?timeFilter=month" style="color: #f8fafc;">
+                                    <li><a class="dropdown-item" th:classappend="${selectedTimeFilter == 'month' ? 'active' : ''}" href="/?timeFilter=month">
                                         <i class="bi bi-calendar-month me-2"></i>Tháng này
                                     </a></li>
-                                    <li><a class="dropdown-item" th:classappend="${selectedTimeFilter == 'lastMonth' ? 'active' : ''}" 
-                                           href="/?timeFilter=lastMonth" style="color: #f8fafc;">
+                                    <li><a class="dropdown-item" th:classappend="${selectedTimeFilter == 'lastMonth' ? 'active' : ''}" href="/?timeFilter=lastMonth">
                                         <i class="bi bi-calendar-check me-2"></i>Tháng trước
                                     </a></li>
                                 </ul>
