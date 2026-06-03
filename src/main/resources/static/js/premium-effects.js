@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Premium Effects & Interactions - MOBILE OPTIMIZED
  * Các hiệu ứng nâng cao cho giao diện (Đã tối ưu cho điện thoại)
  */
