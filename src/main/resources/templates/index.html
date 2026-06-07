@@ -9,964 +9,777 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
     <link href="/css/theme-variables.css" rel="stylesheet">
     <script src="/js/theme-toggle.js"></script>
-    
+
     <style>
-        /* Optimized animations - only use transform and opacity for 60fps */
+        /* ── Keyframes ── */
         @keyframes gradient-shift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
+            0%,100% { background-position: 0% 50%; }
+            50%      { background-position: 100% 50%; }
         }
-        
         @keyframes float {
-            0%, 100% { transform: translate3d(0, 0, 0); }
-            50% { transform: translate3d(0, -10px, 0); }
+            0%,100% { transform: translate3d(0,0,0); }
+            50%     { transform: translate3d(0,-10px,0); }
         }
-        
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translate3d(0, 20px, 0);
-            }
-            to {
-                opacity: 1;
-                transform: translate3d(0, 0, 0);
-            }
+
+        /* ── Body ── */
+        html, body {
+            height: 100%;
         }
-        
         body {
-            /* Background và color dùng CSS variables để hỗ trợ dark/light mode */
             background-size: 400% 400%;
             animation: gradient-shift 35s ease infinite;
-            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: 'Inter','Segoe UI',system-ui,-apple-system,sans-serif;
             min-height: 100vh;
-            position: relative;
             overflow-x: hidden;
-            /* Optimized for smooth scrolling */
             -webkit-overflow-scrolling: touch;
-            scroll-behavior: smooth;
-            /* GPU Acceleration */
-            transform: translate3d(0, 0, 0);
-            backface-visibility: hidden;
         }
-        
         body::before {
             content: '';
-            position: fixed;
-            top: -50%;
-            right: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 30% 50%, var(--glow-color, rgba(99, 102, 241, 0.12)) 0%, transparent 50%),
-                        radial-gradient(circle at 70% 80%, var(--glow-color, rgba(99, 102, 241, 0.12)) 0%, transparent 50%);
+            position: fixed; inset: 0;
+            background:
+                radial-gradient(circle at 25% 45%, var(--glow-color,rgba(99,102,241,.12)) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, var(--glow-color,rgba(99,102,241,.10)) 0%, transparent 50%);
             animation: float 40s ease-in-out infinite;
             pointer-events: none;
             z-index: 0;
-            /* GPU Acceleration */
-            transform: translate3d(0, 0, 0);
             will-change: transform;
-            backface-visibility: hidden;
         }
-        
         body::after {
             content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0px, transparent 1px, transparent 2px, rgba(255,255,255,0.02) 3px),
-                repeating-linear-gradient(90deg, rgba(255,255,255,0.02) 0px, transparent 1px, transparent 2px, rgba(255,255,255,0.02) 3px);
+            position: fixed; inset: 0;
+            background:
+                repeating-linear-gradient(0deg,  rgba(255,255,255,.018) 0px, transparent 1px, transparent 3px, rgba(255,255,255,.018) 4px),
+                repeating-linear-gradient(90deg, rgba(255,255,255,.018) 0px, transparent 1px, transparent 3px, rgba(255,255,255,.018) 4px);
+            opacity: var(--grid-opacity,.22);
             pointer-events: none;
             z-index: 0;
-            opacity: var(--grid-opacity, 0.25);
-            /* GPU Acceleration */
-            transform: translate3d(0, 0, 0);
-        }
-        
-        .container {
-            position: relative;
-            z-index: 1;
-        }
-        
-        .brand-title {
-            font-weight: 800;
-            margin-bottom: 0;
-            display: flex;
-            align-items: center;
-            background: linear-gradient(135deg, #22d3ee 0%, #818cf8 50%, #c084fc 100%);
-            background-size: 200% auto;
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: gradient-shift 3s ease infinite;
-            letter-spacing: -0.5px;
         }
 
-        .tech-card {
-            background: var(--card-bg, rgba(30, 41, 59, 0.6));
-            backdrop-filter: blur(24px) saturate(180%);
-            -webkit-backdrop-filter: blur(24px) saturate(180%);
-            border: 1px solid var(--card-border, rgba(255, 255, 255, 0.1));
-            border-radius: 20px;
-            box-shadow: var(--shadow-md, 0 8px 32px rgba(0, 0, 0, 0.3)), 
-                        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-            /* GPU Acceleration */
-            transform: translateZ(0);
-            will-change: transform, box-shadow;
-            backface-visibility: hidden;
-        }
-        
-        .tech-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
-            transition: left 0.5s;
-        }
-        
-        .tech-card:hover::before {
-            left: 100%;
-        }
-        
-        .tech-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4), 
-                        inset 0 1px 0 rgba(255, 255, 255, 0.15),
-                        0 0 0 1px rgba(99, 102, 241, 0.3);
-        }
-        .table-cyber {
-            --bs-table-bg: transparent;
-            --bs-table-color: var(--text-white, #ffffff);
-            border-collapse: separate;
-            border-spacing: 0 8px;
-        }
-        .table-cyber tr {
-            background: var(--table-row-bg, rgba(30, 41, 59, 0.5));
-            transition: all 0.3s ease;
-            border-left: 3px solid transparent;
-        }
-        .table-cyber tr:hover {
-            background: var(--table-row-hover, rgba(30, 41, 59, 0.7));
-            transform: translateX(4px);
-            border-left-color: #06b6d4;
-            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.2);
-        }
-        .table-cyber th {
-            color: var(--text-secondary, #e2e8f0);
-            font-weight: 700;
-            text-transform: uppercase;
-            font-size: 0.72rem;
-            letter-spacing: 1px;
-            padding: 12px 14px;
-            opacity: 0.9;
-        }
-        .table-cyber td {
-            padding: 16px 14px;
-            vertical-align: middle;
-            color: var(--text-white, #f1f5f9);
-            font-weight: 500;
-        }
-        .btn-gradient-cyan {
-            background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
-            border: none;
-            color: white !important;
-            border-radius: 12px;
-            padding: 10px 20px;
-            font-weight: 600;
-            box-shadow: 0 4px 15px rgba(6, 182, 212, 0.3);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .btn-gradient-cyan::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
-        }
-        
-        .btn-gradient-cyan:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(6, 182, 212, 0.4);
-        }
-        
-        .btn-gradient-cyan:hover::before {
-            left: 100%;
-        }
-        
-        .btn-gradient-cyan:active {
-            transform: translateY(0);
-        }
-        .badge-category {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2));
-            color: #a5b4fc;
-            border: 1px solid rgba(99, 102, 241, 0.4);
-            padding: 5px 12px;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            letter-spacing: 0.3px;
-            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.2);
-            transition: all 0.2s ease;
-        }
-        
-        .badge-category:hover {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(139, 92, 246, 0.3));
-            transform: scale(1.05);
-        }
-        
-        /* Dropdown styles */
-        .dropdown-menu {
-            border-radius: 12px;
-            padding: 8px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-        }
-        
-        .dropdown-item {
-            border-radius: 8px;
-            padding: 8px 12px;
-            transition: all 0.2s ease;
-            font-size: 0.9rem;
-        }
-        
-        .dropdown-item:hover {
-            background: var(--dropdown-item-hover, rgba(99, 102, 241, 0.2)) !important;
-            color: var(--text-primary, #ffffff) !important;
-        }
-        
-        .dropdown-item.active {
-            background: rgba(6, 182, 212, 0.25) !important;
-            color: #06b6d4 !important;
-            font-weight: 600;
-        }
-        
-        .stat-card-glow {
-            animation: glow-pulse 3s ease-in-out infinite;
-        }
-        
-        /* ===== MOBILE OPTIMIZATIONS (< 768px) ===== */
-        @media (max-width: 767.98px) {
-            body {
-                padding: 0 !important;
-                animation: gradient-shift 40s ease infinite; /* Slower on mobile */
-            }
-            
-            body::before {
-                animation: float 50s ease-in-out infinite; /* Much slower */
-            }
-            
-            .container {
-                padding-left: 12px;
-                padding-right: 12px;
-            }
-            
-            .brand-title {
-                font-size: 1.1rem !important;
-                letter-spacing: -0.3px;
-            }
-            
-            .tech-card {
-                border-radius: 16px;
-                padding: 16px !important;
-                margin-bottom: 16px;
-            }
-            
-            .tech-card:hover {
-                transform: none; /* Disable hover on mobile */
-            }
-            
-            /* Mobile card layout for expenses */
-            .mobile-card-item {
-                background: rgba(30, 41, 59, 0.6);
-                border: 1px solid rgba(255, 255, 255, 0.15);
-                border-radius: 12px;
-                padding: 14px;
-                margin-bottom: 10px;
-                transition: background 0.2s ease;
-                /* Touch optimization */
-                -webkit-tap-highlight-color: rgba(6, 182, 212, 0.2);
-            }
-            
-            .mobile-card-item:active {
-                background: rgba(30, 41, 59, 0.8);
-            }
-            
-            /* Larger touch targets */
-            .btn-gradient-cyan {
-                padding: 12px 16px;
-                font-size: 0.95rem;
-                min-height: 44px;
-                border-radius: 10px;
-            }
-            
-            .form-check-input {
-                width: 22px !important;
-                height: 22px !important;
-                margin-top: 0 !important;
-            }
-            
-            /* Optimize chart for mobile */
-            #xuHuongChart {
-                max-height: 160px !important;
-            }
-            
-            /* Mobile-specific button styles */
-            button, a.btn {
-                min-height: 44px;
-                touch-action: manipulation;
-            }
-            
-            /* Hide desktop-only elements */
-            .d-none.d-sm-inline {
-                display: none !important;
-            }
-            
-            /* Mobile typography */
-            h2, h3 {
-                font-size: 1.3rem !important;
-            }
-            
-            h6 {
-                font-size: 0.95rem !important;
-            }
-            
-            /* Reduce padding on mobile */
-            .py-3 {
-                padding-top: 1rem !important;
-                padding-bottom: 1rem !important;
-            }
-            
-            /* Mobile dropdown optimization */
-            .dropdown-menu {
-                font-size: 0.9rem;
-                max-height: 70vh;
-                overflow-y: auto;
-            }
-            
-            .dropdown-item {
-                padding: 12px 16px;
-                min-height: 44px;
-            }
-        }
-        
-        /* ===== TABLET OPTIMIZATIONS (768px - 991px) ===== */
-        @media (min-width: 768px) and (max-width: 991.98px) {
-            .container {
-                max-width: 720px;
-            }
-            
-            .tech-card {
-                padding: 20px !important;
-            }
-            
-            .btn-gradient-cyan {
-                padding: 10px 18px;
-            }
-        }
-        
-        /* ===== DESKTOP OPTIMIZATIONS (>= 992px) ===== */
-        @media (min-width: 992px) {
-            .container {
-                max-width: 1140px;
-            }
-            
-            /* Desktop hover effects */
-            .table-cyber tr:hover {
-                transform: translateX(6px);
-            }
-            
-            /* Smooth desktop animations */
-            .tech-card {
-                transition-property: background-color, border-color, box-shadow, transform;
-                transition-duration: 0.35s;
-                transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-            }
-        }
-        
-        /* ===== LARGE DESKTOP (>= 1200px) ===== */
-        @media (min-width: 1200px) {
-            .container {
-                max-width: 1320px;
-            }
-            
-            .tech-card {
-                padding: 28px !important;
-            }
-        }
-
-        /* ===== SHARED CLASSES — dùng thay thế inline style ===== */
-        .color-accent  { color: #06b6d4; }
-        .color-chart   { color: #818cf8; }
-        .stat-label    { color: #94a3b8; font-size: 0.82rem; font-weight: 500; letter-spacing: 0.3px; }
-        .stat-value    { color: #22d3ee; }
-        .td-title      { color: #f1f5f9; }
-        .td-date       { color: #94a3b8; font-variant-numeric: tabular-nums; }
-        .td-amount     { color: #22d3ee; font-variant-numeric: tabular-nums; }
-        .mobile-amount { color: #22d3ee; font-size: 1.05rem; }
-        .section-title { color: #94a3b8; }
-        .chart-toggle  { color: #06b6d4; font-size: 0.85rem; }
-        .btn-delete    { background: rgba(239,68,68,0.1); color: #ef4444; padding: 6px 12px; border-radius: 8px; }
-        .icon-accent   { color: #06b6d4; }
-
-        /* ===== LIGHT MODE OVERRIDES ===== */
-        [data-theme="light"] .color-accent  { color: #3b8ea5; }
-        [data-theme="light"] .color-chart   { color: #5a7fa8; }
-        [data-theme="light"] .stat-label    { color: #718096; }
-        [data-theme="light"] .stat-value    { color: #3b8ea5; }
-        [data-theme="light"] .td-title      { color: #2d3748; }
-        [data-theme="light"] .td-date       { color: #718096; }
-        [data-theme="light"] .td-amount     { color: #3b8ea5; }
-        [data-theme="light"] .mobile-amount { color: #3b8ea5; }
-        [data-theme="light"] .section-title { color: #718096; }
-        [data-theme="light"] .chart-toggle  { color: #5a7fa8; }
-        [data-theme="light"] .btn-delete    { background: rgba(253,245,244,0.85); color: #c0392b; border-color: rgba(192,57,43,0.25); }
-        [data-theme="light"] .icon-accent   { color: #5a7fa8; }
-
-        [data-theme="light"] .table-cyber th { color: #1e293b !important; opacity: 1; }
-        [data-theme="light"] .table-cyber td { color: #0f172a !important; }
-        [data-theme="light"] .mobile-card-item { -webkit-tap-highlight-color: rgba(91,95,199,0.15); }
-        [data-theme="light"] .mobile-card-item:active { background: rgba(238,242,255,0.95) !important; }
-        [data-theme="light"] .section-heading { color: #334155 !important; }
-        [data-theme="light"] .border-bottom.border-secondary { border-color: rgba(99,102,241,0.12) !important; }
-        [data-theme="light"] .bg-dark.bg-opacity-25 { background: rgba(238,242,255,0.8) !important; }
-        [data-theme="light"] .text-empty { color: #64748b; }
-
-        /* ===== CANVAS NỀN ĐỘNG ===== */
+        /* ── Canvas bg ── */
         #login-bg-canvas {
-            position: fixed;
-            top: 0; left: 0;
+            position: fixed; inset: 0;
             width: 100%; height: 100%;
             pointer-events: none;
             z-index: 0;
         }
+
+        /* ── Layout wrapper ── */
+        #app-wrapper {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding: 16px 16px 24px;
+        }
+        @media (min-width: 768px)  { #app-wrapper { padding: 20px 24px 28px; } }
+        @media (min-width: 1200px) { #app-wrapper { padding: 24px 40px 32px; max-width: 1440px; margin: 0 auto; width: 100%; } }
+
+        /* ── Brand title ── */
+        .brand-title {
+            font-weight: 800;
+            background: linear-gradient(135deg, #22d3ee 0%, #818cf8 55%, #c084fc 100%);
+            background-size: 200% auto;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient-shift 4s ease infinite;
+            letter-spacing: -.5px;
+            white-space: nowrap;
+        }
+
+        /* ── Tech card ── */
+        .tech-card {
+            background: var(--card-bg, rgba(30,41,59,.65));
+            backdrop-filter: blur(20px) saturate(160%);
+            -webkit-backdrop-filter: blur(20px) saturate(160%);
+            border: 1px solid var(--card-border, rgba(255,255,255,.1));
+            border-radius: 18px;
+            box-shadow: var(--shadow-md, 0 8px 32px rgba(0,0,0,.3)),
+                        inset 0 1px 0 rgba(255,255,255,.08);
+            transition: transform .28s cubic-bezier(.4,0,.2,1), box-shadow .28s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .tech-card::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,.03) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        @media (hover: hover) {
+            .tech-card:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 14px 48px rgba(0,0,0,.4),
+                            inset 0 1px 0 rgba(255,255,255,.12),
+                            0 0 0 1px rgba(99,102,241,.28);
+            }
+        }
+
+        /* ── Stat card ── */
+        .stat-card {
+            padding: 18px 20px;
+        }
+        .stat-icon {
+            width: 44px; height: 44px;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(6,182,212,.12);
+            flex-shrink: 0;
+        }
+        .stat-label {
+            color: var(--text-muted,#94a3b8);
+            font-size: .78rem;
+            font-weight: 500;
+            letter-spacing: .3px;
+            text-transform: uppercase;
+        }
+        .stat-value {
+            color: #22d3ee;
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: -.5px;
+            line-height: 1.1;
+        }
+        [data-theme="light"] .stat-value { color: #3b8ea5; }
+
+        /* ── Chart card ── */
+        .chart-card { padding: 18px 20px; }
+        .chart-title { color: #818cf8; font-size: .88rem; font-weight: 700; }
+        [data-theme="light"] .chart-title { color: #5a7fa8; }
+
+        /* ── Table card ── */
+        .table-card { padding: 18px 20px 12px; }
+
+        /* ── Toolbar ── */
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+        }
+        .toolbar-title {
+            font-size: .88rem;
+            font-weight: 700;
+            color: var(--text-muted,#94a3b8);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+        .toolbar-actions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* ── Table ── */
+        .table-cyber {
+            --bs-table-bg: transparent;
+            border-collapse: separate;
+            border-spacing: 0 5px;
+            width: 100%;
+        }
+        .table-cyber thead th {
+            color: var(--text-secondary,#cbd5e1);
+            font-weight: 700;
+            font-size: .7rem;
+            text-transform: uppercase;
+            letter-spacing: .9px;
+            padding: 8px 14px;
+            border: none;
+            white-space: nowrap;
+            opacity: .8;
+        }
+        .table-cyber tbody tr {
+            background: var(--table-row-bg, rgba(30,41,59,.45));
+            transition: background .18s ease, transform .18s ease, border-left-color .18s ease;
+            border-left: 3px solid transparent;
+        }
+        .table-cyber tbody tr td {
+            padding: 13px 14px;
+            vertical-align: middle;
+            border: none;
+            font-size: .9rem;
+        }
+        .table-cyber tbody tr td:first-child { border-radius: 10px 0 0 10px; }
+        .table-cyber tbody tr td:last-child  { border-radius: 0 10px 10px 0; }
+        @media (hover: hover) {
+            .table-cyber tbody tr:hover {
+                background: var(--table-row-hover, rgba(30,41,59,.7));
+                transform: translateX(4px);
+                border-left-color: #06b6d4;
+                box-shadow: 0 4px 16px rgba(6,182,212,.15);
+            }
+        }
+
+        /* ── Mobile expense card ── */
+        .expense-card {
+            background: var(--table-row-bg, rgba(30,41,59,.5));
+            border: 1px solid var(--card-border, rgba(255,255,255,.09));
+            border-radius: 12px;
+            padding: 12px 14px;
+            transition: background .15s ease;
+            -webkit-tap-highlight-color: rgba(6,182,212,.15);
+        }
+        .expense-card:active { background: var(--table-row-hover, rgba(30,41,59,.75)); }
+
+        /* ── Badges ── */
+        .badge-cat {
+            background: linear-gradient(135deg, rgba(99,102,241,.18), rgba(139,92,246,.18));
+            color: #a5b4fc;
+            border: 1px solid rgba(99,102,241,.35);
+            padding: 3px 10px;
+            border-radius: 7px;
+            font-size: .74rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        [data-theme="light"] .badge-cat {
+            background: rgba(90,127,168,.1);
+            color: #5a7fa8;
+            border-color: rgba(90,127,168,.25);
+        }
+
+        /* ── Buttons ── */
+        .btn-add {
+            background: linear-gradient(135deg,#06b6d4,#3b82f6);
+            border: none;
+            color: #fff !important;
+            border-radius: 10px;
+            padding: 7px 14px;
+            font-weight: 600;
+            font-size: .85rem;
+            box-shadow: 0 4px 14px rgba(6,182,212,.3);
+            white-space: nowrap;
+            transition: transform .2s ease, box-shadow .2s ease;
+        }
+        .btn-add:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(6,182,212,.4); }
+        .btn-add:active { transform: none; }
+
+        .btn-del {
+            background: rgba(239,68,68,.1);
+            color: #f87171 !important;
+            border: 1px solid rgba(239,68,68,.2);
+            border-radius: 8px;
+            padding: 6px 10px;
+            font-size: .8rem;
+            font-weight: 600;
+            transition: background .18s ease;
+        }
+        .btn-del:hover { background: rgba(239,68,68,.18); }
+        [data-theme="light"] .btn-del { background: rgba(192,57,43,.07); color: #c0392b !important; border-color: rgba(192,57,43,.2); }
+
+        .btn-filter {
+            background: var(--toggle-bg, rgba(30,41,59,.8));
+            color: var(--toggle-color,#94a3b8) !important;
+            border: 1px solid var(--toggle-border, rgba(255,255,255,.12));
+            border-radius: 8px;
+            padding: 6px 10px;
+            font-size: .8rem;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: background .18s ease;
+        }
+        .btn-filter:hover { background: var(--card-bg-hover, rgba(30,41,59,.9)); }
+
+        /* ── Dropdown ── */
+        .dropdown-menu {
+            border-radius: 12px;
+            padding: 6px;
+            box-shadow: 0 10px 30px rgba(0,0,0,.4);
+            min-width: 160px;
+        }
+        .dropdown-item {
+            border-radius: 7px;
+            padding: 8px 12px;
+            font-size: .85rem;
+            transition: background .15s ease;
+        }
+        .dropdown-item:hover  { background: var(--dropdown-item-hover, rgba(99,102,241,.2)) !important; }
+        .dropdown-item.active { background: rgba(6,182,212,.22) !important; color: #06b6d4 !important; font-weight: 600; }
+
+        /* ── Colors ── */
+        .c-accent  { color: #06b6d4; }
+        .c-muted   { color: var(--text-muted,#94a3b8); }
+        .c-title   { color: var(--text-primary,#f1f5f9); }
+        .c-date    { color: var(--text-muted,#94a3b8); font-size: .82rem; font-variant-numeric: tabular-nums; }
+        .c-amount  { color: #22d3ee; font-variant-numeric: tabular-nums; font-weight: 700; }
+        [data-theme="light"] .c-accent  { color: #3b8ea5; }
+        [data-theme="light"] .c-muted   { color: #718096; }
+        [data-theme="light"] .c-title   { color: #2d3748; }
+        [data-theme="light"] .c-date    { color: #718096; }
+        [data-theme="light"] .c-amount  { color: #3b8ea5; }
+
+        /* ── Header ── */
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 18px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--divider-color, rgba(255,255,255,.08));
+            flex-wrap: wrap;
+        }
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .user-badge {
+            background: var(--toggle-bg, rgba(30,41,59,.7));
+            border: 1px solid var(--toggle-border, rgba(255,255,255,.1));
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: .82rem;
+            color: var(--text-muted,#94a3b8);
+            white-space: nowrap;
+        }
+
+        /* ── Main grid ── */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            flex: 1;
+        }
+        @media (min-width: 992px) {
+            .main-grid {
+                grid-template-columns: 320px 1fr;
+                align-items: start;
+            }
+        }
+        @media (min-width: 1200px) {
+            .main-grid { grid-template-columns: 360px 1fr; gap: 20px; }
+        }
+
+        /* ── Left panel ── */
+        .left-panel { display: flex; flex-direction: column; gap: 14px; }
+
+        /* ── Right panel — stretch full height on desktop ── */
+        @media (min-width: 992px) {
+            .right-panel { display: flex; flex-direction: column; }
+            .table-card  { flex: 1; display: flex; flex-direction: column; }
+            .table-scroll { flex: 1; overflow-y: auto; max-height: calc(100vh - 220px); }
+        }
+        @media (max-width: 991.98px) {
+            .table-scroll { overflow-x: auto; }
+        }
+
+        /* ── Scrollbar ── */
+        .table-scroll::-webkit-scrollbar { width: 5px; height: 5px; }
+        .table-scroll::-webkit-scrollbar-track { background: transparent; }
+        .table-scroll::-webkit-scrollbar-thumb {
+            background: rgba(99,102,241,.35);
+            border-radius: 4px;
+        }
+
+        /* ── Empty state ── */
+        .empty-state { padding: 48px 0; text-align: center; color: var(--text-muted,#64748b); }
+        .empty-state i { font-size: 2.5rem; opacity: .2; display: block; margin-bottom: 10px; }
+
+        /* ── Light mode overrides ── */
+        [data-theme="light"] .table-cyber thead th { color: #4a5568; opacity: 1; }
+        [data-theme="light"] .table-cyber tbody tr { background: rgba(250,250,248,.7); }
+        [data-theme="light"] .table-cyber tbody tr:hover { background: rgba(237,242,248,.9); border-left-color: #3b8ea5; }
+        [data-theme="light"] .expense-card { background: rgba(250,250,248,.8); border-color: rgba(148,163,184,.2); }
+        [data-theme="light"] .topbar { border-color: rgba(148,163,184,.18); }
+
+        /* ── Touch targets ── */
+        @media (max-width: 767.98px) {
+            .btn-add, .btn-del, .btn-filter, .btn { min-height: 40px; }
+            button, input, select, textarea { touch-action: manipulation; }
+            .brand-title { font-size: 1.05rem !important; }
+        }
     </style>
 </head>
-<body class="py-3 py-md-5">
-    <div class="container">
-        
-        <div class="d-flex justify-content-between align-items-center gap-2 mb-4 mb-md-5 pb-3 border-bottom border-secondary border-opacity-25">
-            <h2 class="brand-title fs-4 fs-md-2">
-                <i class="bi bi-cpu me-2 me-md-3 icon-accent" style="-webkit-text-fill-color: initial;"></i>
-                <span>Quản lý chi tiêu</span>
-            </h2>
-            
-            <div class="d-flex align-items-center gap-2">
-                <!-- Theme Toggle Button -->
-                <button onclick="toggleTheme()" class="btn btn-sm theme-toggle-btn px-2 px-md-3 rounded-3 d-flex align-items-center gap-1" 
-                        style="padding-top: 6px; padding-bottom: 6px;"
-                        title="Chuyển đổi chế độ sáng/tối">
-                    <i id="theme-icon" class="bi bi-sun-fill"></i>
-                    <span id="theme-text" class="d-none d-md-inline">Sáng</span>
-                </button>
-                
-                <div class="bg-dark bg-opacity-25 p-2 px-2 px-md-3 rounded-3 border border-secondary border-opacity-10">
-                    <span class="small section-title" style="font-size: 0.85rem;">
-                        <i class="bi bi-person-circle me-1 icon-accent"></i>
-                        <span>Chào, </span>
-                        <span class="fw-medium text-white-50" th:text="${username}">User</span>
-                    </span>
-                </div>
-                <a href="/logout" class="btn btn-sm btn-outline-danger px-2 px-md-3 rounded-3 d-flex align-items-center gap-1" style="padding-top: 6px; padding-bottom: 6px;">
-                    <i class="bi bi-box-arrow-right"></i> 
-                    <span>Đăng xuất</span>
-                </a>
+<body>
+<div id="app-wrapper">
+
+    <!-- ══ TOPBAR ══ -->
+    <header class="topbar">
+        <h1 class="brand-title mb-0" style="font-size:clamp(1rem,2.5vw,1.5rem)">
+            <i class="bi bi-cpu me-2 c-accent" style="-webkit-text-fill-color:initial"></i>
+            Quản lý chi tiêu
+        </h1>
+        <div class="topbar-right">
+            <button onclick="toggleTheme()"
+                    class="btn btn-sm theme-toggle-btn d-flex align-items-center gap-1"
+                    style="padding:6px 12px;border-radius:8px"
+                    title="Chuyển đổi chế độ">
+                <i id="theme-icon" class="bi bi-sun-fill"></i>
+                <span id="theme-text" class="d-none d-sm-inline">Sáng</span>
+            </button>
+            <div class="user-badge d-none d-sm-flex align-items-center gap-1">
+                <i class="bi bi-person-circle c-accent"></i>
+                <span>Chào, </span>
+                <span class="fw-semibold c-title" th:text="${username}">User</span>
             </div>
+            <a href="/logout"
+               class="btn btn-sm btn-outline-danger d-flex align-items-center gap-1"
+               style="padding:6px 12px;border-radius:8px;font-size:.82rem">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Đăng xuất</span>
+            </a>
         </div>
+    </header>
 
-        <div class="row g-3 g-md-4">
-            <div class="col-lg-4">
-                <div class="tech-card p-3 p-md-4 mb-3 mb-md-4">
-                    <div class="d-flex align-items-center">
-                        <div class="p-2 p-md-3 rounded-3 bg-info bg-opacity-10 me-3 icon-accent">
-                            <i class="bi bi-wallet2 fs-4"></i>
-                        </div>
-                        <div>
+    <!-- ══ MAIN GRID ══ -->
+    <div class="main-grid">
+
+        <!-- ── LEFT PANEL ── -->
+        <div class="left-panel">
+
+            <!-- Stat card -->
+            <div class="tech-card stat-card">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="stat-icon">
+                        <i class="bi bi-wallet2 fs-5 c-accent"></i>
+                    </div>
+                    <div class="min-w-0">
                         <p class="stat-label mb-1">Tổng tích lũy chi tiêu</p>
-                            <h3 class="fw-bold mb-0 fs-4 fs-md-3 stat-value" th:text="${totalAmount != null ? #numbers.formatDecimal(totalAmount, 0, 'COMMA', 0, 'POINT') + ' đ' : '0 đ'}">0 đ</h3>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="tech-card p-3 p-md-4 mb-3 mb-md-0">
-                    <div class="d-flex justify-content-between align-items-center mb-3 mb-md-4">
-                        <h6 class="fw-bold mb-0 color-chart">
-                            <i class="bi bi-graph-up-arrow me-2"></i>
-                            <span id="chartTitle">Xu hướng chi tiêu</span>
-                        </h6>
-                        <button id="toggleChartBtn" class="btn btn-sm btn-outline-light border-0 d-flex align-items-center gap-1 chart-toggle">
-                            <i class="bi bi-pie-chart-fill"></i>
-                            <span>Biểu đồ tròn</span>
-                        </button>
-                    </div>
-                    <div style="position: relative; height: 180px; width: 100%;">
-                        <canvas id="xuHuongChart"></canvas>
+                        <div class="stat-value"
+                             th:text="${totalAmount != null
+                                ? #numbers.formatDecimal(totalAmount,0,'COMMA',0,'POINT') + ' đ'
+                                : '0 đ'}">0 đ</div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-lg-8">
-                <div class="tech-card p-3 p-md-4 h-100">
-                    <div class="d-flex justify-content-between align-items-center mb-3 mb-md-4 flex-wrap gap-2">
-                        <h6 class="fw-bold mb-0 section-heading text-white-50"><i class="bi bi-list-stars me-2 icon-accent"></i><span>Lịch sử giao dịch</span></h6>
-                        <div class="d-flex align-items-center gap-2 flex-wrap">
-                            <!-- Nút xóa hàng loạt -->
-                            <button id="deleteSelectedBtn" class="btn btn-sm btn-outline-danger border-opacity-25 d-none align-items-center gap-1 btn-delete"
-                                    onclick="deleteSelected()">
-                                <i class="bi bi-trash3"></i>
-                                <span class="d-none d-sm-inline">Xóa đã chọn</span>
-                            </button>
-                            
-                            <!-- Nút xóa tất cả -->
-                            <button id="deleteAllBtn" class="btn btn-sm btn-outline-danger border-opacity-25 d-flex align-items-center gap-1 btn-delete"
-                                    onclick="deleteAll()">
-                                <i class="bi bi-trash3-fill"></i>
-                                <span class="d-none d-sm-inline">Xóa tất cả</span>
-                            </button>
-                            
-                            <!-- Nút lọc danh mục -->
-                            <div class="dropdown">
-                                <button class="btn btn-sm theme-toggle-btn d-flex align-items-center gap-1 dropdown-toggle" 
-                                        type="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-expanded="false"
-                                        style="padding: 6px 12px; border-radius: 8px;">
-                                    <i class="bi bi-funnel"></i>
-                                    <span class="d-none d-sm-inline">Danh mục</span>
-                                </button>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="categoryDropdown">
-                                    <li><a class="dropdown-item" th:classappend="${selectedCategory == 'all' ? 'active' : ''}" href="/?category=all">
-                                        <i class="bi bi-grid-3x3-gap me-2"></i>Tất cả
-                                    </a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" th:classappend="${selectedCategory == 'Ăn uống' ? 'active' : ''}" href="/?category=Ăn uống">
-                                        🍔 Ăn uống
-                                    </a></li>
-                                    <li><a class="dropdown-item" th:classappend="${selectedCategory == 'Di chuyển' ? 'active' : ''}" href="/?category=Di chuyển">
-                                        🚗 Di chuyển
-                                    </a></li>
-                                    <li><a class="dropdown-item" th:classappend="${selectedCategory == 'Mua sắm' ? 'active' : ''}" href="/?category=Mua sắm">
-                                        🛍️ Mua sắm
-                                    </a></li>
-                                    <li><a class="dropdown-item" th:classappend="${selectedCategory == 'Giải trí' ? 'active' : ''}" href="/?category=Giải trí">
-                                        🎬 Giải trí
-                                    </a></li>
-                                    <li><a class="dropdown-item" th:classappend="${selectedCategory == 'Học tập' ? 'active' : ''}" href="/?category=Học tập">
-                                        📚 Học tập
-                                    </a></li>
-                                    <li><a class="dropdown-item" th:classappend="${selectedCategory == 'Hóa đơn' ? 'active' : ''}" href="/?category=Hóa đơn">
-                                        💵 Hóa đơn & Tiện ích
-                                    </a></li>
-                                    <li><a class="dropdown-item" th:classappend="${selectedCategory == 'Khác' ? 'active' : ''}" href="/?category=Khác">
-                                        ✨ Mục khác
-                                    </a></li>
-                                </ul>
-                            </div>
-                            
-                            <!-- Nút lọc thời gian -->
-                            <div class="dropdown">
-                                <button class="btn btn-sm theme-toggle-btn d-flex align-items-center gap-1 dropdown-toggle" 
-                                        type="button" id="timeDropdown" data-bs-toggle="dropdown" aria-expanded="false"
-                                        style="padding: 6px 12px; border-radius: 8px;">
-                                    <i class="bi bi-calendar-range"></i>
-                                    <span class="d-none d-sm-inline">Thời gian</span>
-                                </button>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="timeDropdown">
-                                    <li><a class="dropdown-item" th:classappend="${selectedTimeFilter == 'all' ? 'active' : ''}" href="/?timeFilter=all">
-                                        <i class="bi bi-infinity me-2"></i>Tất cả
-                                    </a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" th:classappend="${selectedTimeFilter == 'today' ? 'active' : ''}" href="/?timeFilter=today">
-                                        <i class="bi bi-calendar-day me-2"></i>Hôm nay
-                                    </a></li>
-                                    <li><a class="dropdown-item" th:classappend="${selectedTimeFilter == 'yesterday' ? 'active' : ''}" href="/?timeFilter=yesterday">
-                                        <i class="bi bi-calendar-minus me-2"></i>Hôm qua
-                                    </a></li>
-                                    <li><a class="dropdown-item" th:classappend="${selectedTimeFilter == 'week' ? 'active' : ''}" href="/?timeFilter=week">
-                                        <i class="bi bi-calendar-week me-2"></i>Tuần này
-                                    </a></li>
-                                    <li><a class="dropdown-item" th:classappend="${selectedTimeFilter == 'month' ? 'active' : ''}" href="/?timeFilter=month">
-                                        <i class="bi bi-calendar-month me-2"></i>Tháng này
-                                    </a></li>
-                                    <li><a class="dropdown-item" th:classappend="${selectedTimeFilter == 'lastMonth' ? 'active' : ''}" href="/?timeFilter=lastMonth">
-                                        <i class="bi bi-calendar-check me-2"></i>Tháng trước
-                                    </a></li>
-                                </ul>
-                            </div>
-                            
-                            <a href="/showNewExpenseForm" class="btn btn-gradient-cyan d-flex align-items-center gap-2">
-                                <i class="bi bi-plus-lg"></i> 
-                                <span>Thêm khoản chi</span>
-                            </a>
-                        </div>
-                    </div>
+            <!-- Chart card -->
+            <div class="tech-card chart-card">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h6 class="chart-title mb-0 d-flex align-items-center gap-2">
+                        <i class="bi bi-graph-up-arrow"></i>
+                        <span id="chartTitle">Xu hướng chi tiêu</span>
+                    </h6>
+                    <button id="toggleChartBtn"
+                            class="btn btn-filter d-flex align-items-center gap-1"
+                            style="padding:5px 10px">
+                        <i class="bi bi-pie-chart-fill"></i>
+                        <span class="d-none d-sm-inline">Biểu đồ tròn</span>
+                    </button>
+                </div>
+                <div style="position:relative;height:185px;width:100%">
+                    <canvas id="xuHuongChart"></canvas>
+                </div>
+            </div>
 
-                    <div class="d-block d-md-none">
-                        <div th:each="expense : ${listExpenses}" class="mobile-card-item">
-                            <div class="d-flex align-items-start gap-2 mb-2">
-                                <input type="checkbox" class="form-check-input expense-checkbox mt-1" th:value="${expense.id}" 
-                                       style="cursor: pointer; width: 18px; height: 18px;" onchange="updateDeleteButton()">
-                                <div class="flex-grow-1">
-                                    <div class="d-flex justify-content-between align-items-start">
-                                        <div>
-                                            <div class="fw-bold td-title fs-6" th:text="${expense.title}">Khoản chi</div>
-                                            <div class="td-date" style="font-size: 0.75rem;" th:text="${expense.date}">01-01-2026</div>
+        </div><!-- /left-panel -->
+
+        <!-- ── RIGHT PANEL ── -->
+        <div class="right-panel">
+            <div class="tech-card table-card">
+
+                <!-- Toolbar -->
+                <div class="toolbar mb-3">
+                    <div class="toolbar-title">
+                        <i class="bi bi-list-stars c-accent"></i>
+                        <span class="c-muted fw-bold" style="font-size:.85rem">Lịch sử giao dịch</span>
+                    </div>
+                    <div class="toolbar-actions">
+                        <!-- Xóa đã chọn -->
+                        <button id="deleteSelectedBtn"
+                                class="btn btn-del d-none align-items-center gap-1"
+                                onclick="deleteSelected()">
+                            <i class="bi bi-trash3"></i>
+                            <span class="d-none d-sm-inline">Xóa đã chọn</span>
+                        </button>
+                        <!-- Xóa tất cả -->
+                        <button class="btn btn-del d-flex align-items-center gap-1"
+                                onclick="deleteAll()">
+                            <i class="bi bi-trash3-fill"></i>
+                            <span class="d-none d-sm-inline">Xóa tất cả</span>
+                        </button>
+                        <!-- Lọc danh mục -->
+                        <div class="dropdown">
+                            <button class="btn btn-filter d-flex align-items-center gap-1 dropdown-toggle"
+                                    type="button" data-bs-toggle="dropdown">
+                                <i class="bi bi-funnel"></i>
+                                <span class="d-none d-sm-inline">Danh mục</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" th:classappend="${selectedCategory=='all'?'active':''}" href="/?category=all"><i class="bi bi-grid-3x3-gap me-2"></i>Tất cả</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" th:classappend="${selectedCategory=='Ăn uống'?'active':''}"   href="/?category=Ăn uống">🍔 Ăn uống</a></li>
+                                <li><a class="dropdown-item" th:classappend="${selectedCategory=='Di chuyển'?'active':''}" href="/?category=Di chuyển">🚗 Di chuyển</a></li>
+                                <li><a class="dropdown-item" th:classappend="${selectedCategory=='Mua sắm'?'active':''}"   href="/?category=Mua sắm">🛍️ Mua sắm</a></li>
+                                <li><a class="dropdown-item" th:classappend="${selectedCategory=='Giải trí'?'active':''}" href="/?category=Giải trí">🎬 Giải trí</a></li>
+                                <li><a class="dropdown-item" th:classappend="${selectedCategory=='Học tập'?'active':''}"  href="/?category=Học tập">📚 Học tập</a></li>
+                                <li><a class="dropdown-item" th:classappend="${selectedCategory=='Hóa đơn'?'active':''}"  href="/?category=Hóa đơn">💵 Hóa đơn &amp; Tiện ích</a></li>
+                                <li><a class="dropdown-item" th:classappend="${selectedCategory=='Khác'?'active':''}"     href="/?category=Khác">✨ Mục khác</a></li>
+                            </ul>
+                        </div>
+                        <!-- Lọc thời gian -->
+                        <div class="dropdown">
+                            <button class="btn btn-filter d-flex align-items-center gap-1 dropdown-toggle"
+                                    type="button" data-bs-toggle="dropdown">
+                                <i class="bi bi-calendar-range"></i>
+                                <span class="d-none d-sm-inline">Thời gian</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" th:classappend="${selectedTimeFilter=='all'?'active':''}"       href="/?timeFilter=all"><i class="bi bi-infinity me-2"></i>Tất cả</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" th:classappend="${selectedTimeFilter=='today'?'active':''}"     href="/?timeFilter=today"><i class="bi bi-calendar-day me-2"></i>Hôm nay</a></li>
+                                <li><a class="dropdown-item" th:classappend="${selectedTimeFilter=='yesterday'?'active':''}" href="/?timeFilter=yesterday"><i class="bi bi-calendar-minus me-2"></i>Hôm qua</a></li>
+                                <li><a class="dropdown-item" th:classappend="${selectedTimeFilter=='week'?'active':''}"      href="/?timeFilter=week"><i class="bi bi-calendar-week me-2"></i>Tuần này</a></li>
+                                <li><a class="dropdown-item" th:classappend="${selectedTimeFilter=='month'?'active':''}"     href="/?timeFilter=month"><i class="bi bi-calendar-month me-2"></i>Tháng này</a></li>
+                                <li><a class="dropdown-item" th:classappend="${selectedTimeFilter=='lastMonth'?'active':''}" href="/?timeFilter=lastMonth"><i class="bi bi-calendar-check me-2"></i>Tháng trước</a></li>
+                            </ul>
+                        </div>
+                        <!-- Thêm khoản chi -->
+                        <a href="/showNewExpenseForm" class="btn btn-add d-flex align-items-center gap-1">
+                            <i class="bi bi-plus-lg"></i>
+                            <span>Thêm</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Empty state -->
+                <div th:if="${#lists.isEmpty(listExpenses)}" class="empty-state">
+                    <i class="bi bi-inbox"></i>
+                    <span class="c-muted" style="font-size:.9rem">Chưa có dữ liệu chi tiêu nào được ghi nhận.</span>
+                </div>
+
+                <!-- ─ MOBILE LIST (< 768px) ─ -->
+                <div class="d-block d-md-none" th:if="${!#lists.isEmpty(listExpenses)}">
+                    <div class="d-flex flex-column gap-2">
+                        <div th:each="expense : ${listExpenses}" class="expense-card">
+                            <div class="d-flex align-items-start gap-2">
+                                <input type="checkbox" class="form-check-input expense-checkbox mt-1 flex-shrink-0"
+                                       th:value="${expense.id}"
+                                       style="cursor:pointer;width:17px;height:17px"
+                                       onchange="updateDeleteButton()">
+                                <div class="flex-grow-1 min-w-0">
+                                    <div class="d-flex justify-content-between align-items-start gap-2">
+                                        <div class="min-w-0">
+                                            <div class="fw-semibold c-title text-truncate" style="font-size:.9rem"
+                                                 th:text="${expense.title}">Khoản chi</div>
+                                            <div class="c-date mt-1" th:text="${expense.date}">01-01-2026</div>
                                         </div>
-                                        <div class="text-end">
-                                            <div class="fw-bold mobile-amount" th:text="${expense.amount != null ? #numbers.formatDecimal(expense.amount, 0, 'COMMA', 0, 'POINT') + ' đ' : '0 đ'}">0 đ</div>
-                                            <div class="mt-1"><span class="badge badge-category" th:text="${expense.category}">Danh mục</span></div>
+                                        <div class="text-end flex-shrink-0">
+                                            <div class="c-amount" style="font-size:.95rem"
+                                                 th:text="${expense.amount != null
+                                                    ? #numbers.formatDecimal(expense.amount,0,'COMMA',0,'POINT') + ' đ'
+                                                    : '0 đ'}">0 đ</div>
+                                            <span class="badge-cat mt-1 d-inline-block" th:text="${expense.category}">Danh mục</span>
                                         </div>
+                                    </div>
+                                    <div class="d-flex justify-content-end mt-2 pt-2"
+                                         style="border-top:1px solid var(--divider-color,rgba(255,255,255,.07))">
+                                        <a th:href="@{/deleteExpense/{id}(id=${expense.id})}"
+                                           class="btn btn-del d-flex align-items-center gap-1"
+                                           style="padding:4px 10px;font-size:.78rem"
+                                           onclick="return confirm('Bạn có chắc chắn muốn xóa khoản chi này không?')">
+                                            <i class="bi bi-trash3"></i> Xóa
+                                        </a>
                                     </div>
                                 </div>
                             </div>
-                            <div class="d-flex justify-content-end border-top border-secondary border-opacity-10 pt-2 mt-2">
-                                <a th:href="@{/deleteExpense/{id}(id=${expense.id})}" 
-                                   class="text-danger bg-danger bg-opacity-10 p-2 py-1 rounded-2 text-decoration-none" style="font-size: 0.85rem;"
-                                   onclick="return confirm('Bạn có chắc chắn muốn xóa khoản chi này không?')">
-                                    <i class="bi bi-trash3 me-1"></i> Xóa bản ghi
-                                </a>
-                            </div>
                         </div>
                     </div>
-
-                    <div class="table-responsive d-none d-md-block">
-                        <table class="table table-cyber mb-0">
-                            <thead>
-                                <tr>
-                                    <th style="width: 40px;">
-                                        <input type="checkbox" id="selectAll" class="form-check-input" 
-                                               style="cursor: pointer; width: 18px; height: 18px;" 
-                                               onchange="toggleSelectAll(this)">
-                                    </th>
-                                    <th>Khoản chi</th>
-                                    <th>Danh mục</th>
-                                    <th>Thời gian</th>
-                                    <th class="text-end">Số tiền</th>
-                                    <th class="text-center">Hành động</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr th:each="expense : ${listExpenses}">
-                                    <td>
-                                        <input type="checkbox" class="form-check-input expense-checkbox" 
-                                               th:value="${expense.id}" 
-                                               style="cursor: pointer; width: 18px; height: 18px;" 
-                                               onchange="updateDeleteButton()">
-                                    </td>
-                                    <td class="fw-semibold td-title" th:text="${expense.title}">Khoản chi</td>
-                                    <td><span class="badge badge-category" th:text="${expense.category}">Danh mục</span></td>
-                                    <td class="small td-date" th:text="${expense.date}">01-01-2026</td>
-                                    <td class="text-end fw-bold td-amount" th:text="${expense.amount != null ? #numbers.formatDecimal(expense.amount, 0, 'COMMA', 0, 'POINT') + ' đ' : '0 đ'}">0 đ</td>
-                                    <td class="text-center">
-                                        <a th:href="@{/deleteExpense/{id}(id=${expense.id})}" 
-                                           class="btn btn-sm btn-outline-danger border-0" 
-                                           onclick="return confirm('Bạn có chắc chắn muốn xóa khoản chi này không?')">
-                                            <i class="bi bi-trash3"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div th:if="${#lists.isEmpty(listExpenses)}" class="text-center py-5 text-empty">
-                        <i class="bi bi-inbox fs-2 mb-2 d-block opacity-25"></i>
-                        <span>Chưa có dữ liệu chi tiêu nào được ghi nhận.</span>
-                    </div>
-
                 </div>
-            </div>
-        </div>
-    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/js/premium-effects.js"></script>
-    <script src="/js/login-bg.js"></script>
-    <script>
-        let currentChart = null;
-        let currentChartType = 'bar'; // 'bar' hoặc 'pie'
+                <!-- ─ DESKTOP TABLE (≥ 768px) ─ -->
+                <div class="table-scroll d-none d-md-block" th:if="${!#lists.isEmpty(listExpenses)}">
+                    <table class="table table-cyber mb-0">
+                        <thead>
+                            <tr>
+                                <th style="width:36px;padding-left:10px">
+                                    <input type="checkbox" id="selectAll" class="form-check-input"
+                                           style="cursor:pointer;width:16px;height:16px"
+                                           onchange="toggleSelectAll(this)">
+                                </th>
+                                <th>Khoản chi</th>
+                                <th>Danh mục</th>
+                                <th>Thời gian</th>
+                                <th class="text-end">Số tiền</th>
+                                <th class="text-center" style="width:60px"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="expense : ${listExpenses}">
+                                <td style="padding-left:10px">
+                                    <input type="checkbox" class="form-check-input expense-checkbox"
+                                           th:value="${expense.id}"
+                                           style="cursor:pointer;width:16px;height:16px"
+                                           onchange="updateDeleteButton()">
+                                </td>
+                                <td class="fw-semibold c-title" th:text="${expense.title}">Khoản chi</td>
+                                <td><span class="badge-cat" th:text="${expense.category}">Danh mục</span></td>
+                                <td class="c-date" th:text="${expense.date}">01-01-2026</td>
+                                <td class="text-end c-amount"
+                                    th:text="${expense.amount != null
+                                        ? #numbers.formatDecimal(expense.amount,0,'COMMA',0,'POINT') + ' đ'
+                                        : '0 đ'}">0 đ</td>
+                                <td class="text-center">
+                                    <a th:href="@{/deleteExpense/{id}(id=${expense.id})}"
+                                       class="btn btn-del d-inline-flex align-items-center justify-content-center"
+                                       style="width:32px;height:32px;padding:0"
+                                       onclick="return confirm('Bạn có chắc chắn muốn xóa khoản chi này không?')">
+                                        <i class="bi bi-trash3" style="font-size:.82rem"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-        document.addEventListener("DOMContentLoaded", function () {
-            loadBarChart();
+            </div><!-- /table-card -->
+        </div><!-- /right-panel -->
 
-            // Xử lý sự kiện click nút chuyển đổi
-            document.getElementById('toggleChartBtn').addEventListener('click', function() {
-                if (currentChartType === 'bar') {
-                    loadPieChart();
-                } else {
-                    loadBarChart();
-                }
-            });
+    </div><!-- /main-grid -->
+</div><!-- /app-wrapper -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/premium-effects.js"></script>
+<script src="/js/login-bg.js"></script>
+<script>
+    let currentChart = null;
+    let currentChartType = 'bar';
+
+    document.addEventListener('DOMContentLoaded', function () {
+        loadBarChart();
+        document.getElementById('toggleChartBtn').addEventListener('click', function () {
+            currentChartType === 'bar' ? loadPieChart() : loadBarChart();
         });
+    });
 
-        function getChartTextColor() {
-            return document.documentElement.getAttribute('data-theme') === 'light' ? '#334155' : '#94a3b8';
-        }
+    function getChartTextColor() {
+        return document.documentElement.getAttribute('data-theme') === 'light' ? '#4a5568' : '#94a3b8';
+    }
+    function getChartGridColor() {
+        return document.documentElement.getAttribute('data-theme') === 'light'
+            ? 'rgba(90,127,168,.08)' : 'rgba(255,255,255,.05)';
+    }
 
-        function getChartGridColor() {
-            return document.documentElement.getAttribute('data-theme') === 'light'
-                ? 'rgba(99, 102, 241, 0.08)'
-                : 'rgba(255, 255, 255, 0.06)';
-        }
-
-        function loadBarChart() {
-            fetch('/api/xu-huong-chi-tieu')
-                .then(response => response.json())
-                .then(data => {
-                    if (currentChart) {
-                        currentChart.destroy();
-                    }
-
-                    const ctx = document.getElementById('xuHuongChart').getContext('2d');
-                    currentChart = new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: [data.labelThangTruoc || "Tháng trước", data.labelThangNay || "Tháng này"],
-                            datasets: [{
-                                label: 'Chi tiêu',
-                                data: [data.tongThangTruoc || 0, data.tongThangNay || 0],
-                                backgroundColor: ['rgba(99, 102, 241, 0.35)', 'rgba(6, 182, 212, 0.45)'],
-                                borderColor: ['#818cf8', '#22d3ee'],
-                                borderWidth: 2,
-                                borderRadius: 8
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: { 
-                                legend: { display: false },
-                                tooltip: {
-                                    backgroundColor: 'rgba(15, 23, 42, 0.92)',
-                                    titleColor: '#e2e8f0',
-                                    bodyColor: '#22d3ee',
-                                    borderColor: 'rgba(99, 102, 241, 0.3)',
-                                    borderWidth: 1,
-                                    padding: 10,
-                                    callbacks: {
-                                        label: function(context) {
-                                            return ' ' + context.parsed.y.toLocaleString('vi-VN') + ' đ';
-                                        }
-                                    }
-                                }
-                            },
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    ticks: { 
-                                        color: getChartTextColor(),
-                                        font: { size: 11, weight: '500' }
-                                    },
-                                    grid: { color: getChartGridColor() }
-                                },
-                                x: {
-                                    ticks: { 
-                                        color: getChartTextColor(),
-                                        font: { size: 11, weight: '600' }
-                                    },
-                                    grid: { display: false }
-                                }
+    function loadBarChart() {
+        fetch('/api/xu-huong-chi-tieu')
+            .then(r => r.json())
+            .then(data => {
+                if (currentChart) currentChart.destroy();
+                const ctx = document.getElementById('xuHuongChart').getContext('2d');
+                currentChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: [data.labelThangTruoc || 'Tháng trước', data.labelThangNay || 'Tháng này'],
+                        datasets: [{
+                            label: 'Chi tiêu',
+                            data: [data.tongThangTruoc || 0, data.tongThangNay || 0],
+                            backgroundColor: ['rgba(99,102,241,.32)', 'rgba(6,182,212,.42)'],
+                            borderColor: ['#818cf8','#22d3ee'],
+                            borderWidth: 2,
+                            borderRadius: 8
+                        }]
+                    },
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: 'rgba(15,23,42,.95)',
+                                titleColor: '#e2e8f0', bodyColor: '#22d3ee',
+                                borderColor: 'rgba(99,102,241,.3)', borderWidth: 1, padding: 10,
+                                callbacks: { label: ctx => ' ' + ctx.parsed.y.toLocaleString('vi-VN') + ' đ' }
                             }
-                        }
-                    });
-
-                    currentChartType = 'bar';
-                    document.getElementById('chartTitle').textContent = 'Xu hướng chi tiêu';
-                    document.getElementById('toggleChartBtn').innerHTML = '<i class="bi bi-pie-chart-fill"></i><span>Biểu đồ tròn</span>';
-                })
-                .catch(err => console.error("Error loading bar chart:", err));
-        }
-
-        function loadPieChart() {
-            fetch('/api/chi-tieu-theo-danh-muc')
-                .then(response => response.json())
-                .then(data => {
-                    if (currentChart) {
-                        currentChart.destroy();
-                    }
-
-                    const categories = data.categories || [];
-                    const amounts = data.amounts || [];
-
-                    if (categories.length === 0) {
-                        alert('Chưa có dữ liệu chi tiêu theo danh mục');
-                        return;
-                    }
-
-                    // Tạo màu sắc cho từng danh mục
-                    const colors = [
-                        'rgba(99, 102, 241, 0.7)',   // Tím
-                        'rgba(6, 182, 212, 0.7)',    // Xanh cyan
-                        'rgba(245, 158, 11, 0.7)',   // Cam
-                        'rgba(239, 68, 68, 0.7)',    // Đỏ
-                        'rgba(34, 197, 94, 0.7)',    // Xanh lá
-                        'rgba(168, 85, 247, 0.7)',   // Tím nhạt
-                        'rgba(236, 72, 153, 0.7)',   // Hồng
-                        'rgba(14, 165, 233, 0.7)'    // Xanh dương
-                    ];
-
-                    const borderColors = [
-                        '#6366f1', '#06b6d4', '#f59e0b', '#ef4444',
-                        '#22c55e', '#a855f7', '#ec4899', '#0ea5e9'
-                    ];
-
-                    const ctx = document.getElementById('xuHuongChart').getContext('2d');
-                    currentChart = new Chart(ctx, {
-                        type: 'pie',
-                        data: {
-                            labels: categories,
-                            datasets: [{
-                                data: amounts,
-                                backgroundColor: colors.slice(0, categories.length),
-                                borderColor: borderColors.slice(0, categories.length),
-                                borderWidth: 2
-                            }]
                         },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    display: true,
-                                    position: 'bottom',
-                                    labels: {
-                                        color: getChartTextColor(),
-                                        padding: 10,
-                                        font: { size: 11, weight: '600' }
-                                    }
-                                },
-                                tooltip: {
-                                    backgroundColor: 'rgba(15, 23, 42, 0.92)',
-                                    titleColor: '#e2e8f0',
-                                    bodyColor: '#22d3ee',
-                                    borderColor: 'rgba(99, 102, 241, 0.3)',
-                                    borderWidth: 1,
-                                    padding: 10,
-                                    callbacks: {
-                                        label: function(context) {
-                                            const label = context.label || '';
-                                            const value = context.parsed || 0;
-                                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                            const percentage = ((value / total) * 100).toFixed(1);
-                                            return label + ': ' + value.toLocaleString('vi-VN') + ' đ (' + percentage + '%)';
-                                        }
+                        scales: {
+                            y: { beginAtZero: true, ticks: { color: getChartTextColor(), font: { size: 10 } }, grid: { color: getChartGridColor() } },
+                            x: { ticks: { color: getChartTextColor(), font: { size: 10, weight: '600' } }, grid: { display: false } }
+                        }
+                    }
+                });
+                currentChartType = 'bar';
+                document.getElementById('chartTitle').textContent = 'Xu hướng chi tiêu';
+                document.getElementById('toggleChartBtn').innerHTML =
+                    '<i class="bi bi-pie-chart-fill"></i><span class="d-none d-sm-inline ms-1">Biểu đồ tròn</span>';
+            }).catch(console.error);
+    }
+
+    function loadPieChart() {
+        fetch('/api/chi-tieu-theo-danh-muc')
+            .then(r => r.json())
+            .then(data => {
+                if (currentChart) currentChart.destroy();
+                const categories = data.categories || [];
+                const amounts    = data.amounts    || [];
+                if (!categories.length) { alert('Chưa có dữ liệu danh mục'); return; }
+                const bgs = ['rgba(99,102,241,.7)','rgba(6,182,212,.7)','rgba(245,158,11,.7)','rgba(239,68,68,.7)','rgba(34,197,94,.7)','rgba(168,85,247,.7)','rgba(236,72,153,.7)','rgba(14,165,233,.7)'];
+                const bds = ['#6366f1','#06b6d4','#f59e0b','#ef4444','#22c55e','#a855f7','#ec4899','#0ea5e9'];
+                const ctx = document.getElementById('xuHuongChart').getContext('2d');
+                currentChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: categories,
+                        datasets: [{ data: amounts, backgroundColor: bgs.slice(0,categories.length), borderColor: bds.slice(0,categories.length), borderWidth: 2 }]
+                    },
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: true, position: 'bottom', labels: { color: getChartTextColor(), padding: 8, font: { size: 10, weight: '600' } } },
+                            tooltip: {
+                                backgroundColor: 'rgba(15,23,42,.95)',
+                                titleColor: '#e2e8f0', bodyColor: '#22d3ee',
+                                borderColor: 'rgba(99,102,241,.3)', borderWidth: 1, padding: 10,
+                                callbacks: {
+                                    label: ctx => {
+                                        const total = ctx.dataset.data.reduce((a,b)=>a+b,0);
+                                        return ctx.label + ': ' + ctx.parsed.toLocaleString('vi-VN') + ' đ (' + ((ctx.parsed/total)*100).toFixed(1) + '%)';
                                     }
                                 }
                             }
                         }
-                    });
+                    }
+                });
+                currentChartType = 'pie';
+                document.getElementById('chartTitle').textContent = 'Chi tiêu theo danh mục';
+                document.getElementById('toggleChartBtn').innerHTML =
+                    '<i class="bi bi-bar-chart-fill"></i><span class="d-none d-sm-inline ms-1">Biểu đồ cột</span>';
+            }).catch(console.error);
+    }
 
-                    currentChartType = 'pie';
-                    document.getElementById('chartTitle').textContent = 'Chi tiêu theo danh mục';
-                    document.getElementById('toggleChartBtn').innerHTML = '<i class="bi bi-bar-chart-fill"></i><span>Biểu đồ cột</span>';
-                })
-                .catch(err => console.error("Error loading pie chart:", err));
+    function toggleSelectAll(cb) {
+        document.querySelectorAll('.expense-checkbox').forEach(c => c.checked = cb.checked);
+        updateDeleteButton();
+    }
+
+    function updateDeleteButton() {
+        const checked = document.querySelectorAll('.expense-checkbox:checked');
+        const btn = document.getElementById('deleteSelectedBtn');
+        const all = document.getElementById('selectAll');
+        if (checked.length > 0) { btn.classList.remove('d-none'); btn.classList.add('d-flex'); }
+        else                    { btn.classList.add('d-none');    btn.classList.remove('d-flex'); }
+        if (all) {
+            const total = document.querySelectorAll('.expense-checkbox').length;
+            all.checked = total > 0 && checked.length === total;
         }
+    }
 
-        // Hàm chọn/bỏ chọn tất cả
-        function toggleSelectAll(checkbox) {
-            const checkboxes = document.querySelectorAll('.expense-checkbox');
-            checkboxes.forEach(cb => {
-                cb.checked = checkbox.checked;
-            });
-            updateDeleteButton();
-        }
+    function deleteSelected() {
+        const checked = document.querySelectorAll('.expense-checkbox:checked');
+        if (!checked.length) { alert('Vui lòng chọn ít nhất một khoản chi!'); return; }
+        if (!confirm('Xóa ' + checked.length + ' khoản chi đã chọn?')) return;
+        const ids = Array.from(checked).map(c => c.value);
+        fetch('/deleteMultipleExpenses', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ids })
+        }).then(r => r.ok ? location.reload() : alert('Có lỗi xảy ra!'))
+          .catch(() => alert('Có lỗi xảy ra!'));
+    }
 
-        // Cập nhật hiển thị nút xóa đã chọn
-        function updateDeleteButton() {
-            const checkboxes = document.querySelectorAll('.expense-checkbox:checked');
-            const deleteBtn = document.getElementById('deleteSelectedBtn');
-            const selectAllCheckbox = document.getElementById('selectAll');
-            
-            if (checkboxes.length > 0) {
-                deleteBtn.classList.remove('d-none');
-                deleteBtn.classList.add('d-flex');
-            } else {
-                deleteBtn.classList.remove('d-flex');
-                deleteBtn.classList.add('d-none');
-            }
-
-            // Cập nhật trạng thái checkbox "Chọn tất cả"
-            if (selectAllCheckbox) {
-                const allCheckboxes = document.querySelectorAll('.expense-checkbox');
-                selectAllCheckbox.checked = allCheckboxes.length > 0 && checkboxes.length === allCheckboxes.length;
-            }
-        }
-
-        // Xóa các mục đã chọn
-        function deleteSelected() {
-            const checkboxes = document.querySelectorAll('.expense-checkbox:checked');
-            if (checkboxes.length === 0) {
-                alert('Vui lòng chọn ít nhất một khoản chi để xóa!');
-                return;
-            }
-
-            const count = checkboxes.length;
-            if (!confirm(`Bạn có chắc chắn muốn xóa ${count} khoản chi đã chọn không?`)) {
-                return;
-            }
-
-            const ids = Array.from(checkboxes).map(cb => cb.value);
-            
-            fetch('/deleteMultipleExpenses', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ ids: ids })
-            })
-            .then(response => {
-                if (response.ok) {
-                    window.location.reload();
-                } else {
-                    alert('Có lỗi xảy ra khi xóa các khoản chi!');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Có lỗi xảy ra khi xóa các khoản chi!');
-            });
-        }
-
-        // Xóa tất cả
-        function deleteAll() {
-            const checkboxes = document.querySelectorAll('.expense-checkbox');
-            if (checkboxes.length === 0) {
-                alert('Không có khoản chi nào để xóa!');
-                return;
-            }
-
-            if (!confirm(`Bạn có chắc chắn muốn xóa TẤT CẢ ${checkboxes.length} khoản chi không? Hành động này không thể hoàn tác!`)) {
-                return;
-            }
-
-            fetch('/deleteAllExpenses', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            })
-            .then(response => {
-                if (response.ok) {
-                    window.location.reload();
-                } else {
-                    alert('Có lỗi xảy ra khi xóa tất cả khoản chi!');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Có lỗi xảy ra khi xóa tất cả khoản chi!');
-            });
-        }
-    </script>
+    function deleteAll() {
+        const all = document.querySelectorAll('.expense-checkbox');
+        if (!all.length) { alert('Không có khoản chi nào!'); return; }
+        if (!confirm('Xóa TẤT CẢ ' + all.length + ' khoản chi? Không thể hoàn tác!')) return;
+        fetch('/deleteAllExpenses', { method: 'POST', headers: { 'Content-Type': 'application/json' } })
+            .then(r => r.ok ? location.reload() : alert('Có lỗi xảy ra!'))
+            .catch(() => alert('Có lỗi xảy ra!'));
+    }
+</script>
 </body>
 </html>
