@@ -242,6 +242,19 @@
         @media (min-width: 768px) {
             .tech-card { padding: 32px !important; }
         }
+
+        /* ===== CANVAS NỀN ĐỘNG ===== */
+        #login-bg-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Đảm bảo content nằm trên canvas */
+        .theme-toggle-btn { z-index: 1000 !important; }
+        .container { position: relative; z-index: 1; }
     </style>
 </head>
 <body>
@@ -332,6 +345,7 @@
     </div>
     
     <script src="/js/premium-effects.js"></script>
+    <script src="/js/login-bg.js"></script>
     <script>
         document.querySelector('form').addEventListener('submit', function(e) {
             const title = document.querySelector('input[name="title"]').value;
