@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Không có kết nối — Chi Tiêu</title>
+    <link href="/css/theme-variables.css" rel="stylesheet">
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Inter','Segoe UI',system-ui,sans-serif;
+            background: linear-gradient(-45deg,#0f0f23,#1a0f2e,#0a1628,#1e1140);
+            background-size: 400% 400%;
+            animation: gs 20s ease infinite;
+            padding: 24px;
+        }
+        @keyframes gs { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
+        .card {
+            background: rgba(30,41,59,.75);
+            border: 1px solid rgba(255,255,255,.12);
+            border-radius: 24px;
+            padding: 40px 32px;
+            max-width: 380px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,.5);
+        }
+        .icon {
+            font-size: 3.5rem;
+            display: block;
+            margin-bottom: 16px;
+            animation: bob 2.5s ease-in-out infinite;
+        }
+        @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+        h1 { color:#f1f5f9; font-size:1.4rem; font-weight:700; margin:0 0 8px; }
+        p  { color:#94a3b8; font-size:.9rem; line-height:1.6; margin:0 0 28px; }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg,#6366f1,#4f46e5);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 13px 28px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(99,102,241,.4);
+            transition: transform .2s ease, box-shadow .2s ease;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(99,102,241,.5); }
+        .status {
+            margin-top: 20px;
+            font-size: .78rem;
+            color: #475569;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <span class="icon">📶</span>
+        <h1>Không có kết nối</h1>
+        <p>Ứng dụng cần kết nối internet để đồng bộ dữ liệu chi tiêu của bạn. Vui lòng kiểm tra WiFi hoặc dữ liệu di động.</p>
+        <button class="btn" onclick="retry()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 .49-3.1"></path></svg>
+            Thử lại
+        </button>
+        <p class="status" id="status">Đang kiểm tra kết nối...</p>
+    </div>
+
+    <script>
+        function retry() {
+            window.location.href = '/';
+        }
+
+        // Tự động retry khi có mạng trở lại
+        window.addEventListener('online', () => {
+            document.getElementById('status').textContent = '✓ Đã có kết nối, đang chuyển hướng...';
+            setTimeout(() => window.location.href = '/', 800);
+        });
+
+        window.addEventListener('offline', () => {
+            document.getElementById('status').textContent = '✗ Chưa có kết nối internet';
+        });
+
+        // Check initial
+        setTimeout(() => {
+            const el = document.getElementById('status');
+            el.textContent = navigator.onLine ? 'Có vẻ đã có mạng — hãy thử lại' : '✗ Chưa có kết nối internet';
+        }, 1000);
+    </script>
+</body>
+</html>

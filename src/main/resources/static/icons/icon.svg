@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Background gradient circle -->
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a0f2e"/>
+      <stop offset="100%" style="stop-color:#0a1628"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1"/>
+      <stop offset="50%" style="stop-color:#818cf8"/>
+      <stop offset="100%" style="stop-color:#06b6d4"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#22d3ee;stop-opacity:0.8"/>
+      <stop offset="100%" style="stop-color:#818cf8;stop-opacity:0.8"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background rounded rect -->
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+
+  <!-- Subtle glow overlay -->
+  <rect width="512" height="512" rx="112" fill="url(#accent)" opacity="0.08"/>
+
+  <!-- Wallet shape -->
+  <rect x="88" y="168" width="310" height="210" rx="28" fill="none" stroke="url(#accent)" stroke-width="16"/>
+
+  <!-- Wallet flap -->
+  <path d="M88 230 Q88 168 150 168 H362 Q398 168 398 204 V230 Z" fill="url(#accent)" opacity="0.35"/>
+
+  <!-- Coin slot circle -->
+  <circle cx="340" cy="275" r="38" fill="none" stroke="url(#glow)" stroke-width="13"/>
+  <circle cx="340" cy="275" r="16" fill="url(#glow)" opacity="0.7"/>
+
+  <!-- Currency symbol ₫ -->
+  <text x="154" y="298" font-family="'Segoe UI',system-ui,sans-serif" font-size="72" font-weight="800" fill="url(#glow)" text-anchor="start">₫</text>
+
+  <!-- Decorative dots (network nodes) -->
+  <circle cx="108" cy="138" r="8" fill="#6366f1" opacity="0.6"/>
+  <circle cx="148" cy="118" r="5" fill="#06b6d4" opacity="0.5"/>
+  <circle cx="188" cy="132" r="6" fill="#818cf8" opacity="0.5"/>
+  <line x1="108" y1="138" x2="148" y2="118" stroke="#6366f1" stroke-width="1.5" opacity="0.35"/>
+  <line x1="148" y1="118" x2="188" y2="132" stroke="#6366f1" stroke-width="1.5" opacity="0.35"/>
+
+  <circle cx="390" cy="138" r="7" fill="#06b6d4" opacity="0.5"/>
+  <circle cx="420" cy="115" r="5" fill="#818cf8" opacity="0.45"/>
+  <line x1="390" y1="138" x2="420" y2="115" stroke="#06b6d4" stroke-width="1.5" opacity="0.3"/>
+
+  <!-- Bottom chart bars (mini) -->
+  <rect x="100" y="418" width="22" height="45" rx="5" fill="#6366f1" opacity="0.4"/>
+  <rect x="134" y="400" width="22" height="63" rx="5" fill="#818cf8" opacity="0.5"/>
+  <rect x="168" y="408" width="22" height="55" rx="5" fill="#06b6d4" opacity="0.5"/>
+  <rect x="202" y="390" width="22" height="73" rx="5" fill="#22d3ee" opacity="0.55"/>
+</svg>
